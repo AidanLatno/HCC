@@ -1,0 +1,7 @@
+name: KingdomCraftPlugin
+version: '${project.version}'
+main: me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin
+api-version: 1.19
+authors: [ TestedPugtato ]
+description:
+  This is the official Kingdom Craft: HCC plugin! This will include features such as the powers.
