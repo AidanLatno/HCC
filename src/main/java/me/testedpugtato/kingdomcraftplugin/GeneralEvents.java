@@ -2,6 +2,10 @@ package me.testedpugtato.kingdomcraftplugin;
 
 import me.testedpugtato.kingdomcraftplugin.data.PlayerMemory;
 import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
+import me.testedpugtato.kingdomcraftplugin.powers.Air;
+import me.testedpugtato.kingdomcraftplugin.powers.Earth;
+import me.testedpugtato.kingdomcraftplugin.powers.Lightning;
+import me.testedpugtato.kingdomcraftplugin.powers.Power;
 import me.testedpugtato.kingdomcraftplugin.util.EventUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -95,6 +99,11 @@ public class GeneralEvents implements Listener {
         if(e.getCause() == EntityDamageEvent.DamageCause.FALL && e.getEntity() instanceof Player)
         {
             Player player = (Player) e.getEntity();
+            Power power = PlayerUtility.getPlayerMemory(player).getPower();
+
+            if(power instanceof Lightning)
+                ((Lightning)power).dashesUsed = 0;
+
             if(Database.cancelFall.contains(player))
             {
                 player.setFallDistance(0);
@@ -102,7 +111,7 @@ public class GeneralEvents implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            else if(PlayerUtility.getPlayerMemory(player).getPower().equals("air") || PlayerUtility.getPlayerMemory(player).getPower().equals("earth"))
+            else if(power instanceof Air || power instanceof Earth)
             {
                 player.setFallDistance(0);
                 e.setCancelled(true);
