@@ -4,6 +4,7 @@ import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.projectiles.LightningProjectiles.LightningBasicProj;
 import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
+import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -24,7 +25,7 @@ public class Lightning extends Power
         setBasicCooldown(3);
         setDashCooldown(1);
         setQuickCooldown(10);
-        setArielCooldown(7);
+        setArielCooldown(5);
         setChargedCooldown(15);
         setSlamCooldown(15);
         id = "lightning";
@@ -38,7 +39,23 @@ public class Lightning extends Power
 
     @Override
     public void useAriel(Player player, int playerLevel) {
-        super.useAriel(player, playerLevel);
+        Vector dir = player.getLocation().getDirection();
+
+        dir.add(new Vector(0,1,0));
+        dir.multiply(new Vector(-1,1,-1));
+        player.setVelocity(dir);
+
+        Location loc1 = player.getLocation().clone();
+        Location loc2 = loc1.clone();
+        Vector vec = loc1.getDirection();
+        vec.multiply(new Vector(0,-1,0));
+        for(int i = 0; i < 5; i++)
+        {
+            loc2.add(vec);
+            ParticleMaker.createLine(Particle.SCRAPE,loc1,loc2);
+            loc1 = loc2;
+
+        }
     }
 
     @Override
