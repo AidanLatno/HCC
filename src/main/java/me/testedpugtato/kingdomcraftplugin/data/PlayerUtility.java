@@ -1,5 +1,6 @@
 package me.testedpugtato.kingdomcraftplugin.data;
 
+import me.testedpugtato.kingdomcraftplugin.powers.Power;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -30,5 +31,10 @@ public class PlayerUtility {
     public static String getFolderPath(Player p)
     {
         return Bukkit.getPluginsFolder().getAbsolutePath() + "/KingdomCraft/player/" + p.getUniqueId();
+    }
+
+    static public Power GetPower(Player p)
+    {
+        return getPlayerMemory(p).getPower();
     }
 }

@@ -1,6 +1,8 @@
 package me.testedpugtato.kingdomcraftplugin.data;
 
+import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.powers.*;
+import org.bukkit.Bukkit;
 
 public class PlayerMemory {
     // Database variables
@@ -15,6 +17,13 @@ public class PlayerMemory {
 
     // Temporary variables
     public int shiftCount = 0;
+    private boolean stunned = false;
+    public boolean isStunned() { return stunned; }
+    public void stun(int ticks)
+    {
+        stunned = true;
+        Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), () -> stunned = false,ticks);
+    }
 
 
     public void addPowerLevel(int x) {

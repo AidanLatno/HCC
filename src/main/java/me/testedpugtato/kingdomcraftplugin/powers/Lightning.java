@@ -41,20 +41,24 @@ public class Lightning extends Power
     public void useAriel(Player player, int playerLevel) {
         Vector dir = player.getLocation().getDirection();
 
-        dir.add(new Vector(0,1,0));
+        dir.add(new Vector(0,3,0));
         dir.multiply(new Vector(-1,1,-1));
         player.setVelocity(dir);
 
-        Location loc1 = player.getLocation().clone();
-        Location loc2 = loc1.clone();
-        Vector vec = loc1.getDirection();
-        vec.multiply(new Vector(0,-1,0));
-        for(int i = 0; i < 5; i++)
-        {
-            loc2.add(vec);
-            ParticleMaker.createLine(Particle.SCRAPE,loc1,loc2);
-            loc1 = loc2;
+        Location loc1;
+        Location loc2;
+        for(int x = 0; x < 20; x++) {
+            loc1 = player.getLocation().clone();
+            loc2 = loc1.clone();
+            Vector vec = loc1.getDirection();
+            vec.multiply(new Vector(0, -1, 0));
+            for (int i = 0; i < 5; i++) {
+                loc2.add(vec);
+                ParticleMaker.createLine(Particle.SCRAPE, loc1, loc2);
+                loc1 = loc2;
+                vec.add(new Vector(0.3, 0, 0.3));
 
+            }
         }
     }
 
@@ -95,7 +99,7 @@ public class Lightning extends Power
     public void useQuickAttack(Player player, int powerLevel) {
         Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), new Runnable() {
             int ticks = 0;
-            float time = MathUtils.levelInter(3,6,powerLevel);
+            final float time = MathUtils.levelInter(3,6,powerLevel);
             @Override
             public void run(){
                 ticks++;

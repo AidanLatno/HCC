@@ -25,10 +25,11 @@ public class InputListener implements Listener
     @EventHandler
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
-        if (player.getInventory().getHeldItemSlot() != PlayerUtility.getPlayerMemory(player).getPowerSlot())
-            return;
+        PlayerMemory memory = PlayerUtility.getPlayerMemory(player);
+        if(memory.isStunned()) return;
+        if (player.getInventory().getHeldItemSlot() != memory.getPowerSlot()) return;
         if(player.isSneaking() && !player.isOnGround() && player.getLocation().getPitch() >= 50 && !Database.isOnSlamCooldown(player)) { // Slam attack
-            PlayerMemory memory = PlayerUtility.getPlayerMemory(player);
+
             memory.shiftCount++;
             PlayerUtility.setPlayerMemory(player,memory);
 
@@ -41,7 +42,7 @@ public class InputListener implements Listener
                 Database.removeCancelFall(player,10);
                 int powerLevel = PlayerUtility.getPlayerMemory(player).getPowerLevel();
 
-                Power power = GetPower(player);
+                Power power = PlayerUtility.GetPower(player);
                 Database.startSlamCooldown(player,power.getSlamCooldown());
                 power.useGroundSlam(player,powerLevel);
 
@@ -83,13 +84,16 @@ public class InputListener implements Listener
     public void onCLick(PlayerInteractEvent event)
     {
         Player player = event.getPlayer();
+        PlayerMemory memory = PlayerUtility.getPlayerMemory(player);
 
-        int powerLevel = PlayerUtility.getPlayerMemory(player).getPowerLevel();
+        if(memory.isStunned()) return;
 
-        if (player.getInventory().getHeldItemSlot() != PlayerUtility.getPlayerMemory(player).getPowerSlot())
+        int powerLevel = memory.getPowerLevel();
+
+        if (player.getInventory().getHeldItemSlot() != memory.getPowerSlot())
             return;
 
-        Power abilities = GetPower(player);
+        Power abilities = PlayerUtility.GetPower(player);
 
         if(event.getAction().equals(Action.LEFT_CLICK_BLOCK) && player.isSneaking() && player.isOnGround()) // Charge
         {
@@ -115,7 +119,6 @@ public class InputListener implements Listener
                     }
                     else {
                         abilities.useChargedAttack(player,powerLevel,charge);
-                        return;
                     }
                 }
             },2);
@@ -175,8 +178,5 @@ public class InputListener implements Listener
         }
     }
 
-    private Power GetPower(Player p)
-    {
-        return PlayerUtility.getPlayerMemory(p).getPower();
-    }
+
 }

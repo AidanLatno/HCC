@@ -1,9 +1,12 @@
 package me.testedpugtato.kingdomcraftplugin.powers;
 
+import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class Power
 {
+
     public String id = "no power";
     private float basicCooldown = 1;
     private float quickCooldown = 1;
@@ -71,4 +74,6 @@ public class Power
     public float getSlamCooldown() { return slamCooldown; }
 
     public void setSlamCooldown(float slamCooldown) { this.slamCooldown = slamCooldown; }
+
+
 }

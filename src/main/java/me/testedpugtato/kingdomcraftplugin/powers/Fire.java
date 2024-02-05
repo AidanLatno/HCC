@@ -32,7 +32,7 @@ public class Fire extends Power
     {
         setParticle(player,powerLevel);
 
-        FireBasicAttackProj projectile = new FireBasicAttackProj(player,1.5f,particle,(float)MathUtils.levelInter(0.4,0.8,powerLevel));
+        FireBasicAttackProj projectile = new FireBasicAttackProj(player,1.5f,particle,MathUtils.levelInter(0.4,0.8,powerLevel));
 
         projectile.moveSelf(2,false,1);
 
@@ -287,7 +287,7 @@ public class Fire extends Power
         charge /= 6;
 
         FireChargedAttack blast = new FireChargedAttack(player,1.5f,charge*2,particle,3);
-        blast.moveSelf((float)MathUtils.levelInter(1,3,powerLevel), false,1);
+        blast.moveSelf(MathUtils.levelInter(1,3,powerLevel), false,1);
 
     }
 
