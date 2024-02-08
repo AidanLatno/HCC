@@ -87,7 +87,28 @@ public class Lightning extends Power
 
     @Override
     public void chargeChargedAttack(Player player, int powerLevel, double charge) {
-        super.chargeChargedAttack(player, powerLevel, charge);
+        double scale = 1.1 - charge;
+
+        ParticleMaker.createSphere(
+                Particle.SCRAPE,
+                player.getEyeLocation(),
+                MathUtils.levelInter(1,2,powerLevel)*scale,
+                1,
+                MathUtils.levelInter(0.5,1,powerLevel)*scale,
+                0,
+                0,
+                0,
+                0.004*scale);
+        ParticleMaker.createSphere(
+                Particle.END_ROD,
+                player.getEyeLocation(),
+                1*scale,
+                (int)(MathUtils.levelInter(1,5,powerLevel)),
+                0.1,
+                0,
+                0,
+                0,
+                0.3*scale);
     }
 
     @Override
