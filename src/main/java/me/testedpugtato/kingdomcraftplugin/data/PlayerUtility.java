@@ -28,6 +28,15 @@ public class PlayerUtility {
         else playerMemory.put(p.getUniqueId().toString(),memory);
     }
 
+    public static <String, PlayerMemory> String findKeyByValue(PlayerMemory value) {
+        for (Map.Entry<java.lang.String, me.testedpugtato.kingdomcraftplugin.data.PlayerMemory> entry : playerMemory.entrySet()) {
+            if (value.equals(entry.getValue())) {
+                return (String) entry.getKey(); // Return the first found key
+            }
+        }
+        return null; // Not found
+    }
+
     public static String getFolderPath(Player p)
     {
         return Bukkit.getPluginsFolder().getAbsolutePath() + "/KingdomCraft/player/" + p.getUniqueId();

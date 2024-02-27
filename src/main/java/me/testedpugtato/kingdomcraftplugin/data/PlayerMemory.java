@@ -2,6 +2,7 @@ package me.testedpugtato.kingdomcraftplugin.data;
 
 import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.powers.*;
+import me.testedpugtato.kingdomcraftplugin.powers.specialists.RiftWalker;
 import org.bukkit.Bukkit;
 
 public class PlayerMemory {
@@ -115,9 +116,13 @@ public class PlayerMemory {
             case "air":
                 this.power = new Air();
                 break;
+            case "riftwalker":
+                this.power = new RiftWalker();
+                break;
             default:
                 this.power = new Power();
         }
+        this.power.memory = this;
     }
     public int getPlayerLevel() { return playerLevel; }
 

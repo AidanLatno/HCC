@@ -1,5 +1,8 @@
 package me.testedpugtato.kingdomcraftplugin.powers;
 
+import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
+import me.testedpugtato.kingdomcraftplugin.data.PlayerMemory;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class Power
@@ -12,6 +15,8 @@ public class Power
     private float chargedCooldown = 1;
     private float arielCooldown = 1;
     private float slamCooldown = 1;
+    public boolean isDomainActive = false;
+    public PlayerMemory memory;
 
     public void useBasicAttack(Player player, int powerLevel)
     {
@@ -72,6 +77,13 @@ public class Power
     public float getSlamCooldown() { return slamCooldown; }
 
     public void setSlamCooldown(float slamCooldown) { this.slamCooldown = slamCooldown; }
+
+    final public void domainActivate() {
+        domainExpand();
+    }
+    public boolean domainExpand() {return false;}
+    public boolean domainActive() {return false;}
+    public boolean domainBreak() {return false;}
 
 
 }

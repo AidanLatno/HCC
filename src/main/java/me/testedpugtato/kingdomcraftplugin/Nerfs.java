@@ -1,5 +1,6 @@
 package me.testedpugtato.kingdomcraftplugin;
 
+import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
 import me.testedpugtato.kingdomcraftplugin.util.EventUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -54,6 +55,7 @@ public class Nerfs implements Listener
         {
             event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200*2,10),true);
             event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HARM, 1,0),true);
+            PlayerUtility.getPlayerMemory(event.getPlayer()).stun(40);
         }
     }
 
@@ -73,6 +75,7 @@ public class Nerfs implements Listener
                 event.getEntity().addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 200, 10), true);
                 event.getEntity().addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 200, 10), true);
                 event.getEntity().addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 3), true);
+                PlayerUtility.getPlayerMemory((Player)entity).stun(40);
             }, 1);
         }
     }

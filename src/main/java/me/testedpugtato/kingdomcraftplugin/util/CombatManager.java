@@ -3,11 +3,17 @@ package me.testedpugtato.kingdomcraftplugin.util;
 import me.testedpugtato.kingdomcraftplugin.data.PlayerMemory;
 import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class CombatManager
 {
@@ -63,5 +69,33 @@ public class CombatManager
         entity.damage(damage, cause);
         entity.setLastDamageCause(new EntityDamageEvent(cause,damageCause,damage));
 
+    }
+    public static ArrayList<Entity> getEntitiesAroundPoint(Location location, double radius) {
+        ArrayList<Entity> entities = new ArrayList<Entity>();
+        World world = location.getWorld();
+
+        // To find chunks we use chunk coordinates (not block coordinates!)
+        int smallX = (int) Math.floor((location.getX() - radius) / 16.0D);
+        int bigX = (int) Math.floor((location.getX() + radius) / 16.0D);
+        int smallZ = (int) Math.floor((location.getZ() - radius) / 16.0D);
+        int bigZ = (int) Math.floor((location.getZ() + radius) / 16.0D);
+
+        for (int x = smallX; x <= bigX; x++) {
+            for (int z = smallZ; z <= bigZ; z++) {
+                if (world.isChunkLoaded(x, z)) {
+                    entities.addAll(Arrays.asList(world.getChunkAt(x, z).getEntities())); // Add all entities from this chunk to the list
+                }
+            }
+        }
+
+        // Remove the entities that are within the box above but not actually in the sphere we defined with the radius and location
+        // This code below could probably be replaced in Java 8 with a stream -> filter
+        Iterator<Entity> entityIterator = entities.iterator(); // Create an iterator so we can loop through the list while removing entries
+        while (entityIterator.hasNext()) {
+            if (entityIterator.next().getLocation().distanceSquared(location) > radius * radius) { // If the entity is outside of the sphere...
+                entityIterator.remove(); // Remove it
+            }
+        }
+        return entities;
     }
 }

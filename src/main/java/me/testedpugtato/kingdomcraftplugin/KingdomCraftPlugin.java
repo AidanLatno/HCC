@@ -35,6 +35,7 @@ public final class KingdomCraftPlugin extends JavaPlugin
         new YouTubeLink();
         new Stats();
         new SetPower();
+        new Expand();
     }
 
     @Override

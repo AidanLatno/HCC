@@ -6,6 +6,8 @@ import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.LivingEntity;
 
 import java.util.Collection;
@@ -68,6 +70,7 @@ public class LightningBasicProj extends PowerProjectile
                 0.1,
                 1
         );
+        loc.getWorld().playSound(loc, Sound.BLOCK_BEEHIVE_WORK, SoundCategory.MASTER,100,0);
 
     }
 
