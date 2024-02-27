@@ -209,15 +209,15 @@ public class Fire extends Power
 
         player.getWorld().spawnParticle(particle,player.getLocation(),(int)MathUtils.levelInter(100,800,powerLevel), 1,0,1,0.3,null,true);
         player.getWorld().spawnParticle(particle,player.getLocation(),(int)MathUtils.levelInter(1000,8000,powerLevel), MathUtils.levelInter(5,15,powerLevel),1,MathUtils.levelInter(5,15,powerLevel),0.3,null,true);
-        player.playSound(player.getLocation(),Sound.BLOCK_FIRE_AMBIENT, SoundCategory.MASTER,100,0);
-        player.playSound(player.getLocation(),Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,2);
-        player.playSound(player.getLocation(),Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,1);
-        player.playSound(player.getLocation(),Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,0);
+        player.playSound(player.getLocation(), Sound.BLOCK_FIRE_AMBIENT, SoundCategory.MASTER,100,0);
+        player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,2);
+        player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,1);
+        player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,0);
         player.playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,100,0);
         player.playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,100,1);
 
 
-       CombatManager.DamageNearby(player.getLocation(),7,3,7,(int)(MathUtils.levelInter(5,18,powerLevel)*charge),player);
+        CombatManager.DamageNearby(player.getLocation(),7,3,7,(int)(MathUtils.levelInter(5,18,powerLevel)*charge),player);
 
         Collection<LivingEntity> entities = player.getLocation().getNearbyLivingEntities(7,3,7);
 

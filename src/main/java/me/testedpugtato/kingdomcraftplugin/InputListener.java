@@ -26,7 +26,11 @@ public class InputListener implements Listener
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
         PlayerMemory memory = PlayerUtility.getPlayerMemory(player);
-        if(memory.isStunned()) return;
+        if(memory.isStunned())
+        {
+            player.sendMessage("You are stunned!");
+            return;
+        }
         if (player.getInventory().getHeldItemSlot() != memory.getPowerSlot()) return;
         if(player.isSneaking() && !player.isOnGround() && player.getLocation().getPitch() >= 50 && !Database.isOnSlamCooldown(player)) { // Slam attack
 
@@ -86,7 +90,11 @@ public class InputListener implements Listener
         Player player = event.getPlayer();
         PlayerMemory memory = PlayerUtility.getPlayerMemory(player);
 
-        if(memory.isStunned()) return;
+        if(memory.isStunned())
+        {
+            player.sendMessage("You are stunned!");
+            return;
+        }
 
         int powerLevel = memory.getPowerLevel();
 

@@ -1,14 +1,12 @@
 package me.testedpugtato.kingdomcraftplugin.powers;
 
 import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
+import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
 import me.testedpugtato.kingdomcraftplugin.projectiles.LightningProjectiles.LightningBasicProj;
 import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.entity.Entity;
+import org.bukkit.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -89,6 +87,8 @@ public class Lightning extends Power
     public void chargeChargedAttack(Player player, int powerLevel, double charge) {
         double scale = 1.1 - charge;
 
+        player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.MASTER,100,0);
+
         ParticleMaker.createSphere(
                 Particle.SCRAPE,
                 player.getEyeLocation(),
@@ -113,7 +113,42 @@ public class Lightning extends Power
 
     @Override
     public void useChargedAttack(Player player, int powerLevel, double charge) {
-        super.useChargedAttack(player, powerLevel, charge);
+        if(charge > 2) charge = 2;
+        charge /= 2;
+
+        player.getWorld().spawnParticle(Particle.SCRAPE,player.getLocation(),(int)MathUtils.levelInter(100,800,powerLevel), 1,0,1,0.3,null,true);
+        player.getWorld().spawnParticle(Particle.SCRAPE,player.getLocation(),(int)MathUtils.levelInter(1000,8000,powerLevel), MathUtils.levelInter(5,15,powerLevel),1,MathUtils.levelInter(5,15,powerLevel),0.3,null,true);
+        player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.MASTER,100,2);
+        player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.MASTER,100,1);
+        player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.MASTER,100,0);
+
+
+        CombatManager.DamageNearby(player.getLocation(),7,3,7,(int)(MathUtils.levelInter(5,18,powerLevel)*charge),player);
+
+        Collection<LivingEntity> entities = player.getLocation().getNearbyLivingEntities(7,3,7);
+
+        for (LivingEntity entity : entities) {
+            if(entity.equals(player))
+                continue;
+
+            PlayerUtility.getPlayerMemory((Player) entity).stun(2*20);
+
+            Location playerCenterLocation = player.getEyeLocation();
+            Location playerToThrowLocation = entity.getEyeLocation();
+
+            double x = playerToThrowLocation.getX() - playerCenterLocation.getX();
+            double y = playerToThrowLocation.getY() - playerCenterLocation.getY();
+            double z = playerToThrowLocation.getZ() - playerCenterLocation.getZ();
+
+            Vector throwVector = new Vector(x, y, z);
+
+            throwVector.normalize();
+            throwVector.multiply(1.5);
+            throwVector.setY(1.0);
+
+            entity.setVelocity(throwVector);
+
+        }
     }
 
     @Override
@@ -162,7 +197,7 @@ public class Lightning extends Power
 
     @Override
     public void useGroundSlam(Player player, int powerLevel) {
-        super.useGroundSlam(player, powerLevel);
+        
     }
 
     @Override

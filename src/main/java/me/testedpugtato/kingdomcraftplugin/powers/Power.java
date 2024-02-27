@@ -1,7 +1,5 @@
 package me.testedpugtato.kingdomcraftplugin.powers;
 
-import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class Power
