@@ -298,9 +298,9 @@ public class Lightning extends Power
             player.getLocation().getWorld().strikeLightningEffect(loc);
         }
 
-        CombatManager.DamageNearby(player.getLocation(),MathUtils.levelInter(5*charge,10*charge,powerLevel),3,MathUtils.levelInter(5*charge,10*charge,powerLevel),(int)(MathUtils.levelInter(5,18,powerLevel)*charge),player);
+        CombatManager.DamageNearby(player.getLocation(),MathUtils.levelInter(10*charge,20*charge,powerLevel),3,MathUtils.levelInter(10*charge,20*charge,powerLevel),(int)(MathUtils.levelInter(10,40,powerLevel)*charge),player);
 
-        Collection<LivingEntity> entities = player.getLocation().getNearbyLivingEntities(MathUtils.levelInter(5*charge,10*charge,powerLevel),3,MathUtils.levelInter(5*charge,10*charge,powerLevel));
+        Collection<LivingEntity> entities = player.getLocation().getNearbyLivingEntities(MathUtils.levelInter(10*charge,20*charge,powerLevel),3,MathUtils.levelInter(10*charge,20*charge,powerLevel));
 
         for (LivingEntity entity : entities) {
             if(entity.equals(player))

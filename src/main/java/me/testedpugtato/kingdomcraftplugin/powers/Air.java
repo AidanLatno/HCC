@@ -2,6 +2,9 @@ package me.testedpugtato.kingdomcraftplugin.powers;
 
 import me.testedpugtato.kingdomcraftplugin.Database;
 import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
+import me.testedpugtato.kingdomcraftplugin.barriers.AirDomain;
+import me.testedpugtato.kingdomcraftplugin.barriers.RiftWalkerDomain;
+import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
 import me.testedpugtato.kingdomcraftplugin.projectiles.AirProjectiles.AirBasicAttackProj;
 import me.testedpugtato.kingdomcraftplugin.projectiles.AirProjectiles.AirDashProjectile;
 import me.testedpugtato.kingdomcraftplugin.projectiles.AirProjectiles.AirQuickAttackProj;
@@ -16,6 +19,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.Collection;
+import java.util.UUID;
 
 public class Air extends Power
 {
@@ -306,5 +310,16 @@ public class Air extends Power
         proj.setLocation(loc);
         proj.moveSelf(MathUtils.levelInter(6,10,powerLevel),true,1);
 
+    }
+
+    @Override
+    public boolean domainExpand()
+    {
+        UUID uuid = UUID.fromString(PlayerUtility.findKeyByValue(memory)); // Convert the string to a UUID
+        Player player = Bukkit.getPlayer(uuid);
+
+        AirDomain domain = new AirDomain(player,10, player.getLocation(),30,3,1,0.1f,0.1f,0.1f,0.05f);
+        domain.ExpandDomain();
+        return true;
     }
 }

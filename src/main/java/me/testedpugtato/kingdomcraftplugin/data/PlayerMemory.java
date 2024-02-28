@@ -2,6 +2,7 @@ package me.testedpugtato.kingdomcraftplugin.data;
 
 import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.powers.*;
+import me.testedpugtato.kingdomcraftplugin.powers.specialists.Necromancer;
 import me.testedpugtato.kingdomcraftplugin.powers.specialists.RiftWalker;
 import org.bukkit.Bukkit;
 
@@ -118,6 +119,9 @@ public class PlayerMemory {
                 break;
             case "riftwalker":
                 this.power = new RiftWalker();
+                break;
+            case "necromancer":
+                this.power = new Necromancer();
                 break;
             default:
                 this.power = new Power();

@@ -87,15 +87,6 @@ public class CombatManager
                 }
             }
         }
-
-        // Remove the entities that are within the box above but not actually in the sphere we defined with the radius and location
-        // This code below could probably be replaced in Java 8 with a stream -> filter
-        Iterator<Entity> entityIterator = entities.iterator(); // Create an iterator so we can loop through the list while removing entries
-        while (entityIterator.hasNext()) {
-            if (entityIterator.next().getLocation().distanceSquared(location) > radius * radius) { // If the entity is outside of the sphere...
-                entityIterator.remove(); // Remove it
-            }
-        }
         return entities;
     }
 }

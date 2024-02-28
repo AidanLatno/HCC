@@ -1,6 +1,7 @@
 package me.testedpugtato.kingdomcraftplugin.powers.specialists;
 
 import me.testedpugtato.kingdomcraftplugin.barriers.Domain;
+import me.testedpugtato.kingdomcraftplugin.barriers.RiftWalkerDomain;
 import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
 import me.testedpugtato.kingdomcraftplugin.powers.Power;
 import org.bukkit.Bukkit;
@@ -77,9 +78,8 @@ public class RiftWalker extends Power {
         UUID uuid = UUID.fromString(PlayerUtility.findKeyByValue(memory)); // Convert the string to a UUID
         Player player = Bukkit.getPlayer(uuid);
 
-
-        /*Domain domain = new Domain(player.getLocation(),30, Particle.SCRAPE,5000,0.1f,0.1f,0.1f,0.3f);
-        domain.ExpandDomain();*/
+        RiftWalkerDomain domain = new RiftWalkerDomain(player,20, player.getLocation(),30,1,1,0.1f,0.1f,0.1f,0.05f);
+        domain.ExpandDomain();
         return true;
     }
 }
