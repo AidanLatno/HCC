@@ -86,6 +86,8 @@ public class Air extends Power
 
                 ticks++;
 
+                player.getWorld().playSound(player.getLocation(),Sound.ENTITY_CREEPER_HURT, SoundCategory.MASTER,100,2);
+
                 Vector vec = player.getVelocity();
 
                 vec.setY(0);
@@ -193,7 +195,7 @@ public class Air extends Power
                 MathUtils.levelInter(0,0.05,powerLevel),
                 -10);
 
-        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP,10,2);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP,10,2);
     }
 
     @Override
@@ -219,7 +221,7 @@ public class Air extends Power
                 0,
                 1);
 
-        player.playSound(player.getLocation(),Sound.ENTITY_CREEPER_HURT, SoundCategory.MASTER,100,2);
+        player.getWorld().playSound(player.getLocation(),Sound.ENTITY_CREEPER_HURT, SoundCategory.MASTER,100,2);
     }
     @Override
     public void useGroundSlamLanding(Player player, int powerLevel, double charge)
@@ -230,8 +232,8 @@ public class Air extends Power
 
         player.getWorld().spawnParticle(Particle.CLOUD,player.getLocation(),(int)MathUtils.levelInter(100,800,powerLevel), 1,0,1,0.3,null,true);
         player.getWorld().spawnParticle(Particle.CLOUD,player.getLocation(),(int)MathUtils.levelInter(1000,8000,powerLevel), MathUtils.levelInter(5,15,powerLevel),1,MathUtils.levelInter(5,15,powerLevel),0.3,null,true);
-        player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,100,2);
-        player.playSound(player.getLocation(),Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,2);
+        player.getWorld().playSound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,100,2);
+        player.getWorld().playSound(player.getLocation(),Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,2);
 
 
         CombatManager.DamageNearby(player.getLocation(),7,3,7,(int)(MathUtils.levelInter(2,12,powerLevel)*charge),player);
@@ -270,7 +272,7 @@ public class Air extends Power
 
         loc.add(player.getLocation().getDirection().multiply(6));
 
-        player.playSound(loc,Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,MathUtils.levelInter(0.05f,0.5f,(int)(charge*100)),0);
+        player.getWorld().playSound(loc,Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,MathUtils.levelInter(0.05f,0.5f,(int)(charge*100)),0);
         if(charge == 1)  player.playSound(loc, Sound.ENTITY_CREEPER_HURT,0.2f,2);
 
         double scale = 1.1 - charge;
@@ -313,13 +315,9 @@ public class Air extends Power
     }
 
     @Override
-    public boolean domainExpand()
+    public void domainExpand(Player player)
     {
-        UUID uuid = UUID.fromString(PlayerUtility.findKeyByValue(memory)); // Convert the string to a UUID
-        Player player = Bukkit.getPlayer(uuid);
-
         AirDomain domain = new AirDomain(player,10, player.getLocation(),30,3,1,0.1f,0.1f,0.1f,0.05f);
         domain.ExpandDomain();
-        return true;
     }
 }

@@ -1,4 +1,5 @@
 package me.testedpugtato.kingdomcraftplugin.powers;
+import me.testedpugtato.kingdomcraftplugin.barriers.Domain;
 import org.bukkit.entity.Player;
 
 public class PowerExample extends Power
@@ -62,4 +63,12 @@ public class PowerExample extends Power
     {
 
     }
+
+    public void domainExpand(Player player)
+    {
+        // Change to your domain
+        Domain domain = new Domain(player,20, player.getLocation(),30,1,2,0.1f,0.1f,0.1f,0.05f);
+        domain.ExpandDomain();
+    }
+
 }

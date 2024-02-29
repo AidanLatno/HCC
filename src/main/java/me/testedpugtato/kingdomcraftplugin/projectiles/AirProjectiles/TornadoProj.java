@@ -5,6 +5,7 @@ import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -48,9 +49,9 @@ public class TornadoProj extends PowerProjectile
                     0.01
             );
 
-            for (LivingEntity entity : loc.getNearbyLivingEntities(MathUtils.levelInter(7,10,getPowerLevel()),MathUtils.levelInter(3,10,getPowerLevel()),MathUtils.levelInter(7,10,getPowerLevel()))) {
-//            for (LivingEntity entity : loc.getNearbyLivingEntities(4,4,4)) {
+            getLocation().getWorld().playSound(getLocation(), Sound.ENTITY_CREEPER_HURT,0.1f,5);
 
+            for (LivingEntity entity : loc.getNearbyLivingEntities(MathUtils.levelInter(7,10,getPowerLevel()),MathUtils.levelInter(3,10,getPowerLevel()),MathUtils.levelInter(7,10,getPowerLevel()))) {
                 if(entity.equals(getCaster()))
                     continue;
 

@@ -1,7 +1,13 @@
 package me.testedpugtato.kingdomcraftplugin.powers;
 
 
+import me.testedpugtato.kingdomcraftplugin.barriers.EarthDomain;
+import me.testedpugtato.kingdomcraftplugin.barriers.RiftWalkerDomain;
+import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class Earth extends Power
 {
@@ -63,5 +69,12 @@ public class Earth extends Power
     public void useChargedAttack(Player player, int powerLevel, double charge)
     {
 
+    }
+
+    @Override
+    public void domainExpand(Player player)
+    {
+        EarthDomain domain = new EarthDomain(player,20, player.getLocation(),30,1,2,0.1f,0.1f,0.1f,0.05f);
+        domain.ExpandDomain();
     }
 }

@@ -43,7 +43,7 @@ public class Lightning extends Power
         dir.multiply(new Vector(-1*MathUtils.levelInter(1.5,4,powerLevel),1,-1*MathUtils.levelInter(1.5,4,powerLevel)));
         player.setVelocity(dir);
 
-        player.playSound(player.getLocation(),Sound.ENTITY_CREEPER_PRIMED,SoundCategory.MASTER,100,2);
+        player.getWorld().playSound(player.getLocation(),Sound.ENTITY_CREEPER_PRIMED,SoundCategory.MASTER,100,2);
 
         Location loc = player.getLocation().clone();
         Vector vec = loc.getDirection();
@@ -62,8 +62,8 @@ public class Lightning extends Power
         player.setVelocity(player.getLocation().getDirection().clone().multiply(10));
         dashesUsed++;
 
-        player.playSound(player.getLocation(),Sound.ENTITY_CREEPER_PRIMED,SoundCategory.MASTER,100,2);
-        player.playSound(player.getLocation(),Sound.BLOCK_BEEHIVE_WORK,SoundCategory.MASTER,100,0);
+        player.getWorld().playSound(player.getLocation(),Sound.ENTITY_CREEPER_PRIMED,SoundCategory.MASTER,100,2);
+        player.getWorld().playSound(player.getLocation(),Sound.BLOCK_BEEHIVE_WORK,SoundCategory.MASTER,100,0);
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), new Runnable() {
             int ticks = 0;
@@ -88,7 +88,7 @@ public class Lightning extends Power
         double scale = 1.1 - charge;
 
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEEHIVE_WORK, SoundCategory.MASTER,100,0);
-        if(charge == 1) player.playSound(player.getLocation(), Sound.ENTITY_CREEPER_HURT, SoundCategory.MASTER,100,0);
+        if(charge == 1) player.getWorld().playSound(player.getLocation(), Sound.ENTITY_CREEPER_HURT, SoundCategory.MASTER,100,0);
 
         ParticleMaker.createSphere(
                 Particle.SCRAPE,
@@ -119,9 +119,9 @@ public class Lightning extends Power
 
         player.getWorld().spawnParticle(Particle.SCRAPE,player.getLocation(),(int)MathUtils.levelInter(100,800,powerLevel), 1,0,1,0.3,null,true);
         player.getWorld().spawnParticle(Particle.SCRAPE,player.getLocation(),(int)MathUtils.levelInter(1000,8000,powerLevel), MathUtils.levelInter(5*charge,10*charge,powerLevel),1,MathUtils.levelInter(5*charge,15*charge,powerLevel),0.3,null,true);
-        player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.MASTER,100,2);
-        player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.MASTER,100,1);
-        player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.MASTER,100,0);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.MASTER,100,2);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.MASTER,100,1);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.MASTER,100,0);
 
 
         CombatManager.DamageNearby(player.getLocation(),MathUtils.levelInter(5*charge,10*charge,powerLevel),3,MathUtils.levelInter(5*charge,10*charge,powerLevel),(int)(MathUtils.levelInter(5*charge,18*charge,powerLevel)*charge),player);
@@ -243,7 +243,7 @@ public class Lightning extends Power
                 MathUtils.levelInter(0,0.05,powerLevel),
                 -10);
 
-        player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER,10,0);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER,10,0);
     }
 
     @Override
@@ -276,7 +276,7 @@ public class Lightning extends Power
             player.getLocation().getWorld().strikeLightningEffect(strikeLoc);
         }
 
-        player.playSound(player.getLocation(),Sound.BLOCK_BEEHIVE_WORK, SoundCategory.MASTER,100,0);
+        player.getWorld().playSound(player.getLocation(),Sound.BLOCK_BEEHIVE_WORK, SoundCategory.MASTER,100,0);
     }
     @Override
     public void useGroundSlamLanding(Player player, int powerLevel, double charge)
@@ -287,9 +287,9 @@ public class Lightning extends Power
         player.getWorld().spawnParticle(Particle.SCRAPE,player.getLocation(),(int)MathUtils.levelInter(100,800,powerLevel), 1,0,1,0.3,null,true);
         player.getWorld().spawnParticle(Particle.SCRAPE,player.getLocation(),(int)MathUtils.levelInter(1000,8000,powerLevel), MathUtils.levelInter(5,15,powerLevel),1,MathUtils.levelInter(5,15,powerLevel),0.3,null,true);
 
-        player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,2);
-        player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,1);
-        player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,0);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,2);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,1);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,0);
 
         for(int i = 0; i < MathUtils.levelInter(3,25,powerLevel); i++)
         {

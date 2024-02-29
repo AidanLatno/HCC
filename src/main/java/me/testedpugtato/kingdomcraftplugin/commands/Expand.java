@@ -16,7 +16,7 @@ public class Expand {
             public boolean onCommand(CommandSender sender, String[] arguments)
             {
                 Player player = (Player) sender;
-                PlayerUtility.getPlayerMemory(player).getPower().domainExpand();
+                PlayerUtility.getPlayerMemory(player).getPower().domainExpand(player);
 
                 return true;
             }

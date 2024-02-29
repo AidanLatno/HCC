@@ -2,8 +2,11 @@ package me.testedpugtato.kingdomcraftplugin.powers;
 
 import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.data.PlayerMemory;
+import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class Power
 {
@@ -78,12 +81,7 @@ public class Power
 
     public void setSlamCooldown(float slamCooldown) { this.slamCooldown = slamCooldown; }
 
-    final public void domainActivate() {
-        domainExpand();
-    }
-    public boolean domainExpand() {return false;}
-    public boolean domainActive() {return false;}
-    public boolean domainBreak() {return false;}
+    public void domainExpand(Player player) {}
 
 
 }

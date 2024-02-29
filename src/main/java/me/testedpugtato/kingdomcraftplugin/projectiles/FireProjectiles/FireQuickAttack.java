@@ -5,6 +5,7 @@ import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 
 import java.util.Collection;
@@ -29,6 +30,7 @@ public class FireQuickAttack extends PowerProjectile
         Location loc = getLocation();
         if(controllable) loc.setDirection(getCaster().getEyeLocation().getDirection());
 
+        getLocation().getWorld().playSound(getLocation(), Sound.BLOCK_FIRE_AMBIENT,.5f,1);
 
         ParticleMaker.createHelix(
             particle,

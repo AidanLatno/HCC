@@ -73,13 +73,9 @@ public class RiftWalker extends Power {
     }
 
     @Override
-    public boolean domainExpand()
+    public void domainExpand(Player player)
     {
-        UUID uuid = UUID.fromString(PlayerUtility.findKeyByValue(memory)); // Convert the string to a UUID
-        Player player = Bukkit.getPlayer(uuid);
-
         RiftWalkerDomain domain = new RiftWalkerDomain(player,20, player.getLocation(),30,1,1,0.1f,0.1f,0.1f,0.05f);
         domain.ExpandDomain();
-        return true;
     }
 }

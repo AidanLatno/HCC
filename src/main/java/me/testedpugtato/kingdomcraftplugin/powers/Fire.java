@@ -65,11 +65,11 @@ public class Fire extends Power
                     0.07,
                     1);
         }
-        player.playSound(player.getLocation(),Sound.BLOCK_FIRE_AMBIENT, SoundCategory.MASTER,100,2);
-        player.playSound(player.getLocation(),Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,2);
-        player.playSound(player.getLocation(),Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,0);
-        player.playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,1,1);
-        player.playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,1,2);
+        player.getWorld().playSound(player.getLocation(),Sound.BLOCK_FIRE_AMBIENT, SoundCategory.MASTER,100,2);
+        player.getWorld().playSound(player.getLocation(),Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,2);
+        player.getWorld().playSound(player.getLocation(),Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,0);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,1,1);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,1,2);
 
     }
     @Override
@@ -110,9 +110,9 @@ public class Fire extends Power
                 MathUtils.levelInter(0,0.5,powerLevel),
                 MathUtils.levelInter(0,0.05,powerLevel),
                 -10);
-        player.playSound(player.getLocation(),Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,2);
-        player.playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,1,1);
-        player.playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,1,2);
+        player.getWorld().playSound(player.getLocation(),Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,2);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,1,1);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,1,2);
 
     }
     @Override
@@ -122,7 +122,7 @@ public class Fire extends Power
         FireQuickAttack proj = new FireQuickAttack(player,3,particle,2);
         proj.moveSelf(MathUtils.levelInter(0.4,1,powerLevel),true,1);
 
-        player.playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,10,2);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,10,2);
     }
     @Override
     public void useGroundSlam(Player player, int powerLevel)
@@ -169,7 +169,7 @@ public class Fire extends Power
                 MathUtils.levelInter(0,0.05,powerLevel),
                 -10);
 
-        player.playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,10,0);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,10,0);
     }
 
     @Override
@@ -197,7 +197,7 @@ public class Fire extends Power
                 0,
                 1);
 
-        player.playSound(player.getLocation(),Sound.BLOCK_FIRE_AMBIENT, SoundCategory.MASTER,100,2);
+        player.getWorld().playSound(player.getLocation(),Sound.BLOCK_FIRE_AMBIENT, SoundCategory.MASTER,100,2);
     }
     @Override
     public void useGroundSlamLanding(Player player, int powerLevel, double charge)
@@ -209,12 +209,12 @@ public class Fire extends Power
 
         player.getWorld().spawnParticle(particle,player.getLocation(),(int)MathUtils.levelInter(100,800,powerLevel), 1,0,1,0.3,null,true);
         player.getWorld().spawnParticle(particle,player.getLocation(),(int)MathUtils.levelInter(1000,8000,powerLevel), MathUtils.levelInter(5,15,powerLevel),1,MathUtils.levelInter(5,15,powerLevel),0.3,null,true);
-        player.playSound(player.getLocation(), Sound.BLOCK_FIRE_AMBIENT, SoundCategory.MASTER,100,0);
-        player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,2);
-        player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,1);
-        player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,0);
-        player.playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,100,0);
-        player.playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,100,1);
+        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_FIRE_AMBIENT, SoundCategory.MASTER,100,0);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,2);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,1);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER,100,0);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,100,0);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT,100,1);
 
 
         CombatManager.DamageNearby(player.getLocation(),7,3,7,(int)(MathUtils.levelInter(5,18,powerLevel)*charge),player);
@@ -253,8 +253,8 @@ public class Fire extends Power
 
         loc.add(player.getLocation().getDirection().multiply(6));
 
-        player.playSound(loc,Sound.BLOCK_FIRE_AMBIENT, SoundCategory.MASTER,0.4f,0);
-        if(charge == 1)  player.playSound(loc, Sound.ENTITY_BLAZE_SHOOT,0.2f,2);
+        player.getWorld().playSound(loc,Sound.BLOCK_FIRE_AMBIENT, SoundCategory.MASTER,0.4f,0);
+        if(charge == 1)  player.getWorld().playSound(loc, Sound.ENTITY_BLAZE_SHOOT,0.2f,2);
 
         setParticle(player,powerLevel);
 
