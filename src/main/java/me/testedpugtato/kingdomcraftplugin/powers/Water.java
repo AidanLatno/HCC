@@ -3,6 +3,9 @@ package me.testedpugtato.kingdomcraftplugin.powers;
 import me.testedpugtato.kingdomcraftplugin.barriers.Domain;
 import me.testedpugtato.kingdomcraftplugin.projectiles.WaterProjectiles.WaterBasicProj;
 import me.testedpugtato.kingdomcraftplugin.projectiles.WaterProjectiles.WaterQuickProj;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 public class Water extends Power
@@ -27,7 +30,10 @@ public class Water extends Power
     @Override
     public void useAriel(Player player, int powerLevel)
     {
+        Location loc = player.getLocation();
 
+
+        loc.getBlock().setType(Material.BEDROCK,true);
     }
     @Override
     public void useArielDash(Player player, int powerLevel)
