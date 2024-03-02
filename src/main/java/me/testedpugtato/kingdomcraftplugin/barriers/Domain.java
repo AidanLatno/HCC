@@ -4,20 +4,20 @@ import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class Domain {
     public Location center;
     public float radius;
     public Player caster;
-    public ArrayList<LivingEntity> participants;
+    public ArrayList<LivingEntity> participants = new ArrayList<>();
     public ArrayList<Particle> particles = new ArrayList<>();
     public int count;
     public float offSetX;
@@ -51,12 +51,15 @@ public class Domain {
 
     final public void ExpandDomain()
     {
-       /* Bukkit.getLogger().info("WORKING");
-        ArrayList<Entity> list = CombatManager.getEntitiesAroundPoint(center,radius);
+        center.getWorld().playSound(center, Sound.ENTITY_WITHER_SPAWN, SoundCategory.MASTER,100,2);
+        Collection<LivingEntity> list = center.getNearbyLivingEntities(radius,radius,radius);
         for(Entity entity : list)
         {
-            if(entity instanceof LivingEntity) participants.add((LivingEntity) entity);
-        }*/
+            if(entity.getLocation().distance(center) <= radius && entity != caster) {
+                participants.add((LivingEntity) entity);
+                caster.sendMessage(entity.getName());
+            }
+        }
 
         // Store the task ID
 
@@ -68,19 +71,19 @@ public class Domain {
             @Override
             public void run() {
                 ticks+=tickRate;
-                float time = ticks / 20f; // Ensure floating-point division
+                float time = (ticks / 20f)*4;
                 if (time > radius){
                     time = radius;
                     expanded = true;
                 }
 
+                center.getWorld().playSound(center, Sound.BLOCK_BEACON_POWER_SELECT, SoundCategory.MASTER,1,2);
+
                 for(Particle p : particles) {
                     ParticleMaker.createSphere(p, center, time, count, time / 3, offSetX, offSetY, offSetZ, particleSpeed);
                 }
 
-                caster.sendMessage("Domain Expanding");
-
-                if(ticks / 20f > radius) {
+                if(time >= radius) {
                     mainLoop();
                     Bukkit.getScheduler().cancelTask(taskId[0]); // Use the taskId from the array
                 }
@@ -104,14 +107,15 @@ public class Domain {
             public void run() {
                 ticks++;
 
+                caster.sendMessage("MAIN LOOP");
+
                 if(ticks % tickRate == 0) renderDomain();
 
-                caster.sendMessage("Main Loop");
 
-                if(Logic() && ticks/20f < upTime) Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(),this);
+                if(Logic() && ticks/20f < upTime) Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(),this,1);
                 else End();
             }
-        });
+        },1);
     }
 
     // TO BE OVERRIDEN
