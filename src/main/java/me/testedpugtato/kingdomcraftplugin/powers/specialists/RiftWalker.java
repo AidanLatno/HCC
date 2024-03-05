@@ -1,15 +1,8 @@
 package me.testedpugtato.kingdomcraftplugin.powers.specialists;
 
-import me.testedpugtato.kingdomcraftplugin.barriers.Domain;
 import me.testedpugtato.kingdomcraftplugin.barriers.RiftWalkerDomain;
-import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
 import me.testedpugtato.kingdomcraftplugin.powers.Power;
-import org.bukkit.Bukkit;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
-
-import java.util.UUID;
 
 public class RiftWalker extends Power {
     public RiftWalker()

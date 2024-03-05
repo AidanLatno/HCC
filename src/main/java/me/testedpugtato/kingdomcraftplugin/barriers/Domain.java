@@ -25,13 +25,13 @@ public class Domain {
     public float offSetZ;
     public float particleSpeed;
     public int tickRate;
-    public float upTime; //seconds
+    public int Energy;
     boolean expanded = false;
 
-    public Domain(Player caster, float upTime, Location center, float radius, int tickRate,int count, float offSetX, float offSetY,float offSetZ, float particleSpeed)
+    public Domain(Player caster, int Energy, Location center, float radius, int tickRate,int count, float offSetX, float offSetY,float offSetZ, float particleSpeed)
     {
         this.caster = caster;
-        this.upTime = upTime;
+        this.Energy = Energy;
         this.center = center;
         this.radius = radius;
         this.count = count;
@@ -103,12 +103,12 @@ public class Domain {
             @Override
             public void run() {
                 ticks++;
-
+                Energy--;
                 if(ticks % tickRate == 0) renderDomain();
 
-                caster.sendMessage("Main Loop");
 
-                if(Logic() && ticks/20f < upTime) Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(),this);
+
+                if(Logic() && Energy > 0) Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(),this);
                 else End();
             }
         });
