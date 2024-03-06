@@ -1,8 +1,8 @@
 package me.testedpugtato.kingdomcraftplugin.projectiles.WaterProjectiles;
 
 import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
+import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
-import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
 
@@ -30,7 +30,10 @@ public class WaterQuickProj extends PowerProjectile {
     @Override
     public void entityInteract(Collection<LivingEntity> entities)
     {
-
+        for(LivingEntity entity : entities)
+        {
+            CombatManager.DamageEntity(MathUtils.levelInter(0.3f,5,getPowerLevel()),entity,getCaster());
+        }
     }
 
     // controllable determines whether the projectile can be controlled after it has been shot based on the player's direction
@@ -39,7 +42,7 @@ public class WaterQuickProj extends PowerProjectile {
     @Override
     public void logic(boolean controllable)
     {
-        getLocation().getWorld().spawnParticle(Particle.WATER_SPLASH,getLocation(),30,.2,.2,.2,.01);
-        getLocation().getWorld().spawnParticle(Particle.BUBBLE_POP,getLocation(),30,.2,.2,.2,.01);
+        getLocation().getWorld().spawnParticle(Particle.WATER_SPLASH,getLocation(),30,.2,.2,.2,.01,null,true);
+        getLocation().getWorld().spawnParticle(Particle.BUBBLE_POP,getLocation(),30,.2,.2,.2,.01,null,true);
     }
 }

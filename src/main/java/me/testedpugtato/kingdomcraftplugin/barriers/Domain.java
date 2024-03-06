@@ -1,8 +1,6 @@
 package me.testedpugtato.kingdomcraftplugin.barriers;
 
 import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
-import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
-import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -11,7 +9,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class Domain {
     public Location center;
