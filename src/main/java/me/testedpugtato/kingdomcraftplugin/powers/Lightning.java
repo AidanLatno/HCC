@@ -306,7 +306,7 @@ public class Lightning extends Power
             if(entity.equals(player))
                 continue;
 
-            PlayerUtility.getPlayerMemory((Player) entity).stun(2*20);
+            if(entity instanceof Player) PlayerUtility.getPlayerMemory((Player) entity).stun(2*20);
 
             Location playerCenterLocation = player.getEyeLocation();
             Location playerToThrowLocation = entity.getEyeLocation();

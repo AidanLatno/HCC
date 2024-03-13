@@ -1,6 +1,7 @@
 package me.testedpugtato.kingdomcraftplugin.projectiles.WaterProjectiles;
 
 import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
+import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
 import org.bukkit.Particle;
@@ -30,7 +31,10 @@ public class WaterBasicProj extends PowerProjectile {
     @Override
     public void entityInteract(Collection<LivingEntity> entities)
     {
-
+        for(LivingEntity entity : entities)
+        {
+            CombatManager.DamageEntity(MathUtils.levelInter(3,17,getPowerLevel()),entity,getCaster());
+        }
     }
 
     // controllable determines whether the projectile can be controlled after it has been shot based on the player's direction

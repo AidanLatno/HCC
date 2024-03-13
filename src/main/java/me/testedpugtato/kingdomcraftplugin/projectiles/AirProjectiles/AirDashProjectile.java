@@ -1,15 +1,11 @@
 package me.testedpugtato.kingdomcraftplugin.projectiles.AirProjectiles;
 
-import me.testedpugtato.kingdomcraftplugin.Database;
-import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
 import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
-import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.Collection;

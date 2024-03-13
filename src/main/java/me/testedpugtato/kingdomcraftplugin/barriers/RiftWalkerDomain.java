@@ -18,13 +18,13 @@ public class RiftWalkerDomain extends Domain{
     @Override
     public boolean Logic()
     {
-        Location loc = center.clone();
+        /*Location loc = center.clone();
 
         for(int i = 0; i < 20; i++) {
             loc.add((Math.random() * radius * 2) - radius, (Math.random() * radius * 2) - radius, (Math.random() * radius * 2) - radius);
             loc.createExplosion(caster, 3, true, true);
             loc = center.clone();
-        }
+        }*/
         return true;
     }
 

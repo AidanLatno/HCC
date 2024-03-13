@@ -40,6 +40,4 @@ public class PowerProjectileExample extends PowerProjectile
     {
 
     }
-
-
 }
