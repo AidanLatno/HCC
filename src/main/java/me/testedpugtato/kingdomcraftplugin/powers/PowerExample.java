@@ -64,6 +64,7 @@ public class PowerExample extends Power
 
     }
 
+    @Override
     public void domainExpand(Player player)
     {
         // Change to your domain
