@@ -1,13 +1,8 @@
 package me.testedpugtato.kingdomcraftplugin.powers.specialists;
 
 import me.testedpugtato.kingdomcraftplugin.barriers.NecromancerDomain;
-import me.testedpugtato.kingdomcraftplugin.barriers.RiftWalkerDomain;
-import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
 import me.testedpugtato.kingdomcraftplugin.powers.Power;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 public class Necromancer extends Power {
     @Override

@@ -1,20 +1,23 @@
 package me.testedpugtato.kingdomcraftplugin.barriers;
 
 import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
+import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
+import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class Domain {
     public Location center;
     public float radius;
     public Player caster;
-    public ArrayList<LivingEntity> participants = new ArrayList<>();
+    public ArrayList<LivingEntity> participants;
     public ArrayList<Particle> particles = new ArrayList<>();
     public int count;
     public float offSetX;
@@ -22,13 +25,13 @@ public class Domain {
     public float offSetZ;
     public float particleSpeed;
     public int tickRate;
-    public float upTime; //seconds
+    public int Energy;
     boolean expanded = false;
 
-    public Domain(Player caster, float upTime, Location center, float radius, int tickRate,int count, float offSetX, float offSetY,float offSetZ, float particleSpeed)
+    public Domain(Player caster, int Energy, Location center, float radius, int tickRate,int count, float offSetX, float offSetY,float offSetZ, float particleSpeed)
     {
         this.caster = caster;
-        this.upTime = upTime;
+        this.Energy = Energy;
         this.center = center;
         this.radius = radius;
         this.count = count;
@@ -48,15 +51,12 @@ public class Domain {
 
     final public void ExpandDomain()
     {
-        center.getWorld().playSound(center, Sound.ENTITY_WITHER_SPAWN, SoundCategory.MASTER,100,2);
-        Collection<LivingEntity> list = center.getNearbyLivingEntities(radius,radius,radius);
+       /* Bukkit.getLogger().info("WORKING");
+        ArrayList<Entity> list = CombatManager.getEntitiesAroundPoint(center,radius);
         for(Entity entity : list)
         {
-            if(entity.getLocation().distance(center) <= radius && entity != caster) {
-                participants.add((LivingEntity) entity);
-                caster.sendMessage(entity.getName());
-            }
-        }
+            if(entity instanceof LivingEntity) participants.add((LivingEntity) entity);
+        }*/
 
         // Store the task ID
 
@@ -68,19 +68,19 @@ public class Domain {
             @Override
             public void run() {
                 ticks+=tickRate;
-                float time = (ticks / 20f)*4;
+                float time = ticks / 20f; // Ensure floating-point division
                 if (time > radius){
                     time = radius;
                     expanded = true;
                 }
 
-                center.getWorld().playSound(center, Sound.BLOCK_BEACON_POWER_SELECT, SoundCategory.MASTER,1,2);
-
                 for(Particle p : particles) {
                     ParticleMaker.createSphere(p, center, time, count, time / 3, offSetX, offSetY, offSetZ, particleSpeed);
                 }
 
-                if(time >= radius) {
+                caster.sendMessage("Domain Expanding");
+
+                if(ticks / 20f > radius) {
                     mainLoop();
                     Bukkit.getScheduler().cancelTask(taskId[0]); // Use the taskId from the array
                 }
@@ -103,16 +103,15 @@ public class Domain {
             @Override
             public void run() {
                 ticks++;
-
-                caster.sendMessage("MAIN LOOP");
-
+                Energy--;
                 if(ticks % tickRate == 0) renderDomain();
 
 
-                if(Logic() && ticks/20f < upTime) Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(),this,1);
+
+                if(Logic() && Energy > 0) Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(),this);
                 else End();
             }
-        },1);
+        });
     }
 
     // TO BE OVERRIDEN
