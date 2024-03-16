@@ -154,16 +154,14 @@ public class Samurai extends Power
         float baseDamage = 0;
         switch (item.getType()) {
             case WOODEN_SWORD:
+            case GOLDEN_SWORD:
                 baseDamage = 4.0f;
-                break; // Stops the execution from falling through to the next case
+                break;
             case STONE_SWORD:
                 baseDamage = 5.0f;
                 break;
             case IRON_SWORD:
                 baseDamage = 6.0f;
-                break;
-            case GOLDEN_SWORD:
-                baseDamage = 4.0f;
                 break;
             case DIAMOND_SWORD:
                 baseDamage = 7.0f;
