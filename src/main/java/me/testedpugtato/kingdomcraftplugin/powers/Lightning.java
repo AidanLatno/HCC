@@ -17,11 +17,10 @@ import java.util.Collection;
 
 public class Lightning extends Power
 {
-    public int dashesUsed = 0;
     public Lightning()
     {
         setBasicCooldown(3);
-        setDashCooldown(1);
+        setDashCooldown(2);
         setQuickCooldown(10);
         setArielCooldown(5);
         setChargedCooldown(15);
@@ -57,10 +56,10 @@ public class Lightning extends Power
 
     @Override
     public void useArielDash(Player player, int powerLevel) {
-        if(dashesUsed >= 4) return;
+
 
         player.setVelocity(player.getLocation().getDirection().clone().multiply(10));
-        dashesUsed++;
+
 
         player.getWorld().playSound(player.getLocation(),Sound.ENTITY_CREEPER_PRIMED,SoundCategory.MASTER,100,2);
         player.getWorld().playSound(player.getLocation(),Sound.BLOCK_BEEHIVE_WORK,SoundCategory.MASTER,100,0);

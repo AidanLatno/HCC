@@ -23,7 +23,7 @@ public class WaterBasicProj extends PowerProjectile {
     public boolean onCollide()
     {
         // Return true if you want the projectile to vanish after collision, otherwise return false;
-        return false;
+        return true;
     }
 
     // Will be called every step
