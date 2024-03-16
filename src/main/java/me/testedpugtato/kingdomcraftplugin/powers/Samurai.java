@@ -10,7 +10,6 @@ import org.bukkit.util.Vector;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Samurai extends Power
@@ -30,7 +29,7 @@ public class Samurai extends Power
     @Override
     public void useBasicAttack(Player player, int powerLevel)
     {
-        if(!isHoldingSword(player)) return;
+        if(isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
 
         List<LivingEntity> entitiesInCone = new ArrayList<>();
@@ -89,59 +88,59 @@ public class Samurai extends Power
     @Override
     public void useAriel(Player player, int powerLevel)
     {
-        if(!isHoldingSword(player)) return;
+        if(isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
     }
     @Override
     public void useArielDash(Player player, int powerLevel)
     {
-        if(!isHoldingSword(player)) return;
+        if(isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
     }
     @Override
     public void useQuickAttack(Player player, int powerLevel)
     {
-        if(!isHoldingSword(player)) return;
+        if(isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
     }
     @Override
     public void useGroundSlam(Player player, int powerLevel)
     {
-        if(!isHoldingSword(player)) return;
+        if(isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
     }
 
     @Override
     public void groundSlamFalling(Player player, int powerLevel, double charge)
     {
-        if(!isHoldingSword(player)) return;
+        if(isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
     }
     @Override
     public void useGroundSlamLanding(Player player, int powerLevel, double charge)
     {
-        if(!isHoldingSword(player)) return;
+        if(isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
     }
 
     @Override
     public void chargeChargedAttack(Player player, int powerLevel, double charge)
     {
-        if(!isHoldingSword(player)) return;
+        if(isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
     }
 
     @Override
     public void useChargedAttack(Player player, int powerLevel, double charge)
     {
-        if(!isHoldingSword(player)) return;
+        if(isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
     }
 
     @Override
     public void domainExpand(Player player)
     {
-        if(!isHoldingSword(player)) return;
+        if(isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
 
         // Change to your domain
