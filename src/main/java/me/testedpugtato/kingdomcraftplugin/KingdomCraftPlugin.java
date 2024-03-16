@@ -36,14 +36,36 @@ public final class KingdomCraftPlugin extends JavaPlugin
         new Stats();
         new SetPower();
         new Expand();
+
+
+        // AUTO SAVE EVERY 5 MIN
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            @Override
+            public void run() {
+                savePlayerData();
+            }
+        },1200,6000);
     }
 
     @Override
     public void onDisable() {
+        savePlayerData();
+    }
+
+    public static void savePlayerData()
+    {
+        int success = 0,failed = 0;
         for(Player player : Bukkit.getOnlinePlayers()) {
             PlayerMemory memory = PlayerUtility.getPlayerMemory(player);
             File f = new File(PlayerUtility.getFolderPath(player) + "/general.yml");
             FileConfiguration config = YamlConfiguration.loadConfiguration(f);
+
+            if(memory.getPower() == null)
+            {
+                failed++;
+                continue;
+            }
+
             config.set("stats.power", memory.getPower().id);
             config.set("stats.player_exp", memory.getPlayerEXP());
             config.set("stats.player_level", memory.getPlayerLevel());
@@ -53,12 +75,19 @@ public final class KingdomCraftPlugin extends JavaPlugin
 
             try {
                 config.save(f);
+                success++;
             } catch (IOException e) {
                 e.printStackTrace();
+                failed++;
             }
-            PlayerUtility.setPlayerMemory(player, null);
         }
+        String s = new String("\n--------SAVE REPORT--------\n" +
+                                     "- Successes: " + success + "\n" +
+                                     "- Fails: " + failed + "\n" +
+                                     "--------SAVE REPORT--------");
+        Bukkit.getLogger().info(s);
     }
+
     public static KingdomCraftPlugin getInstance()
     {
         return instance;

@@ -2,6 +2,7 @@ package me.testedpugtato.kingdomcraftplugin.powers;
 
 import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.barriers.Domain;
+import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
 import me.testedpugtato.kingdomcraftplugin.projectiles.WaterProjectiles.WaterBasicProj;
 import me.testedpugtato.kingdomcraftplugin.projectiles.WaterProjectiles.WaterQuickProj;
 import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
@@ -35,16 +36,22 @@ public class Water extends Power
     @Override
     public void useBasicAttack(Player player, int powerLevel)
     {
-        WaterBasicProj proj = new WaterBasicProj(player,2,1);
+        if(isInNether(player)) return;
+
+        WaterBasicProj proj = new WaterBasicProj(player,MathUtils.levelInter(1,2,powerLevel),1);
         proj.moveSelf(2,false);
     }
 
     @Override
     public void useAriel(Player player, int powerLevel)
     {
+        if(isInNether(player)) return;
+
         List<LivingEntity> entitiesInCone = new ArrayList<>();
         Vector playerDirection = player.getLocation().getDirection();
         Vector playerLocation = player.getLocation().toVector();
+
+        player.getWorld().spawnParticle(Particle.WATER_SPLASH,player.getLocation().clone().add(playerDirection),(int)MathUtils.levelInter(500,1500,powerLevel),1,1,1,0,null,true);
 
         for (LivingEntity target : player.getLocation().getNearbyLivingEntities(10,10,10)) {
             // Don't include the player themselves
@@ -72,7 +79,7 @@ public class Water extends Power
             if(p.equals(player))
                 continue;
 
-            p.getLocation().getWorld().spawnParticle(Particle.WATER_SPLASH,p.getLocation(),1000,1,1,1,0,null,true);
+            p.getLocation().getWorld().spawnParticle(Particle.WATER_SPLASH,p.getLocation(),(int)MathUtils.levelInter(500,1500,powerLevel),1,1,1,0,null,true);
 
             Location playerCenterLocation = player.getEyeLocation();
             Location playerToThrowLocation = p.getEyeLocation();
@@ -84,8 +91,8 @@ public class Water extends Power
             Vector throwVector = new Vector(x, y, z);
 
             throwVector.normalize();
-            throwVector.multiply(1.5);
-            throwVector.setY(1.0);
+            throwVector.multiply(MathUtils.levelInter(1,2,powerLevel));
+            throwVector.setY(MathUtils.levelInter(0.4,1.3,powerLevel));
 
             p.setVelocity(throwVector);
         }
@@ -93,6 +100,8 @@ public class Water extends Power
     @Override
     public void useArielDash(Player player, int powerLevel)
     {
+        if(isInNether(player)) return;
+
         Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), new Runnable() {
             int ticks = 0;
             @Override
@@ -122,7 +131,7 @@ public class Water extends Power
                 vec.setY(0.1);
                 player.setVelocity(vec);
 
-                if(ticks >= 20) return;
+                if(ticks >= MathUtils.levelInter(8,30,powerLevel)) return;
 
 
                 Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(),this,1);
@@ -132,12 +141,16 @@ public class Water extends Power
     @Override
     public void useQuickAttack(Player player, int powerLevel)
     {
-        WaterQuickProj proj = new WaterQuickProj(player,3,1);
-        proj.moveSelf(1,true);
+        if(isInNether(player)) return;
+
+        WaterQuickProj proj = new WaterQuickProj(player,MathUtils.levelInter(2,3,powerLevel),1);
+        proj.moveSelf(MathUtils.levelInter(0.3,1,powerLevel),true);
     }
     @Override
     public void useGroundSlam(Player player, int powerLevel)
     {
+        if(isInNether(player)) return;
+
         player.setVelocity(new Vector(0,-20,0));
         Location loc = player.getLocation();
 
@@ -162,17 +175,20 @@ public class Water extends Power
     @Override
     public void groundSlamFalling(Player player, int powerLevel, double charge)
     {
+        if(isInNether(player)) return;
+
         player.getWorld().spawnParticle(Particle.WATER_SPLASH,player.getLocation(),100,1,1,1,1,null,true);
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_AXOLOTL_SPLASH,10,0);
     }
     @Override
     public void useGroundSlamLanding(Player player, int powerLevel, double charge)
     {
-        if(charge > 2) charge = 2;
-        charge /= 2;
+        if(isInNether(player)) return;
+
+        if(charge > 1) charge = 1;
 
 
-       player.getWorld().spawnParticle(Particle.SPIT,player.getLocation(),(int)MathUtils.levelInter(500,4000,powerLevel), MathUtils.levelInter(5,10,powerLevel),1,MathUtils.levelInter(5,10,powerLevel),0,null,true);
+       player.getWorld().spawnParticle(Particle.SPIT,player.getLocation(),(int)(MathUtils.levelInter(500,4000,powerLevel)*charge), MathUtils.levelInter(5,10,powerLevel)*charge,1,MathUtils.levelInter(5,10,powerLevel)*charge,0,null,true);
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_AXOLOTL_SPLASH, SoundCategory.MASTER,100,0);
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_DOLPHIN_SPLASH, SoundCategory.MASTER,100,2);
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_SPLASH_HIGH_SPEED, SoundCategory.MASTER,100,1);
@@ -197,8 +213,8 @@ public class Water extends Power
             Vector throwVector = new Vector(x, y, z);
 
             throwVector.normalize();
-            throwVector.multiply(1.5);
-            throwVector.setY(1.0);
+            throwVector.multiply(MathUtils.levelInter(1,2,powerLevel)*charge);
+            throwVector.setY(MathUtils.levelInter(0.4,1.3,powerLevel)*charge);
 
             entity.setVelocity(throwVector);
 
@@ -262,6 +278,8 @@ public class Water extends Power
     @Override
     public void chargeChargedAttack(Player player, int powerLevel, double charge)
     {
+        if(isInNether(player)) return;
+
         if(charge > 6) charge = 6;
         charge /= 6;
 
@@ -272,15 +290,73 @@ public class Water extends Power
     @Override
     public void useChargedAttack(Player player, int powerLevel, double charge)
     {
+        if(isInNether(player)) return;
+
         if(charge > 6) charge = 6;
         charge /= 6;
 
+        int radius = (int)(MathUtils.levelInter(5,10,powerLevel)*charge);
+        int trapTicks = (int)(MathUtils.levelInter(20,100,powerLevel)*charge);
 
-        player.getWorld().spawnParticle(Particle.SPIT,player.getLocation(),(int)(MathUtils.levelInter(100,1000, powerLevel)*charge), MathUtils.levelInter(5,10,powerLevel)*charge,0,MathUtils.levelInter(5,10,powerLevel)*charge,0,null, true);
+        player.getWorld().spawnParticle(Particle.SPIT,player.getLocation(),(int)(MathUtils.levelInter(100,1000, powerLevel)*charge), radius,0,radius,0,null, true);
 
+        Collection<LivingEntity> entities = player.getLocation().getNearbyLivingEntities(radius, 2, radius);
+
+        for(LivingEntity entity : entities)
+        {
+            if(entity.equals(player)) continue;
+
+            if(entity.getLocation().distance(player.getLocation()) <= radius)
+            {
+                if(entity instanceof Player) PlayerUtility.getPlayerMemory((Player) entity).stun(trapTicks);
+
+                Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), new Runnable() {
+                    int ticks = 0;
+                    @Override
+                    public void run() {
+                        ticks++;
+
+                        entity.setVelocity(new Vector(0,0,0));
+
+                        Location pos1 = entity.getLocation().clone(); // Bottom corner
+                        Location pos2 = entity.getLocation().clone(); // Top corner
+
+                        pos1.subtract(1,1,1);
+                        pos2.add(1,2,1);
+
+                        for(int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++)
+                        {
+                            for(int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++)
+                            {
+                                for(int y = pos1.getBlockY(); y <= pos2.getBlockY(); y++)
+                                {
+                                    Block block = entity.getWorld().getBlockAt(x,y,z);
+                                    if(block.getType() != Material.AIR) continue;
+                                    block.setType(Material.WATER,true);
+
+                                    BlockData blockData = block.getBlockData();
+
+                                    // Check if the BlockData is an instance of Levelled (water, lava)
+                                    if (blockData instanceof Levelled) {
+                                        Levelled levelled = (Levelled) blockData;
+
+                                        // Set the water level to 1
+                                        levelled.setLevel(1);
+
+                                        // Apply the modified BlockData back to the block
+                                        block.setBlockData(levelled);
+                                    }
+                                }
+                            }
+                        }
+
+                        if(ticks < trapTicks)  Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(),this,1);
+                    }
+                },1);
+            }
+        }
 
         List<Block> blocks = new ArrayList<>();
-        int radius = (int)(MathUtils.levelInter(5,10,powerLevel)*charge);
         Location center = player.getLocation(); // Center of the circle
         World world = center.getWorld();
         int centerX = center.getBlockX();
@@ -294,6 +370,8 @@ public class Water extends Power
                 }
             }
         }
+
+
 
         for(Block block : blocks)
         {
@@ -318,9 +396,22 @@ public class Water extends Power
     @Override
     public void domainExpand(Player player)
     {
+        if(isInNether(player)) return;
+
         // Change to your domain
         Domain domain = new Domain(player,20, player.getLocation(),30,1,2,0.1f,0.1f,0.1f,0.05f);
         domain.ExpandDomain();
+    }
+
+    private boolean isInNether(Player player)
+    {
+        if(player.getWorld().getEnvironment().equals(World.Environment.NETHER))
+        {
+            player.getWorld().playSound(player.getLocation(),Sound.ENTITY_GENERIC_EXTINGUISH_FIRE,1,1);
+            player.getWorld().spawnParticle(Particle.SMOKE_LARGE,player.getLocation().clone().add(player.getLocation().getDirection().clone().multiply(3)),4,.1,.1,.1,1,null,true);
+            return true;
+        }
+        return false;
     }
 
 }

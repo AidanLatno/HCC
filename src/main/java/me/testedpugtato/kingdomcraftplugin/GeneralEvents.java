@@ -50,6 +50,7 @@ public class GeneralEvents implements Listener {
             memory.setPowerEXP(0);
             memory.setPlayerEXP(0);
             memory.setPowerSlot(8);
+            memory.setPower(new Power());
 
             File theDir = new File(PlayerUtility.getFolderPath(event.getPlayer()));
             if (!theDir.exists()){
@@ -100,9 +101,6 @@ public class GeneralEvents implements Listener {
         {
             Player player = (Player) e.getEntity();
             Power power = PlayerUtility.getPlayerMemory(player).getPower();
-
-            if(power instanceof Lightning)
-                ((Lightning)power).dashesUsed = 0;
 
             if(Database.cancelFall.contains(player))
             {
