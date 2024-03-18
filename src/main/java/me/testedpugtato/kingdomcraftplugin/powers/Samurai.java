@@ -1,6 +1,8 @@
 package me.testedpugtato.kingdomcraftplugin.powers;
 
 import me.testedpugtato.kingdomcraftplugin.barriers.Domain;
+import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
+import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
@@ -75,13 +77,15 @@ public class Samurai extends Power
             Vector throwVector = new Vector(x, y, z);
 
             throwVector.normalize();
-            throwVector.multiply(1.5);
+            throwVector.multiply(MathUtils.levelInter(0.1,2,(int)swordDamage)*MathUtils.levelInter(1,2,powerLevel));
             throwVector.setY(1.0);
 
             p.setVelocity(throwVector);
+            CombatManager.DamageEntity(swordDamage*MathUtils.levelInter(1,1.75,powerLevel),p,player);
         }
 
         //Play audio slightly in front of user
+        player.getLocation().getWorld().spawnParticle(Particle.SWEEP_ATTACK,player.getEyeLocation().add(playerDirection.multiply(2)),3,1,1,1,0,null,true);
         player.getWorld().playSound(player.getEyeLocation().add(player.getEyeLocation().getDirection()),Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,2,2);
     }
 
@@ -171,8 +175,7 @@ public class Samurai extends Power
                 break;
             // Add more cases for other items as needed
             default:
-                baseDamage = -1.0f; // Items not listed do not deal extra damage
-                break; // Default case also often includes a break out of convention
+                return -1.0f;
         }
 
         if (item.containsEnchantment(Enchantment.DAMAGE_ALL)) {
