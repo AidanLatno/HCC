@@ -1,6 +1,8 @@
 package me.testedpugtato.kingdomcraftplugin.powers;
 
+import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.barriers.Domain;
+import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SamuraiQuickProj;
 import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import org.bukkit.*;
@@ -31,8 +33,11 @@ public class Samurai extends Power
     @Override
     public void useBasicAttack(Player player, int powerLevel)
     {
-        if(isHoldingSword(player)) return;
+        player.sendMessage("BEFORE");
+        if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
+
+        player.sendMessage("AFTER");
 
         List<LivingEntity> entitiesInCone = new ArrayList<>();
         Vector playerDirection = player.getLocation().getDirection();
@@ -92,59 +97,82 @@ public class Samurai extends Power
     @Override
     public void useAriel(Player player, int powerLevel)
     {
-        if(isHoldingSword(player)) return;
+        if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
     }
     @Override
     public void useArielDash(Player player, int powerLevel)
     {
-        if(isHoldingSword(player)) return;
+        if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
+
+        player.setVelocity(player.getLocation().getDirection().clone().multiply(10));
+
+
+        player.getWorld().playSound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,SoundCategory.MASTER,100,2);
+        player.getWorld().playSound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,SoundCategory.MASTER,100,0);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), new Runnable() {
+            int ticks = 0;
+            @Override
+            public void run() {
+                ticks++;
+                player.getWorld().spawnParticle(Particle.SCRAPE,player.getEyeLocation(),4,.2,.2,.2,0, null, true);
+                if(ticks >= MathUtils.levelInter(0.1,0.5, powerLevel)*20) {
+                    player.setVelocity(new Vector(0,0,0));
+                }
+                else {
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), this, 1);
+                }
+            }
+        },1);
     }
     @Override
     public void useQuickAttack(Player player, int powerLevel)
     {
-        if(isHoldingSword(player)) return;
+        if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
+
+        SamuraiQuickProj proj = new SamuraiQuickProj(player,2,2,swordDamage);
+        proj.moveSelf(2,false);
     }
     @Override
     public void useGroundSlam(Player player, int powerLevel)
     {
-        if(isHoldingSword(player)) return;
+        if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
     }
 
     @Override
     public void groundSlamFalling(Player player, int powerLevel, double charge)
     {
-        if(isHoldingSword(player)) return;
+        if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
     }
     @Override
     public void useGroundSlamLanding(Player player, int powerLevel, double charge)
     {
-        if(isHoldingSword(player)) return;
+        if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
     }
 
     @Override
     public void chargeChargedAttack(Player player, int powerLevel, double charge)
     {
-        if(isHoldingSword(player)) return;
+        if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
     }
 
     @Override
     public void useChargedAttack(Player player, int powerLevel, double charge)
     {
-        if(isHoldingSword(player)) return;
+        if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
     }
 
     @Override
     public void domainExpand(Player player)
     {
-        if(isHoldingSword(player)) return;
+        if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
 
         // Change to your domain

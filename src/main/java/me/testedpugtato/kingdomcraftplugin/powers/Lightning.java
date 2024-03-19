@@ -56,8 +56,6 @@ public class Lightning extends Power
 
     @Override
     public void useArielDash(Player player, int powerLevel) {
-
-
         player.setVelocity(player.getLocation().getDirection().clone().multiply(10));
 
 
