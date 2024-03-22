@@ -1,5 +1,6 @@
 package me.testedpugtato.kingdomcraftplugin;
 
+import me.testedpugtato.kingdomcraftplugin.powers.swords.*;
 import me.testedpugtato.kingdomcraftplugin.util.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandException;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 public class Database
 {
+    public static Map<Integer, Sword> SwordMap = new HashMap<>();
     public static ArrayList<Player> cancelFall = new ArrayList<>();
 
     private static Map<String, Boolean> basicCooldowns = new HashMap<>();
@@ -199,6 +201,16 @@ public class Database
                 }
             }
         }, (int)(20L*time));
+    }
+
+    public static void initSwordMap()
+    {
+        SwordMap.put(0, new Sword());
+        SwordMap.put(1, new FireSword());
+        SwordMap.put(2, new EarthSword());
+        SwordMap.put(3, new AirSword());
+        SwordMap.put(4, new LightningSword());
+        SwordMap.put(5, new WaterSword());
     }
 
 }

@@ -25,6 +25,7 @@ public final class KingdomCraftPlugin extends JavaPlugin
         new InputListener();
         new GeneralEvents();
         new Nerfs();
+        Database.initSwordMap();
 
         // Commands
         new PowerLevel();

@@ -2,11 +2,13 @@ package me.testedpugtato.kingdomcraftplugin.powers;
 
 import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.barriers.Domain;
+import me.testedpugtato.kingdomcraftplugin.powers.swords.Sword;
 import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SamuraiQuickProj;
 import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -31,67 +33,14 @@ public class Samurai extends Power
         id = "samurai";
     }
     @Override
-    public void useBasicAttack(Player player, int powerLevel)
+    public void useQuickAttack(Player player, int powerLevel)
     {
-        player.sendMessage("BEFORE");
         if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
 
-        player.sendMessage("AFTER");
-
-        List<LivingEntity> entitiesInCone = new ArrayList<>();
-        Vector playerDirection = player.getLocation().getDirection();
-        Vector playerLocation = player.getLocation().toVector();
-
-        // Get all entities in a cone facing out from the players direction
-        for (LivingEntity target : player.getLocation().getNearbyLivingEntities(10,10,10)) {
-            // Don't include the player themselves
-            if (target.equals(player)) {
-                continue;
-            }
-
-            Vector targetLocation = target.getLocation().toVector();
-            Vector directionToTarget = targetLocation.subtract(playerLocation);
-
-            // Calculate the angle between the player's direction and the direction to the target
-            double angleToTarget = playerDirection.angle(directionToTarget);
-
-            // Convert the angle parameter to radians for comparison
-            double angleRadians = Math.toRadians(100);
-
-            // Check if the target is within the distance and the angle
-            if (directionToTarget.length() <= 5 && angleToTarget <= angleRadians) {
-                entitiesInCone.add(target);
-            }
-        }
-
-        for(LivingEntity p : entitiesInCone)
-        {
-            if(p.equals(player))
-                continue;
-
-            p.getLocation().getWorld().spawnParticle(Particle.SWEEP_ATTACK,p.getLocation(),3,1,1,1,0,null,true);
-
-            Location playerCenterLocation = player.getEyeLocation();
-            Location playerToThrowLocation = p.getEyeLocation();
-
-            double x = playerToThrowLocation.getX() - playerCenterLocation.getX();
-            double y = playerToThrowLocation.getY() - playerCenterLocation.getY();
-            double z = playerToThrowLocation.getZ() - playerCenterLocation.getZ();
-
-            Vector throwVector = new Vector(x, y, z);
-
-            throwVector.normalize();
-            throwVector.multiply(MathUtils.levelInter(0.1,2,(int)swordDamage)*MathUtils.levelInter(1,2,powerLevel));
-            throwVector.setY(1.0);
-
-            p.setVelocity(throwVector);
-            CombatManager.DamageEntity(swordDamage*MathUtils.levelInter(1,1.75,powerLevel),p,player);
-        }
-
-        //Play audio slightly in front of user
-        player.getLocation().getWorld().spawnParticle(Particle.SWEEP_ATTACK,player.getEyeLocation().add(playerDirection.multiply(2)),3,1,1,1,0,null,true);
-        player.getWorld().playSound(player.getEyeLocation().add(player.getEyeLocation().getDirection()),Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,2,2);
+        getHeldSword(player);
+        Sword sword = new Sword();
+        sword.useQuickAttack(player,powerLevel,swordDamage);
     }
 
     @Override
@@ -106,34 +55,18 @@ public class Samurai extends Power
         if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
 
-        player.setVelocity(player.getLocation().getDirection().clone().multiply(10));
-
-
-        player.getWorld().playSound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,SoundCategory.MASTER,100,2);
-        player.getWorld().playSound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,SoundCategory.MASTER,100,0);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), new Runnable() {
-            int ticks = 0;
-            @Override
-            public void run() {
-                ticks++;
-                player.getWorld().spawnParticle(Particle.SCRAPE,player.getEyeLocation(),4,.2,.2,.2,0, null, true);
-                if(ticks >= MathUtils.levelInter(0.1,0.5, powerLevel)*20) {
-                    player.setVelocity(new Vector(0,0,0));
-                }
-                else {
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), this, 1);
-                }
-            }
-        },1);
+        Sword sword = new Sword();
+        sword.useArielDash(player,powerLevel,swordDamage);
     }
     @Override
-    public void useQuickAttack(Player player, int powerLevel)
+    public void useBasicAttack(Player player, int powerLevel)
     {
         if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
 
-        SamuraiQuickProj proj = new SamuraiQuickProj(player,2,2,swordDamage);
-        proj.moveSelf(2,false);
+        getHeldSword(player);
+        Sword sword = new Sword();
+        sword.useBasicAttack(player,powerLevel,swordDamage);
     }
     @Override
     public void useGroundSlam(Player player, int powerLevel)
@@ -183,7 +116,7 @@ public class Samurai extends Power
     public float getSwordDamage(Player player)
     {
         ItemStack item = player.getInventory().getItemInMainHand();
-        float baseDamage = 0;
+        float baseDamage;
         switch (item.getType()) {
             case WOODEN_SWORD:
             case GOLDEN_SWORD:
@@ -224,5 +157,21 @@ public class Samurai extends Power
             }
         }
         return false;
+    }
+
+    public void getHeldSword(Player player)
+    {
+        if(!isHoldingSword(player)) return;
+        ItemStack HeldItem = player.getInventory().getItemInMainHand();
+        int data = 0;
+        if(HeldItem.getItemMeta().hasCustomModelData())
+            data = HeldItem.getItemMeta().getCustomModelData();
+
+
+
+
+
+        player.sendMessage("Data: ");
+
     }
 }
