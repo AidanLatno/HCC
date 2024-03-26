@@ -2,15 +2,21 @@ package me.testedpugtato.kingdomcraftplugin.powers;
 
 
 import me.testedpugtato.kingdomcraftplugin.barriers.EarthDomain;
-import me.testedpugtato.kingdomcraftplugin.barriers.RiftWalkerDomain;
-import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
-import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 
-import java.util.UUID;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class Earth extends Power
 {
+    public static Set<Material> blockList = new HashSet<>();
+    public static Set<Material> ignoreListSet = new HashSet<>();
+
     public Earth()
     {
         setBasicCooldown(3);
@@ -20,6 +26,26 @@ public class Earth extends Power
         setChargedCooldown(15);
         setSlamCooldown(15);
         id = "earth";
+
+        Material[] set = {
+                Material.GRASS_BLOCK,
+                Material.DIRT,
+                Material.SAND,
+                Material.STONE,
+                Material.COBBLESTONE,
+                Material.DEEPSLATE,
+                Material.COBBLED_DEEPSLATE,
+                Material.GRAVEL,
+                Material.ANDESITE,
+                Material.GRANITE,
+                Material.DIORITE,
+                Material.COARSE_DIRT,
+                Material.FARMLAND,
+                Material.DIRT_PATH
+        };
+
+        blockList.addAll(Arrays.asList(set));
+        ignoreListSet.addAll(Arrays.asList(ignoreList));
     }
     @Override
     public void useBasicAttack(Player player, int powerLevel)
@@ -30,7 +56,10 @@ public class Earth extends Power
     @Override
     public void useAriel(Player player, int powerLevel)
     {
+        Block block = player.getTargetBlock(ignoreListSet,2);
+        BlockData data = block.getBlockData();
 
+        player.getWorld().spawnFallingBlock(block.getLocation().add(0,3,0),block.getBlockData());
     }
     @Override
     public void useArielDash(Player player, int powerLevel)

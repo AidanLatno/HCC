@@ -20,7 +20,7 @@ public class Lightning extends Power
     public Lightning()
     {
         setBasicCooldown(3);
-        setDashCooldown(2);
+        setDashCooldown(5);
         setQuickCooldown(10);
         setArielCooldown(5);
         setChargedCooldown(15);

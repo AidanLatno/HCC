@@ -1,12 +1,9 @@
 package me.testedpugtato.kingdomcraftplugin.powers;
 
-import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.data.PlayerMemory;
-import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
-import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import java.util.UUID;
 
 public class Power
 {
@@ -84,4 +81,40 @@ public class Power
     public void domainExpand(Player player) {}
 
 
+    public static Material[] ignoreList = {
+            Material.AIR,
+            Material.GRASS,
+            Material.TALL_GRASS,
+            Material.SEAGRASS,
+            Material.TALL_SEAGRASS,
+            Material.SEA_PICKLE,
+            Material.KELP_PLANT,
+            Material.OXEYE_DAISY,
+            Material.DANDELION,
+            Material.ROSE_BUSH,
+            Material.POPPY,
+            Material.AZURE_BLUET,
+            Material.CORNFLOWER,
+            Material.SUNFLOWER,
+            Material.BAMBOO,
+            Material.SMALL_DRIPLEAF,
+            Material.BIG_DRIPLEAF,
+            Material.BIG_DRIPLEAF_STEM,
+            Material.COBWEB,
+            Material.FIRE,
+            Material.SOUL_FIRE,
+            Material.BLUE_ORCHID,
+            Material.ALLIUM,
+            Material.PEONY,
+            Material.ORANGE_TULIP,
+            Material.PINK_TULIP,
+            Material.RED_TULIP,
+            Material.WHITE_TULIP,
+            Material.LILAC,
+            Material.LILY_OF_THE_VALLEY,
+            Material.LILY_PAD,
+            Material.WITHER_ROSE,
+            Material.TORCH,
+            Material.SOUL_TORCH
+    };
 }
