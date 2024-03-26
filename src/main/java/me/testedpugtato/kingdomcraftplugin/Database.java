@@ -1,6 +1,7 @@
 package me.testedpugtato.kingdomcraftplugin;
 
-import me.testedpugtato.kingdomcraftplugin.powers.swords.*;
+import me.testedpugtato.kingdomcraftplugin.items.swords.*;
+
 import me.testedpugtato.kingdomcraftplugin.util.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandException;

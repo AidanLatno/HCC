@@ -47,32 +47,9 @@ public class Water extends Power
     {
         if(isInNether(player)) return;
 
-        List<LivingEntity> entitiesInCone = new ArrayList<>();
-        Vector playerDirection = player.getLocation().getDirection();
-        Vector playerLocation = player.getLocation().toVector();
+        List<LivingEntity> entitiesInCone = MathUtils.getEntitiesInCone(player.getLocation());
 
-        player.getWorld().spawnParticle(Particle.WATER_SPLASH,player.getLocation().clone().add(playerDirection),(int)MathUtils.levelInter(500,1500,powerLevel),1,1,1,0,null,true);
-
-        for (LivingEntity target : player.getLocation().getNearbyLivingEntities(10,10,10)) {
-            // Don't include the player themselves
-            if (target.equals(player)) {
-                continue;
-            }
-
-            Vector targetLocation = target.getLocation().toVector();
-            Vector directionToTarget = targetLocation.subtract(playerLocation);
-
-            // Calculate the angle between the player's direction and the direction to the target
-            double angleToTarget = playerDirection.angle(directionToTarget);
-
-            // Convert the angle parameter to radians for comparison
-            double angleRadians = Math.toRadians(100);
-
-            // Check if the target is within the distance and the angle
-            if (directionToTarget.length() <= 5 && angleToTarget <= angleRadians) {
-                entitiesInCone.add(target);
-            }
-        }
+        player.getWorld().spawnParticle(Particle.WATER_SPLASH,player.getLocation().clone().add(player.getLocation().getDirection()),(int)MathUtils.levelInter(500,1500,powerLevel),1,1,1,0,null,true);
 
         for(LivingEntity p : entitiesInCone)
         {
@@ -300,60 +277,58 @@ public class Water extends Power
 
         player.getWorld().spawnParticle(Particle.SPIT,player.getLocation(),(int)(MathUtils.levelInter(100,1000, powerLevel)*charge), radius,0,radius,0,null, true);
 
-        Collection<LivingEntity> entities = player.getLocation().getNearbyLivingEntities(radius, 2, radius);
+        List<LivingEntity> entities = MathUtils.getEntitiesInSphere(player.getLocation(),radius,new Vector(radius,2,radius));
 
         for(LivingEntity entity : entities)
         {
             if(entity.equals(player)) continue;
 
-            if(entity.getLocation().distance(player.getLocation()) <= radius)
-            {
-                if(entity instanceof Player) PlayerUtility.getPlayerMemory((Player) entity).stun(trapTicks);
+            if(entity instanceof Player) PlayerUtility.getPlayerMemory((Player) entity).stun(trapTicks);
 
-                Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), new Runnable() {
-                    int ticks = 0;
-                    @Override
-                    public void run() {
-                        ticks++;
+            Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), new Runnable() {
+                int ticks = 0;
+                @Override
+                public void run() {
+                    ticks++;
 
-                        entity.setVelocity(new Vector(0,0,0));
+                    entity.setVelocity(new Vector(0,0,0));
 
-                        Location pos1 = entity.getLocation().clone(); // Bottom corner
-                        Location pos2 = entity.getLocation().clone(); // Top corner
+                    Location pos1 = entity.getLocation().clone(); // Bottom corner
+                    Location pos2 = entity.getLocation().clone(); // Top corner
 
-                        pos1.subtract(1,1,1);
-                        pos2.add(1,2,1);
+                    pos1.subtract(1,1,1);
+                    pos2.add(1,2,1);
 
-                        for(int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++)
+                    for(int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++)
+                    {
+                        for(int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++)
                         {
-                            for(int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++)
+                            for(int y = pos1.getBlockY(); y <= pos2.getBlockY(); y++)
                             {
-                                for(int y = pos1.getBlockY(); y <= pos2.getBlockY(); y++)
-                                {
-                                    Block block = entity.getWorld().getBlockAt(x,y,z);
-                                    if(block.getType() != Material.AIR) continue;
-                                    block.setType(Material.WATER,true);
+                                Block block = entity.getWorld().getBlockAt(x,y,z);
+                                if(block.getType() != Material.AIR) continue;
+                                block.setType(Material.WATER,true);
 
-                                    BlockData blockData = block.getBlockData();
+                                BlockData blockData = block.getBlockData();
 
-                                    // Check if the BlockData is an instance of Levelled (water, lava)
-                                    if (blockData instanceof Levelled) {
-                                        Levelled levelled = (Levelled) blockData;
+                                // Check if the BlockData is an instance of Levelled (water, lava)
+                                if (blockData instanceof Levelled) {
+                                    Levelled levelled = (Levelled) blockData;
 
-                                        // Set the water level to 1
-                                        levelled.setLevel(1);
+                                    // Set the water level to 1
+                                    levelled.setLevel(1);
 
-                                        // Apply the modified BlockData back to the block
-                                        block.setBlockData(levelled);
-                                    }
+                                    // Apply the modified BlockData back to the block
+                                    block.setBlockData(levelled);
                                 }
                             }
                         }
-
-                        if(ticks < trapTicks)  Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(),this,1);
                     }
-                },1);
-            }
+
+                    if(ticks < trapTicks)  Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(),this,1);
+                }
+            },1);
+
         }
 
         List<Block> blocks = new ArrayList<>();

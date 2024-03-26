@@ -12,12 +12,13 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Domain {
     public Location center;
     public float radius;
     public Player caster;
-    public ArrayList<LivingEntity> participants;
+    public List<LivingEntity> participants;
     public ArrayList<Particle> particles = new ArrayList<>();
     public int count;
     public float offSetX;
@@ -51,12 +52,9 @@ public class Domain {
 
     final public void ExpandDomain()
     {
-       /* Bukkit.getLogger().info("WORKING");
-        ArrayList<Entity> list = CombatManager.getEntitiesAroundPoint(center,radius);
-        for(Entity entity : list)
-        {
-            if(entity instanceof LivingEntity) participants.add((LivingEntity) entity);
-        }*/
+        Bukkit.getLogger().info("WORKING");
+        participants = MathUtils.getEntitiesInSphere(center,(int)radius);
+
 
         // Store the task ID
 

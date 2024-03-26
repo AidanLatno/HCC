@@ -37,6 +37,7 @@ public final class KingdomCraftPlugin extends JavaPlugin
         new Stats();
         new SetPower();
         new Expand();
+        new Craft();
 
 
         // AUTO SAVE EVERY 5 MIN

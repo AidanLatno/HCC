@@ -1,8 +1,8 @@
-package me.testedpugtato.kingdomcraftplugin.powers.swords;
+package me.testedpugtato.kingdomcraftplugin.items.swords;
 
 import org.bukkit.entity.Player;
 
-public class FireSword extends Sword{
+public class SwordExample extends Sword{
     @Override
     public void useBasicAttack(Player player, int powerLevel, float swordDamage)
     {
@@ -52,4 +52,5 @@ public class FireSword extends Sword{
     {
 
     }
+
 }

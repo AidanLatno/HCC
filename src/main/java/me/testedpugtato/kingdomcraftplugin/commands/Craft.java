@@ -1,0 +1,26 @@
+package me.testedpugtato.kingdomcraftplugin.commands;
+
+import me.testedpugtato.kingdomcraftplugin.data.PlayerMemory;
+import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
+import me.testedpugtato.kingdomcraftplugin.util.CommandBase;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+public class Craft {
+    public Craft()
+    {
+        new CommandBase("craft")
+        {
+
+            @Override
+            public boolean onCommand(CommandSender sender, String[] arguments)
+            {
+
+                return true;
+            }
+
+            @Override
+            public String getUsage() { return "/craft";}
+        };
+    }
+}

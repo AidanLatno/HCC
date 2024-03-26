@@ -1,22 +1,12 @@
 package me.testedpugtato.kingdomcraftplugin.powers;
 
-import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.barriers.Domain;
-import me.testedpugtato.kingdomcraftplugin.powers.swords.Sword;
-import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SamuraiQuickProj;
-import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
-import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
-import org.bukkit.*;
+import me.testedpugtato.kingdomcraftplugin.items.swords.*;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Samurai extends Power
 {
@@ -38,8 +28,8 @@ public class Samurai extends Power
         if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
 
-        getHeldSword(player);
-        Sword sword = new Sword();
+
+        Sword sword = getHeldSword(player);
         sword.useQuickAttack(player,powerLevel,swordDamage);
     }
 
@@ -159,19 +149,28 @@ public class Samurai extends Power
         return false;
     }
 
-    public void getHeldSword(Player player)
+    public Sword getHeldSword(Player player)
     {
-        if(!isHoldingSword(player)) return;
         ItemStack HeldItem = player.getInventory().getItemInMainHand();
-        int data = 0;
-        if(HeldItem.getItemMeta().hasCustomModelData())
-            data = HeldItem.getItemMeta().getCustomModelData();
 
-
-
-
-
-        player.sendMessage("Data: ");
-
+        if(HeldItem.getItemMeta().hasCustomModelData()) {
+            switch (HeldItem.getItemMeta().getCustomModelData()) {
+                case 1:
+                    return new FireSword();
+                case 2:
+                    return new WaterSword();
+                case 3:
+                    return new LightningSword();
+                case 4:
+                    return new EarthSword();
+                case 5:
+                    return new AirSword();
+                case 12:
+                    return new BloodStoneSword();
+                default:
+                    return new Sword();
+            }
+        }
+        return new Sword();
     }
 }

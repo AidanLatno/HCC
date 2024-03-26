@@ -1,6 +1,7 @@
-package me.testedpugtato.kingdomcraftplugin.powers.swords;
+package me.testedpugtato.kingdomcraftplugin.items.swords;
 
 import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
+import me.testedpugtato.kingdomcraftplugin.items.CustomItem;
 import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SamuraiQuickProj;
 import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
@@ -12,7 +13,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Sword {
+public class Sword extends CustomItem {
     public void useBasicAttack(Player player, int powerLevel, float swordDamage)
     {
         SamuraiQuickProj proj = new SamuraiQuickProj(player,2,2,swordDamage);
@@ -62,31 +63,7 @@ public class Sword {
     }
     public void useQuickAttack(Player player, int powerLevel, float swordDamage)
     {
-        List<LivingEntity> entitiesInCone = new ArrayList<>();
-        Vector playerDirection = player.getLocation().getDirection();
-        Vector playerLocation = player.getLocation().toVector();
-
-        // Get all entities in a cone facing out from the players direction
-        for (LivingEntity target : player.getLocation().getNearbyLivingEntities(10,10,10)) {
-            // Don't include the player themselves
-            if (target.equals(player)) {
-                continue;
-            }
-
-            Vector targetLocation = target.getLocation().toVector();
-            Vector directionToTarget = targetLocation.subtract(playerLocation);
-
-            // Calculate the angle between the player's direction and the direction to the target
-            double angleToTarget = playerDirection.angle(directionToTarget);
-
-            // Convert the angle parameter to radians for comparison
-            double angleRadians = Math.toRadians(100);
-
-            // Check if the target is within the distance and the angle
-            if (directionToTarget.length() <= 5 && angleToTarget <= angleRadians) {
-                entitiesInCone.add(target);
-            }
-        }
+        List<LivingEntity> entitiesInCone = MathUtils.getEntitiesInCone(player.getLocation());
 
         for(LivingEntity p : entitiesInCone)
         {
@@ -113,8 +90,8 @@ public class Sword {
         }
 
         //Play audio slightly in front of user
-        player.getLocation().getWorld().spawnParticle(Particle.SWEEP_ATTACK,player.getEyeLocation().add(playerDirection.multiply(2)),3,1,1,1,0,null,true);
-        player.getWorld().playSound(player.getEyeLocation().add(player.getEyeLocation().getDirection()), Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,2,2);
+        player.getLocation().getWorld().spawnParticle(Particle.SWEEP_ATTACK,player.getEyeLocation().add(player.getLocation().getDirection().multiply(2)),3,1,1,1,0,null,true);
+        player.getWorld().playSound(player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(2)), Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,2,2);
 
     }
     public void useGroundSlam(Player player, int powerLevel, float swordDamage)
