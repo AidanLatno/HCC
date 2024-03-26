@@ -1,8 +1,18 @@
 package me.testedpugtato.kingdomcraftplugin.items.swords;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class SwordExample extends Sword{
+    public SwordExample()
+    {
+        name = ChatColor.RED + ChatColor.BOLD.toString() + "Example Sword";
+        lore.add(ChatColor.DARK_RED + "A sword infused with example blood.");
+        CustomModelData = 1;
+        baseItem = Material.NETHERITE_SWORD;
+    }
+
     @Override
     public void useBasicAttack(Player player, int powerLevel, float swordDamage)
     {
