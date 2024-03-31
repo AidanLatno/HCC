@@ -4,6 +4,7 @@ import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
 import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
+import me.testedpugtato.kingdomcraftplugin.util.lvl;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
 
@@ -33,7 +34,7 @@ public class WaterBasicProj extends PowerProjectile {
     {
         for(LivingEntity entity : entities)
         {
-            CombatManager.DamageEntity(MathUtils.levelInter(3,17,getPowerLevel()),entity,getCaster());
+            CombatManager.DamageEntity(lvl.i(3,17,getPowerLevel()),entity,getCaster());
         }
     }
 
@@ -48,7 +49,7 @@ public class WaterBasicProj extends PowerProjectile {
                 getLocation(),
                 getRadius(),
                 1,
-                MathUtils.levelInter(2,8,getPowerLevel()),
+                lvl.i(2,8,getPowerLevel()),
                 0.2,
                 0.2,
                 0.2,
@@ -59,7 +60,7 @@ public class WaterBasicProj extends PowerProjectile {
                 getLocation(),
                 getRadius()/2,
                 1,
-                MathUtils.levelInter(2,8,getPowerLevel()),
+                lvl.i(2,8,getPowerLevel()),
                 0.2,
                 0.2,
                 0.2,
@@ -70,7 +71,7 @@ public class WaterBasicProj extends PowerProjectile {
                 getLocation(),
                 getRadius(),
                 1,
-                MathUtils.levelInter(2,8,getPowerLevel()),
+                lvl.i(2,8,getPowerLevel()),
                 0.2,
                 0.2,
                 0.2,

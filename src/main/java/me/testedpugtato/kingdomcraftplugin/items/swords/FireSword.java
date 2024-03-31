@@ -1,5 +1,6 @@
 package me.testedpugtato.kingdomcraftplugin.items.swords;
 
+import me.testedpugtato.kingdomcraftplugin.util.GeneralUtils;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import org.bukkit.*;
 import org.bukkit.entity.LivingEntity;
@@ -42,15 +43,15 @@ public class FireSword extends Sword {
 
         loc.add(loc.getDirection().multiply(2));
 
-        loc.getWorld().playSound(loc, Sound.ENTITY_BLAZE_SHOOT, SoundCategory.MASTER,2,1);
-        loc.getWorld().spawnParticle(Particle.FLAME,loc,100, 2,2,2,0,null,true);
+        GeneralUtils.PlaySound(loc,Sound.ENTITY_BLAZE_SHOOT,2,1);
+        GeneralUtils.SpawnParticle(loc,Particle.FLAME,100,2,2,2);
 
         for(LivingEntity e : entitiesInCone)
         {
             if(e.equals(player)) continue;
 
             e.setFireTicks(60);
-            loc.getWorld().spawnParticle(Particle.FLAME,e.getLocation(),10, 2,2,2,0,null,true);
+            GeneralUtils.SpawnParticle(e.getLocation(),Particle.FLAME,10,2,2,2);
         }
         
     }

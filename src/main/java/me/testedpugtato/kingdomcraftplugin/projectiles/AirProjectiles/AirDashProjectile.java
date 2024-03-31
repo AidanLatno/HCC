@@ -1,6 +1,7 @@
 package me.testedpugtato.kingdomcraftplugin.projectiles.AirProjectiles;
 
 import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
+import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -41,25 +42,10 @@ public class AirDashProjectile extends PowerProjectile
     @Override
     public void entityInteract(Collection<LivingEntity> entities)
     {
-        for (LivingEntity entity : entities) {
 
-            Location playerCenterLocation = getCaster().getEyeLocation();
-            Location playerToThrowLocation = entity.getEyeLocation();
+        CombatManager.ApplyPulse(getLocation(),1f,0.5f,entities,getCaster());
+        getLocation().getWorld().playSound(getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,2,2);
 
-            double x = playerToThrowLocation.getX() - playerCenterLocation.getX();
-            double y = playerToThrowLocation.getY() - playerCenterLocation.getY();
-            double z = playerToThrowLocation.getZ() - playerCenterLocation.getZ();
-
-            Vector throwVector = new Vector(x, y, z);
-
-            throwVector.normalize();
-            throwVector.setY(0.5D);
-
-            entity.setVelocity(throwVector);
-
-            getLocation().getWorld().playSound(getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,2,2);
-
-        }
 
     }
     @Override

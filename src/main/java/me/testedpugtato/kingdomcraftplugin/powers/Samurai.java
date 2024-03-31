@@ -38,14 +38,18 @@ public class Samurai extends Power
     {
         if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
+        Sword sword = getHeldSword(player);
+
+
+        sword.useAriel(player,powerLevel,swordDamage);
     }
     @Override
     public void useArielDash(Player player, int powerLevel)
     {
         if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
+        Sword sword = getHeldSword(player);
 
-        Sword sword = new Sword();
         sword.useArielDash(player,powerLevel,swordDamage);
     }
     @Override
@@ -53,9 +57,9 @@ public class Samurai extends Power
     {
         if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
+        Sword sword = getHeldSword(player);
 
-        getHeldSword(player);
-        Sword sword = new Sword();
+
         sword.useBasicAttack(player,powerLevel,swordDamage);
     }
     @Override
@@ -63,6 +67,10 @@ public class Samurai extends Power
     {
         if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
+        Sword sword = getHeldSword(player);
+
+
+        sword.useGroundSlam(player,powerLevel,swordDamage);
     }
 
     @Override
@@ -70,12 +78,20 @@ public class Samurai extends Power
     {
         if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
+        Sword sword = getHeldSword(player);
+
+
+        sword.groundSlamFalling(player,powerLevel,charge,swordDamage);
     }
     @Override
     public void useGroundSlamLanding(Player player, int powerLevel, double charge)
     {
         if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
+        Sword sword = getHeldSword(player);
+
+
+        sword.useGroundSlamLanding(player,powerLevel,charge,swordDamage);
     }
 
     @Override
@@ -83,6 +99,10 @@ public class Samurai extends Power
     {
         if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
+        Sword sword = getHeldSword(player);
+
+
+        sword.useChargedAttack(player,powerLevel,charge,swordDamage);
     }
 
     @Override
@@ -90,6 +110,10 @@ public class Samurai extends Power
     {
         if(!isHoldingSword(player)) return;
         float swordDamage = getSwordDamage(player);
+        Sword sword = getHeldSword(player);
+
+
+        sword.useChargedAttack(player,powerLevel,charge,swordDamage);
     }
 
     @Override

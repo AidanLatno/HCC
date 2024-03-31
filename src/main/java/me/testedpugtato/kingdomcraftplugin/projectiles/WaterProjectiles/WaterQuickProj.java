@@ -2,7 +2,9 @@ package me.testedpugtato.kingdomcraftplugin.projectiles.WaterProjectiles;
 
 import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
 import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
+import me.testedpugtato.kingdomcraftplugin.util.GeneralUtils;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
+import me.testedpugtato.kingdomcraftplugin.util.lvl;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
 
@@ -32,7 +34,7 @@ public class WaterQuickProj extends PowerProjectile {
     {
         for(LivingEntity entity : entities)
         {
-            CombatManager.DamageEntity(MathUtils.levelInter(0.3f,5,getPowerLevel()),entity,getCaster());
+            CombatManager.DamageEntity(lvl.i(0.3f,5,getPowerLevel()),entity,getCaster());
         }
     }
 
@@ -42,7 +44,7 @@ public class WaterQuickProj extends PowerProjectile {
     @Override
     public void logic(boolean controllable)
     {
-        getLocation().getWorld().spawnParticle(Particle.WATER_SPLASH,getLocation(),30,.2,.2,.2,.01,null,true);
-        getLocation().getWorld().spawnParticle(Particle.BUBBLE_POP,getLocation(),30,.2,.2,.2,.01,null,true);
+        GeneralUtils.SpawnParticle(getLocation(),Particle.WATER_SPLASH,30,.2f,.2f,.2f,.01f);
+        GeneralUtils.SpawnParticle(getLocation(),Particle.BUBBLE_POP,30,.2f,.2f,.2f,.01f);
     }
 }

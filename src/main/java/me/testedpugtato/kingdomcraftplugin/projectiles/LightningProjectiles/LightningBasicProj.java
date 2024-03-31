@@ -1,9 +1,7 @@
 package me.testedpugtato.kingdomcraftplugin.projectiles.LightningProjectiles;
 
 import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
-import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
-import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
-import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
+import me.testedpugtato.kingdomcraftplugin.util.*;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -45,7 +43,7 @@ public class LightningBasicProj extends PowerProjectile
                     5,
                     0,0,0
             );
-            CombatManager.DamageEntity(MathUtils.levelInter(1,10,getPowerLevel()),e,getCaster());
+            CombatManager.DamageEntity(lvl.i(1,10,getPowerLevel()),e,getCaster());
         }
     }
 
@@ -61,17 +59,15 @@ public class LightningBasicProj extends PowerProjectile
         ParticleMaker.createHelix(
                 Particle.SCRAPE,
                 loc,
-                MathUtils.levelInter(0.1,0.4,getPowerLevel()),
-                (int)MathUtils.levelInter(1,3,getPowerLevel()),
-                MathUtils.levelInter(2,4,getPowerLevel()),
+                lvl.i(0.1,0.4,getPowerLevel()),
+                (int)lvl.i(1,3,getPowerLevel()),
+                lvl.i(2,4,getPowerLevel()),
                 0.25,
                 0.25,
                 0.25,
                 0.1,
                 1
         );
-        loc.getWorld().playSound(loc, Sound.BLOCK_BEEHIVE_WORK, SoundCategory.MASTER,100,0);
-
+        GeneralUtils.PlaySound(loc, Sound.BLOCK_BEEHIVE_WORK,100,0);
     }
-
 }

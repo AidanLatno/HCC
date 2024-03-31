@@ -1,8 +1,10 @@
 package me.testedpugtato.kingdomcraftplugin.projectiles.FireProjectiles;
 
 import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
+import me.testedpugtato.kingdomcraftplugin.util.GeneralUtils;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
+import me.testedpugtato.kingdomcraftplugin.util.lvl;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -30,14 +32,14 @@ public class FireQuickAttack extends PowerProjectile
         Location loc = getLocation();
         if(controllable) loc.setDirection(getCaster().getEyeLocation().getDirection());
 
-        getLocation().getWorld().playSound(getLocation(), Sound.BLOCK_FIRE_AMBIENT,.5f,1);
+        GeneralUtils.PlaySound(getLocation(), Sound.BLOCK_FIRE_AMBIENT,.5f);
 
         ParticleMaker.createHelix(
             particle,
             loc,
-            MathUtils.levelInter(0.1,0.4,getPowerLevel()),
-            (int)MathUtils.levelInter(1,3,getPowerLevel()),
-            MathUtils.levelInter(2,4,getPowerLevel()),
+            lvl.i(0.1,0.4,getPowerLevel()),
+            (int)lvl.i(1,3,getPowerLevel()),
+            lvl.i(2,4,getPowerLevel()),
             0.03,
             0.03,
             0.03,
@@ -52,14 +54,14 @@ public class FireQuickAttack extends PowerProjectile
         for(LivingEntity e : entities)
         {
             e.setFireTicks(20*2);
-            e.damage((float)MathUtils.levelInter(1,4,getPowerLevel()),getCaster());
+            e.damage((float) lvl.i(1,4,getPowerLevel()),getCaster());
         }
     }
 
     @Override
     public boolean onCollide()
     {
-        getCaster().getWorld().spawnParticle(particle,getLocation(),10,.3,.3,.3,.2,null,true);
+        GeneralUtils.SpawnParticle(getLocation(),particle,10,.3f,.3f,.3f,.2f);
         return true;
     }
 }

@@ -4,6 +4,7 @@ import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
 import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
+import me.testedpugtato.kingdomcraftplugin.util.lvl;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -31,9 +32,9 @@ public class AirBasicAttackProj extends PowerProjectile {
         ParticleMaker.createHelix(
                 Particle.CLOUD,
                 loc,
-                MathUtils.levelInter(0.2,1,getPowerLevel()),
+                lvl.i(0.2,1,getPowerLevel()),
                 1,
-                MathUtils.levelInter(2,4,getPowerLevel()),
+                lvl.i(2,4,getPowerLevel()),
                 .3,
                 .3,
                 .3,
@@ -47,26 +48,12 @@ public class AirBasicAttackProj extends PowerProjectile {
     @Override
     public void entityInteract(Collection<LivingEntity> entities)
     {
-        for (LivingEntity entity : entities) {
-
-            Location playerCenterLocation = getCaster().getEyeLocation();
-            Location playerToThrowLocation = entity.getEyeLocation();
-
-            double x = playerToThrowLocation.getX() - playerCenterLocation.getX();
-            double y = playerToThrowLocation.getY() - playerCenterLocation.getY();
-            double z = playerToThrowLocation.getZ() - playerCenterLocation.getZ();
-
-            Vector throwVector = new Vector(x, y, z);
-
-            throwVector.normalize();
-            throwVector.multiply(MathUtils.levelInter(1.3,3,getPowerLevel()));
-            throwVector.setY(MathUtils.levelInter(0.8,2,getPowerLevel()));
-
-            entity.setVelocity(throwVector);
-
-            CombatManager.DamageEntity(MathUtils.levelInter(1,6,getPowerLevel()),entity,getCaster());
-        }
-
+        CombatManager.ApplyPulse(getLocation(),
+                lvl.i(1.3,3,getPowerLevel()),
+                lvl.i(0.8,2,getPowerLevel()),
+                entities,
+                getCaster());
+        CombatManager.DamageEntity(lvl.i(1,6,getPowerLevel()),entities,getCaster());
     }
 
     @Override

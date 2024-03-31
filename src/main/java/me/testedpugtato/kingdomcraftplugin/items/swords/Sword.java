@@ -2,34 +2,40 @@ package me.testedpugtato.kingdomcraftplugin.items.swords;
 
 import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.items.CustomItem;
-import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SamuraiQuickProj;
-import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
-import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
+import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SamuraiBasicProj;
+import me.testedpugtato.kingdomcraftplugin.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Sword extends CustomItem {
     public void useBasicAttack(Player player, int powerLevel, float swordDamage)
     {
-        SamuraiQuickProj proj = new SamuraiQuickProj(player,2,2,swordDamage);
+        SamuraiBasicProj proj = new SamuraiBasicProj(player,2,2,swordDamage,this);
         proj.moveSelf(2,false);
     }
-    public void useAriel(Player player, int playerLevel, float swordDamage)
+    public void useAriel(Player player, int powerLevel, float swordDamage)
     {
-        /*for(int i = 0; i < 32; i++) {
-            SamuraiQuickProj proj = new SamuraiQuickProj(player, 2, 2, swordDamage);
-            proj.setLocation(proj.getLocation().setDirection());
-        }*/
+        Location loc = player.getEyeLocation();
+
+        loc.setPitch(90);
+        loc.setYaw(0);
+
+        ParticleMaker.createCircle(
+                Particle.SWEEP_ATTACK,
+                loc,
+                lvl.i(1, 4, powerLevel),
+                (int)lvl.i(1,5,powerLevel),
+                lvl.i(2,32,powerLevel));
+        CombatManager.DamageNearby(player.getLocation(),lvl.i(1,4,powerLevel),3,lvl.i(1,4,powerLevel),swordDamage,player);
     }
     public void useArielDash(Player player, int powerLevel, float swordDamage)
     {
-        player.getWorld().playSound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,SoundCategory.MASTER,100,2);
-        player.getWorld().playSound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,SoundCategory.MASTER,100,0);
+        GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,100,2);
+        GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,100,0);
         Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), new Runnable() {
             int ticks = 0;
             @Override
@@ -38,13 +44,13 @@ public class Sword extends CustomItem {
                 Vector dir = player.getLocation().getDirection().clone().multiply(10);
                 dir.setY(0.2f);
                 player.setVelocity(dir);
-                player.getWorld().spawnParticle(Particle.SWEEP_ATTACK,player.getEyeLocation(),4,.2,.2,.2,0, null, true);
+                GeneralUtils.SpawnParticle(player.getEyeLocation(), Particle.SWEEP_ATTACK,4,.2f,.2f,.2f);
                 for(LivingEntity e : player.getLocation().getNearbyLivingEntities(3,3,3))
                 {
                     if(e.equals(player)) continue;
-                    CombatManager.DamageEntity(swordDamage*MathUtils.levelInter(0.9,1.4,powerLevel),e,player);
+                    CombatManager.DamageEntity(swordDamage*lvl.i(0.9,1.4,powerLevel),e,player);
                 }
-                if(ticks >= MathUtils.levelInter(0.1,0.5, powerLevel)*20) {
+                if(ticks >= lvl.i(0.1,0.5, powerLevel)*20) {
                     player.setVelocity(new Vector(0,0,0));
                 }
                 else {
@@ -65,38 +71,55 @@ public class Sword extends CustomItem {
     {
         List<LivingEntity> entitiesInCone = MathUtils.getEntitiesInCone(player.getLocation());
 
-        for(LivingEntity p : entitiesInCone)
-        {
-            if(p.equals(player))
-                continue;
-
-            p.getLocation().getWorld().spawnParticle(Particle.SWEEP_ATTACK,p.getLocation(),3,1,1,1,0,null,true);
-
-            Location playerCenterLocation = player.getEyeLocation();
-            Location playerToThrowLocation = p.getEyeLocation();
-
-            double x = playerToThrowLocation.getX() - playerCenterLocation.getX();
-            double y = playerToThrowLocation.getY() - playerCenterLocation.getY();
-            double z = playerToThrowLocation.getZ() - playerCenterLocation.getZ();
-
-            Vector throwVector = new Vector(x, y, z);
-
-            throwVector.normalize();
-            throwVector.multiply(MathUtils.levelInter(0.1,2,(int)swordDamage)*MathUtils.levelInter(1,2,powerLevel));
-            throwVector.setY(1.0);
-
-            p.setVelocity(throwVector);
-            CombatManager.DamageEntity(swordDamage*MathUtils.levelInter(1,1.75,powerLevel),p,player);
-        }
-
+        CombatManager.ApplyPulse(player.getLocation(),lvl.i(0.1,2,(int)swordDamage)*lvl.i(1,2,powerLevel),1.0f, entitiesInCone,player);
+        CombatManager.DamageEntity(swordDamage*lvl.i(1,1.75,powerLevel),entitiesInCone,player);
         //Play audio slightly in front of user
-        player.getLocation().getWorld().spawnParticle(Particle.SWEEP_ATTACK,player.getEyeLocation().add(player.getLocation().getDirection().multiply(2)),3,1,1,1,0,null,true);
-        player.getWorld().playSound(player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(2)), Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,2,2);
+        GeneralUtils.SpawnParticle(player.getEyeLocation().add(player.getLocation().getDirection().multiply(2)),Particle.SWEEP_ATTACK,3,1,1,1);
+        GeneralUtils.PlaySound(player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(2)), Sound.ENTITY_PLAYER_ATTACK_SWEEP,2,2);
 
     }
     public void useGroundSlam(Player player, int powerLevel, float swordDamage)
     {
-        player.sendMessage("[ERROR] Ground Slam Not Overloaded");
+        player.setVelocity(new Vector(0,-20,0));
+        Location loc = player.getLocation();
+
+        loc.add(0,2,0);
+        loc.setPitch(90);
+        loc.setYaw(0);
+
+        ParticleMaker.createCircle(
+                Particle.SWEEP_ATTACK,
+                loc,
+                lvl.i(1,5,powerLevel),
+                (int)lvl.i(1,3,powerLevel),
+                lvl.i(2,16,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.05,powerLevel));
+        ParticleMaker.createCircle(
+                Particle.SWEEP_ATTACK,
+                loc,
+                lvl.i(0.5,3.75,powerLevel),
+                (int)lvl.i(1,3,powerLevel),
+                lvl.i(2,16,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.05,powerLevel),
+                10);
+        ParticleMaker.createCircle(
+                Particle.SWEEP_ATTACK,
+                loc,
+                lvl.i(0,2.5,powerLevel),
+                (int)lvl.i(1,3,powerLevel),
+                lvl.i(2,16,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.05,powerLevel),
+                -10);
+        GeneralUtils.PlaySound(player.getEyeLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP);
     }
     public void groundSlamFalling(Player player, int powerLevel, double charge, float swordDamage)
     {

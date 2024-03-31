@@ -22,7 +22,7 @@ public class ParticleMaker
             v = MathUtils.rotateFunction(v,loc);
             loc.add(v.getX(),v.getY(),v.getZ());
 
-            loc.getWorld().spawnParticle(particle, loc, particleAmount,offsetX,offsetY,offsetZ, speed,null,true);
+            GeneralUtils.SpawnParticle(loc, particle, particleAmount,(float)offsetX,(float)offsetY,(float)offsetZ,(float)speed);
             loc.subtract(v.getX(),v.getY(),v.getZ());
         }
     }
@@ -74,7 +74,7 @@ public class ParticleMaker
             v = MathUtils.rotateFunction(v,loc);
             loc.add(v.getX(),v.getY(),v.getZ());
 
-            loc.getWorld().spawnParticle(particle, loc, particleAmount,offsetX,offsetY,offsetZ, speed,null,true);
+            GeneralUtils.SpawnParticle(loc, particle, particleAmount,(float)offsetX,(float)offsetY,(float)offsetZ, (float)speed);
             loc.subtract(v.getX(),v.getY(),v.getZ());
         }
     }
@@ -127,7 +127,7 @@ public class ParticleMaker
                 v = MathUtils.rotateFunction(v, loc);
                 loc.add(v.getX(), v.getY(), v.getZ());
 
-                loc.getWorld().spawnParticle(particle, loc, particleAmount, offsetX, offsetY, offsetZ, speed,null,true);
+                GeneralUtils.SpawnParticle(loc, particle, particleAmount, (float)offsetX, (float)offsetY, (float)offsetZ, (float)speed);
                 loc.subtract(v.getX(), v.getY(), v.getZ());
             }
         }
@@ -169,14 +169,14 @@ public class ParticleMaker
 
     public static void createLine(Particle particle, Location start, Location end, float spacing, int particleAmount, double offsetX, double offsetY, double offsetZ, double speed)
     {
-        World world = start.getWorld();
         double distance = start.distance(end);
         Vector p1 = start.toVector();
         Vector p2 = end.toVector();
         Vector vector = p2.clone().subtract(p1).normalize().multiply(spacing);
         double length = 0;
         for (; length < distance; p1.add(vector)) {
-            world.spawnParticle(particle, p1.getX(), p1.getY(), p1.getZ(), particleAmount,offsetX,offsetY,offsetZ,speed,null,true);
+            Location loc = new Location(start.getWorld(),p1.getX(), p1.getY(), p1.getZ());
+            GeneralUtils.SpawnParticle(loc, particle, particleAmount,(float)offsetX,(float)offsetY,(float)offsetZ,(float)speed);
             length += spacing;
         }
     }

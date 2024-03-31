@@ -2,9 +2,7 @@ package me.testedpugtato.kingdomcraftplugin.projectiles.FireProjectiles;
 
 import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
 import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
-import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
-import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
-import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
+import me.testedpugtato.kingdomcraftplugin.util.*;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -34,21 +32,21 @@ public class FireBasicAttackProj extends PowerProjectile
         Location loc = getLocation();
         if(controllable) loc.setDirection(getCaster().getEyeLocation().getDirection());
 
-        getCaster().getWorld().playSound(getLocation(),Sound.ENTITY_BLAZE_SHOOT,1,1);
+        GeneralUtils.PlaySound(getLocation(),Sound.ENTITY_BLAZE_SHOOT);
 
         ParticleMaker.createCircle(
                 particle,
                 loc,
                 getRadius(),
                 1,
-                MathUtils.levelInter(2,8,getPowerLevel()),
+                lvl.i(2,8,getPowerLevel()),
                 0.2,
                 0.2,
                 0.2,
                 0.01,
                 1);
 
-        CombatManager.DamageNearby(getLocation(),getRadius(),getRadius(),getRadius(),(float)MathUtils.levelInter(3,7,getPowerLevel()),getCaster());
+        CombatManager.DamageNearby(getLocation(),getRadius(),getRadius(),getRadius(),(float)lvl.i(3,7,getPowerLevel()),getCaster());
     }
 
     @Override
@@ -58,7 +56,7 @@ public class FireBasicAttackProj extends PowerProjectile
 
         for(LivingEntity e : entities)
         {
-            e.setFireTicks((int)MathUtils.levelInter(20,50,powerLevel));
+            e.setFireTicks((int)lvl.i(20,50,powerLevel));
         }
     }
 

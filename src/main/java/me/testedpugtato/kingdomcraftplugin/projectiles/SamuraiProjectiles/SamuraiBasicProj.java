@@ -1,26 +1,33 @@
 package me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles;
 
+import me.testedpugtato.kingdomcraftplugin.items.swords.Sword;
 import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
 import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
+import me.testedpugtato.kingdomcraftplugin.util.GeneralUtils;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
+import me.testedpugtato.kingdomcraftplugin.util.lvl;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 
 import java.util.Collection;
 
-public class SamuraiQuickProj extends PowerProjectile {
-    private float swordDamage;
+public class SamuraiBasicProj extends PowerProjectile {
+    private final float swordDamage;
+    private final Sword sword;
 
-    public SamuraiQuickProj(LivingEntity caster, float speed, float radius, float swordDamage) {
+    public SamuraiBasicProj(LivingEntity caster, float speed, float radius, float swordDamage, Sword sword) {
         super(caster, speed, radius);
         this.swordDamage = swordDamage;
+        this.sword = sword;
     }
 
-    public SamuraiQuickProj(LivingEntity caster, float speed, float swordDamage) {
+    public SamuraiBasicProj(LivingEntity caster, float speed, float swordDamage, Sword sword) {
         super(caster, speed);
         this.swordDamage = swordDamage;
+        this.sword = sword;
     }
 
     // Will be called when projectile collides with block
@@ -38,7 +45,7 @@ public class SamuraiQuickProj extends PowerProjectile {
     {
         for(LivingEntity entity : entities)
         {
-            CombatManager.DamageEntity(swordDamage*MathUtils.levelInter(0.5,1.3,getPowerLevel()),entity,getCaster());
+            CombatManager.DamageEntity(swordDamage* lvl.i(0.5,1.3,getPowerLevel()),entity,getCaster());
         }
     }
 
@@ -48,9 +55,9 @@ public class SamuraiQuickProj extends PowerProjectile {
     @Override
     public void logic(boolean controllable)
     {
-        getLocation().getWorld().spawnParticle(Particle.SWEEP_ATTACK,getLocation(),1,0,0,0,0,null,true);
-        getLocation().getWorld().playSound(getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,2,2);
-
+        GeneralUtils.SpawnParticle(getLocation(),Particle.SWEEP_ATTACK,1);
+        GeneralUtils.PlaySound(getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP,2,2);
+        sword.useBasicAttack((Player)getCaster(),getPowerLevel(),swordDamage);
 
     }
 }

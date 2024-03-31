@@ -56,10 +56,10 @@ public class Earth extends Power
     @Override
     public void useAriel(Player player, int powerLevel)
     {
-        Block block = player.getTargetBlock(ignoreListSet,2);
+        Block block = player.getTargetBlock(ignoreListSet,3);
         BlockData data = block.getBlockData();
 
-        player.getWorld().spawnFallingBlock(block.getLocation().add(0,3,0),block.getBlockData());
+        player.getWorld().spawnFallingBlock(block.getLocation().add(0,3,0),data);
     }
     @Override
     public void useArielDash(Player player, int powerLevel)

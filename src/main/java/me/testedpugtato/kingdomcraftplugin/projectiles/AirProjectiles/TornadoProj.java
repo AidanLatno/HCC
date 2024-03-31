@@ -3,6 +3,7 @@ package me.testedpugtato.kingdomcraftplugin.projectiles.AirProjectiles;
 import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
+import me.testedpugtato.kingdomcraftplugin.util.lvl;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -15,7 +16,7 @@ import java.util.Collection;
 
 public class TornadoProj extends PowerProjectile
 {
-    private double charge;
+    private final double charge;
 
     public TornadoProj(LivingEntity caster, float speed, float radius, double charge) {
         super(caster, speed, radius);
@@ -30,7 +31,7 @@ public class TornadoProj extends PowerProjectile
     @Override
     public void logic(boolean controllable)
     {
-        int height = (int)(MathUtils.levelInter(4,20,getPowerLevel())*charge);
+        int height = (int)(lvl.i(4,20,getPowerLevel())*charge);
         Location loc = new Location(getCaster().getWorld(),getLocation().getX(),getLocation().getY(),getLocation().getZ(),0,90);
         loc.add(0,5,0);
         for(int i = 0; i < height; i++)
@@ -44,14 +45,14 @@ public class TornadoProj extends PowerProjectile
                     loc,
                     2*(i/10.0f),
                     1,
-                    MathUtils.levelInter(1,2,getPowerLevel()) < 0.5 ? 1 : 2,
+                    lvl.i(1,2,getPowerLevel()) < 0.5 ? 1 : 2,
                     0.1,0.1,0.1,
                     0.01
             );
 
             getLocation().getWorld().playSound(getLocation(), Sound.ENTITY_CREEPER_HURT,0.1f,5);
 
-            for (LivingEntity entity : loc.getNearbyLivingEntities(MathUtils.levelInter(7,10,getPowerLevel()),MathUtils.levelInter(3,10,getPowerLevel()),MathUtils.levelInter(7,10,getPowerLevel()))) {
+            for (LivingEntity entity : loc.getNearbyLivingEntities(lvl.i(7,10,getPowerLevel()),lvl.i(3,10,getPowerLevel()),lvl.i(7,10,getPowerLevel()))) {
                 if(entity.equals(getCaster()))
                     continue;
 
@@ -59,14 +60,14 @@ public class TornadoProj extends PowerProjectile
 
                 Location centerLocation = getLocation();
                 Location playerToThrowLocation = entity.getLocation();
-                entity.damage(MathUtils.levelInter(0.6,2.5,getPowerLevel())*charge,getCaster());
+                entity.damage(lvl.i(0.6,2.5,getPowerLevel())*charge,getCaster());
                 entity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,10,1),true);
 
                 double x = playerToThrowLocation.getX() - centerLocation.getX();
                 double y = playerToThrowLocation.getY() - centerLocation.getY();
                 double z = playerToThrowLocation.getZ() - centerLocation.getZ();
 
-                theta += Math.PI/4;
+                theta += (float) (Math.PI/4);
 
                 Vector throwVector = new Vector(x, y, z);
 
