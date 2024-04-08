@@ -1,6 +1,7 @@
 package me.testedpugtato.kingdomcraftplugin.powers;
 
 import me.testedpugtato.kingdomcraftplugin.barriers.Domain;
+import me.testedpugtato.kingdomcraftplugin.util.GeneralUtils;
 import org.bukkit.entity.Player;
 
 public class Mage extends Power
@@ -34,7 +35,7 @@ public class Mage extends Power
     @Override
     public void useQuickAttack(Player player, int powerLevel)
     {
-
+        GeneralUtils.GetHeldCustomItem(player).give(player,1);
     }
     @Override
     public void useGroundSlam(Player player, int powerLevel)

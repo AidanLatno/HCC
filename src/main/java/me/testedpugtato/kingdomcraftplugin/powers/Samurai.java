@@ -1,12 +1,13 @@
 package me.testedpugtato.kingdomcraftplugin.powers;
 
 import me.testedpugtato.kingdomcraftplugin.barriers.Domain;
+import me.testedpugtato.kingdomcraftplugin.items.CustomItem;
 import me.testedpugtato.kingdomcraftplugin.items.swords.*;
+import me.testedpugtato.kingdomcraftplugin.util.GeneralUtils;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
-
 
 public class Samurai extends Power
 {
@@ -177,24 +178,8 @@ public class Samurai extends Power
     {
         ItemStack HeldItem = player.getInventory().getItemInMainHand();
 
-        if(HeldItem.getItemMeta().hasCustomModelData()) {
-            switch (HeldItem.getItemMeta().getCustomModelData()) {
-                case 1:
-                    return new FireSword();
-                case 2:
-                    return new WaterSword();
-                case 3:
-                    return new LightningSword();
-                case 4:
-                    return new EarthSword();
-                case 5:
-                    return new AirSword();
-                case 12:
-                    return new BloodStoneSword();
-                default:
-                    return new Sword();
-            }
-        }
-        return new Sword();
+        CustomItem item = GeneralUtils.GetHeldCustomItem(HeldItem);
+        if(item == null) return new Sword();
+        return (Sword)item;
     }
 }

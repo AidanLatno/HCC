@@ -44,7 +44,7 @@ public class Sword extends CustomItem {
                 Vector dir = player.getLocation().getDirection().clone().multiply(10);
                 dir.setY(0.2f);
                 player.setVelocity(dir);
-                GeneralUtils.SpawnParticle(player.getEyeLocation(), Particle.SWEEP_ATTACK,4,.2f,.2f,.2f);
+                ParticleMaker.SpawnParticle(player.getEyeLocation(), Particle.SWEEP_ATTACK,4,.2f,.2f,.2f);
                 for(LivingEntity e : player.getLocation().getNearbyLivingEntities(3,3,3))
                 {
                     if(e.equals(player)) continue;
@@ -74,7 +74,7 @@ public class Sword extends CustomItem {
         CombatManager.ApplyPulse(player.getLocation(),lvl.i(0.1,2,(int)swordDamage)*lvl.i(1,2,powerLevel),1.0f, entitiesInCone,player);
         CombatManager.DamageEntity(swordDamage*lvl.i(1,1.75,powerLevel),entitiesInCone,player);
         //Play audio slightly in front of user
-        GeneralUtils.SpawnParticle(player.getEyeLocation().add(player.getLocation().getDirection().multiply(2)),Particle.SWEEP_ATTACK,3,1,1,1);
+        ParticleMaker.SpawnParticle(player.getEyeLocation().add(player.getLocation().getDirection().multiply(2)),Particle.SWEEP_ATTACK,3,1,1,1);
         GeneralUtils.PlaySound(player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(2)), Sound.ENTITY_PLAYER_ATTACK_SWEEP,2,2);
 
     }

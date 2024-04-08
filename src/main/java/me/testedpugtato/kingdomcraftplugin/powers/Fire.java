@@ -206,8 +206,8 @@ public class Fire extends Power
 
         setParticle(player,powerLevel);
 
-        GeneralUtils.SpawnParticle(player.getLocation(),particle,(int)lvl.i(100,800,powerLevel), 1,0,1,0.3f);
-        GeneralUtils.SpawnParticle(player.getLocation(),particle,(int)lvl.i(1000,8000,powerLevel), lvl.i(5,15,powerLevel),1,lvl.i(5,15,powerLevel),0.3f);
+        ParticleMaker.SpawnParticle(player.getLocation(),particle,(int)lvl.i(100,800,powerLevel), 1,0,1,0.3f);
+        ParticleMaker.SpawnParticle(player.getLocation(),particle,(int)lvl.i(1000,8000,powerLevel), lvl.i(5,15,powerLevel),1,lvl.i(5,15,powerLevel),0.3f);
 
         GeneralUtils.PlaySound(player.getLocation(), Sound.BLOCK_FIRE_AMBIENT,100,0);
         GeneralUtils.PlaySound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE,100,2);

@@ -1,10 +1,7 @@
 package me.testedpugtato.kingdomcraftplugin.projectiles.WaterProjectiles;
 
 import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
-import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
-import me.testedpugtato.kingdomcraftplugin.util.GeneralUtils;
-import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
-import me.testedpugtato.kingdomcraftplugin.util.lvl;
+import me.testedpugtato.kingdomcraftplugin.util.*;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
 
@@ -44,7 +41,7 @@ public class WaterQuickProj extends PowerProjectile {
     @Override
     public void logic(boolean controllable)
     {
-        GeneralUtils.SpawnParticle(getLocation(),Particle.WATER_SPLASH,30,.2f,.2f,.2f,.01f);
-        GeneralUtils.SpawnParticle(getLocation(),Particle.BUBBLE_POP,30,.2f,.2f,.2f,.01f);
+        ParticleMaker.SpawnParticle(getLocation(),Particle.WATER_SPLASH,30,.2f,.2f,.2f,.01f);
+        ParticleMaker.SpawnParticle(getLocation(),Particle.BUBBLE_POP,30,.2f,.2f,.2f,.01f);
     }
 }

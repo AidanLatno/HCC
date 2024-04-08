@@ -9,7 +9,7 @@ public class BloodStone extends CustomItem {
     {
         name = ChatColor.RED + ChatColor.BOLD.toString() + "Blood Stone";
         lore.add(ChatColor.DARK_RED + "Merge with a sword to allow the infusion of blood.");
-        CustomModelData = -1;
+        CustomModelData = 11;
         baseItem = Material.ENDER_CHEST;
     }
 }

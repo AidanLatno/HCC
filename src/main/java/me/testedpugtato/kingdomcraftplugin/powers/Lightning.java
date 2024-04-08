@@ -48,7 +48,7 @@ public class Lightning extends Power
         vec.normalize();
         vec.multiply(2);
         loc.add(vec);
-        GeneralUtils.SpawnParticle(loc, Particle.SCRAPE,2000,2,1.3f,2,1);
+        ParticleMaker.SpawnParticle(loc, Particle.SCRAPE,2000,2,1.3f,2,1);
 
     }
 
@@ -65,7 +65,7 @@ public class Lightning extends Power
             public void run() {
                 ticks++;
 
-                GeneralUtils.SpawnParticle(player.getEyeLocation(), Particle.SCRAPE,4,.2f,.2f,.2f,0);
+                ParticleMaker.SpawnParticle(player.getEyeLocation(), Particle.SCRAPE,4,.2f,.2f,.2f,0);
 
                 if(ticks >= lvl.i(0.1,0.5, powerLevel)*20) {
                     player.setVelocity(new Vector(0,0,0));
@@ -113,8 +113,8 @@ public class Lightning extends Power
         if(charge > 6) charge = 6;
         charge /= 6;
 
-        GeneralUtils.SpawnParticle(player.getLocation(),Particle.SCRAPE,(int)lvl.i(100,800,powerLevel), 1,0,1,0.3f);
-        GeneralUtils.SpawnParticle(player.getLocation(),Particle.SCRAPE,(int)lvl.i(1000,8000,powerLevel), lvl.i(5*charge,10*charge,powerLevel),1,lvl.i(5*charge,15*charge,powerLevel),0.3f);
+        ParticleMaker.SpawnParticle(player.getLocation(),Particle.SCRAPE,(int)lvl.i(100,800,powerLevel), 1,0,1,0.3f);
+        ParticleMaker.SpawnParticle(player.getLocation(),Particle.SCRAPE,(int)lvl.i(1000,8000,powerLevel), lvl.i(5*charge,10*charge,powerLevel),1,lvl.i(5*charge,15*charge,powerLevel),0.3f);
 
         GeneralUtils.PlaySound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT,100,2);
         GeneralUtils.PlaySound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_IMPACT,100);
@@ -161,15 +161,15 @@ public class Lightning extends Power
                 for (LivingEntity entity : loc.getNearbyLivingEntities(2, 2, 2)) {
                     if (entity.equals(player)) continue;
                     CombatManager.DamageEntity(lvl.i(3,10,powerLevel),entity,player);
-                    GeneralUtils.SpawnParticle(loc, Particle.SCRAPE,60,.1f,.1f,.1f,0.6f);
-                    GeneralUtils.SpawnParticle(loc, Particle.BUBBLE_POP,60,.1f,.1f,.1f,0.6f);
+                    ParticleMaker.SpawnParticle(loc, Particle.SCRAPE,60,.1f,.1f,.1f,0.6f);
+                    ParticleMaker.SpawnParticle(loc, Particle.BUBBLE_POP,60,.1f,.1f,.1f,0.6f);
                     player.setWalkSpeed(0.2f);
                     entity.getWorld().strikeLightningEffect(entity.getLocation());
                     return;
                 }
 
-                GeneralUtils.SpawnParticle(loc, Particle.SCRAPE,10,.1f,.1f,.1f);
-                GeneralUtils.SpawnParticle(loc, Particle.BUBBLE_POP,10,.1f,.1f,.1f);
+                ParticleMaker.SpawnParticle(loc, Particle.SCRAPE,10,.1f,.1f,.1f);
+                ParticleMaker.SpawnParticle(loc, Particle.BUBBLE_POP,10,.1f,.1f,.1f);
                 if(ticks/20.0f < time) Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(),this,1);
                 else {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW,60,10,false,false,false));
@@ -264,8 +264,8 @@ public class Lightning extends Power
         if(charge > 2) charge = 2;
         charge /= 2;
 
-        GeneralUtils.SpawnParticle(player.getLocation(), Particle.SCRAPE, (int)lvl.i(100,800,powerLevel), 1,0,1,0.3f);
-        GeneralUtils.SpawnParticle(player.getLocation(), Particle.SCRAPE, (int)lvl.i(1000,8000,powerLevel), lvl.i(5,15,powerLevel),1,lvl.i(5,15,powerLevel),0.3f);
+        ParticleMaker.SpawnParticle(player.getLocation(), Particle.SCRAPE, (int)lvl.i(100,800,powerLevel), 1,0,1,0.3f);
+        ParticleMaker.SpawnParticle(player.getLocation(), Particle.SCRAPE, (int)lvl.i(1000,8000,powerLevel), lvl.i(5,15,powerLevel),1,lvl.i(5,15,powerLevel),0.3f);
 
         GeneralUtils.PlaySound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 100,2);
         GeneralUtils.PlaySound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 100);

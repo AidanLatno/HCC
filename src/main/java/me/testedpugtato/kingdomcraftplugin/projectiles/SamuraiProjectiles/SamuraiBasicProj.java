@@ -2,10 +2,7 @@ package me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles;
 
 import me.testedpugtato.kingdomcraftplugin.items.swords.Sword;
 import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
-import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
-import me.testedpugtato.kingdomcraftplugin.util.GeneralUtils;
-import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
-import me.testedpugtato.kingdomcraftplugin.util.lvl;
+import me.testedpugtato.kingdomcraftplugin.util.*;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -55,9 +52,9 @@ public class SamuraiBasicProj extends PowerProjectile {
     @Override
     public void logic(boolean controllable)
     {
-        GeneralUtils.SpawnParticle(getLocation(),Particle.SWEEP_ATTACK,1);
+        ParticleMaker.SpawnParticle(getLocation(),Particle.SWEEP_ATTACK,1);
         GeneralUtils.PlaySound(getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP,2,2);
-        sword.useBasicAttack((Player)getCaster(),getPowerLevel(),swordDamage);
+
 
     }
 }

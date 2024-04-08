@@ -47,7 +47,7 @@ public class Water extends Power
 
         List<LivingEntity> entitiesInCone = MathUtils.getEntitiesInCone(player.getLocation());
 
-        GeneralUtils.SpawnParticle(player.getLocation().clone().add(player.getLocation().getDirection()),
+        ParticleMaker.SpawnParticle(player.getLocation().clone().add(player.getLocation().getDirection()),
                 Particle.WATER_SPLASH,
                 (int)lvl.i(500,1500,powerLevel),
                 1,1,1);
@@ -136,7 +136,7 @@ public class Water extends Power
     {
         if(isInNether(player)) return;
 
-        GeneralUtils.SpawnParticle(player.getLocation(), Particle.WATER_SPLASH,100,1,1,1,1);
+        ParticleMaker.SpawnParticle(player.getLocation(), Particle.WATER_SPLASH,100,1,1,1,1);
         GeneralUtils.PlaySound(player.getLocation(), Sound.ENTITY_AXOLOTL_SPLASH,10,0);
     }
     @Override
@@ -147,7 +147,7 @@ public class Water extends Power
         if(charge > 1) charge = 1;
 
 
-        GeneralUtils.SpawnParticle(
+        ParticleMaker.SpawnParticle(
                 player.getLocation(),
                 Particle.SPIT,
                 (int)(lvl.i(500,4000,powerLevel)*charge),
@@ -256,7 +256,7 @@ public class Water extends Power
         if(charge > 6) charge = 6;
         charge /= 6;
 
-        GeneralUtils.SpawnParticle(player.getLocation(), Particle.BUBBLE_POP, (int)(lvl.i(100,1000, powerLevel)*charge), (float)(lvl.i(5,10,powerLevel)*charge),0,(float)(lvl.i(5,10,powerLevel)*charge));
+        ParticleMaker.SpawnParticle(player.getLocation(), Particle.BUBBLE_POP, (int)(lvl.i(100,1000, powerLevel)*charge), (float)(lvl.i(5,10,powerLevel)*charge),0,(float)(lvl.i(5,10,powerLevel)*charge));
         if(charge == 1) GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_AXOLOTL_SPLASH,0.5f,0);
     }
 
@@ -271,7 +271,7 @@ public class Water extends Power
         int radius = (int)(lvl.i(5,10,powerLevel)*charge);
         int trapTicks = (int)(lvl.i(20,100,powerLevel)*charge);
 
-        GeneralUtils.SpawnParticle(player.getLocation(),Particle.SPIT,(int)(lvl.i(100,1000, powerLevel)*charge), radius,0,radius);
+        ParticleMaker.SpawnParticle(player.getLocation(),Particle.SPIT,(int)(lvl.i(100,1000, powerLevel)*charge), radius,0,radius);
 
         List<LivingEntity> entities = MathUtils.getEntitiesInSphere(player.getLocation(),radius,new Vector(radius,2,radius));
 
@@ -379,7 +379,7 @@ public class Water extends Power
         if(player.getWorld().getEnvironment().equals(World.Environment.NETHER))
         {
             GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_GENERIC_EXTINGUISH_FIRE);
-            GeneralUtils.SpawnParticle(player.getLocation().clone().add(player.getLocation().getDirection().clone().multiply(3)),Particle.SMOKE_LARGE,4,.1f,.1f,.1f,1);
+            ParticleMaker.SpawnParticle(player.getLocation().clone().add(player.getLocation().getDirection().clone().multiply(3)),Particle.SMOKE_LARGE,4,.1f,.1f,.1f,1);
             return true;
         }
         return false;

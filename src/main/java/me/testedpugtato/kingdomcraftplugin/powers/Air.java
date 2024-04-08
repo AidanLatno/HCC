@@ -217,8 +217,8 @@ public class Air extends Power
         if(charge > 2) charge = 2;
         charge /= 2;
 
-        GeneralUtils.SpawnParticle(player.getLocation(),Particle.CLOUD,(int)lvl.i(100,800,powerLevel), 1,0,1,0.3f);
-        GeneralUtils.SpawnParticle(player.getLocation(),Particle.CLOUD,(int)lvl.i(1000,8000,powerLevel), lvl.i(5,15,powerLevel),1,lvl.i(5,15,powerLevel),0.3f);
+        ParticleMaker.SpawnParticle(player.getLocation(),Particle.CLOUD,(int)lvl.i(100,800,powerLevel), 1,0,1,0.3f);
+        ParticleMaker.SpawnParticle(player.getLocation(),Particle.CLOUD,(int)lvl.i(1000,8000,powerLevel), lvl.i(5,15,powerLevel),1,lvl.i(5,15,powerLevel),0.3f);
 
         GeneralUtils.PlaySound(player.getEyeLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,100,2);
         GeneralUtils.PlaySound(player.getEyeLocation(),Sound.ENTITY_GENERIC_EXPLODE,100,2);
@@ -271,7 +271,7 @@ public class Air extends Power
 
         Location loc = player.getLocation().add(player.getLocation().getDirection().multiply(6));
 
-        GeneralUtils.SpawnParticle(loc, Particle.CLOUD,500,1,5,1,0.5f);
+        ParticleMaker.SpawnParticle(loc, Particle.CLOUD,500,1,5,1,0.5f);
         TornadoProj proj = new TornadoProj(player,0.4f,charge);
         proj.setLocation(loc);
         proj.moveSelf(lvl.i(6,10,powerLevel),true,1);

@@ -61,7 +61,7 @@ public class FireQuickAttack extends PowerProjectile
     @Override
     public boolean onCollide()
     {
-        GeneralUtils.SpawnParticle(getLocation(),particle,10,.3f,.3f,.3f,.2f);
+        ParticleMaker.SpawnParticle(getLocation(),particle,10,.3f,.3f,.3f,.2f);
         return true;
     }
 }
