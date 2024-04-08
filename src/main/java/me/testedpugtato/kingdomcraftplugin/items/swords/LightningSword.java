@@ -1,8 +1,12 @@
 package me.testedpugtato.kingdomcraftplugin.items.swords;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import me.testedpugtato.kingdomcraftplugin.util.GeneralUtils;
+import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
+import org.bukkit.*;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class LightningSword extends Sword{
     public LightningSword()
@@ -32,7 +36,21 @@ public class LightningSword extends Sword{
     @Override
     public void useQuickAttack(Player player, int powerLevel, float swordDamage)
     {
+        super.useQuickAttack(player,powerLevel,swordDamage);
+        List<LivingEntity> entitiesInCone = MathUtils.getEntitiesInCone(player.getLocation());
+        Location loc = player.getEyeLocation().clone();
 
+        loc.add(loc.getDirection().multiply(2));
+
+        GeneralUtils.SpawnParticle(loc, Particle.SCRAPE,100,2,2,2);
+
+        for(LivingEntity e : entitiesInCone)
+        {
+            if(e.equals(player)) continue;
+
+            e.getWorld().strikeLightningEffect(e.getLocation());
+            GeneralUtils.SpawnParticle(e.getLocation(),Particle.SCRAPE,10,2,2,2);
+        }
     }
     @Override
     public void useGroundSlam(Player player, int powerLevel, float swordDamage)
