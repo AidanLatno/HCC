@@ -3,6 +3,7 @@ package me.testedpugtato.kingdomcraftplugin;
 import me.testedpugtato.kingdomcraftplugin.items.swords.*;
 
 import me.testedpugtato.kingdomcraftplugin.util.Msg;
+import me.testedpugtato.kingdomcraftplugin.util.Recipe;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandException;
 import org.bukkit.entity.Player;
@@ -15,6 +16,7 @@ public class Database
 {
     public static Map<Integer, Sword> SwordMap = new HashMap<>();
     public static ArrayList<Player> cancelFall = new ArrayList<>();
+    public static ArrayList<Recipe> recipeList = new ArrayList<>();
 
     private static Map<String, Boolean> basicCooldowns = new HashMap<>();
     private static Map<String, Boolean> arielCooldowns = new HashMap<>();
