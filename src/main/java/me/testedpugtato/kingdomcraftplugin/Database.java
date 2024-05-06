@@ -1,5 +1,8 @@
 package me.testedpugtato.kingdomcraftplugin;
 
+import jdk.internal.net.http.common.Pair;
+import me.testedpugtato.kingdomcraftplugin.items.CustomItem;
+import me.testedpugtato.kingdomcraftplugin.items.blood.LightningBlood;
 import me.testedpugtato.kingdomcraftplugin.items.swords.*;
 
 import me.testedpugtato.kingdomcraftplugin.util.Msg;
@@ -15,9 +18,8 @@ import java.util.Map;
 public class Database
 {
     public static Map<Integer, Sword> SwordMap = new HashMap<>();
+    public static Map<Pair<Integer,Integer>, CustomItem> RecipeMap = new HashMap<>();
     public static ArrayList<Player> cancelFall = new ArrayList<>();
-    public static ArrayList<Recipe> recipeList = new ArrayList<>();
-
     private static Map<String, Boolean> basicCooldowns = new HashMap<>();
     private static Map<String, Boolean> arielCooldowns = new HashMap<>();
     private static Map<String, Boolean> DashCooldowns = new HashMap<>();
@@ -214,6 +216,15 @@ public class Database
         SwordMap.put(3, new AirSword());
         SwordMap.put(4, new LightningSword());
         SwordMap.put(5, new WaterSword());
+    }
+
+    public static void initRecipeMap()
+    {
+        RecipeMap.put(Pair.pair(12,6),new AirSword());
+        RecipeMap.put(Pair.pair(12,7),new LightningSword());
+        RecipeMap.put(Pair.pair(12,8),new EarthSword());
+        RecipeMap.put(Pair.pair(12,9),new WaterSword());
+        RecipeMap.put(Pair.pair(12,10),new FireSword());
     }
 
 }
