@@ -204,7 +204,6 @@ public class ParticleMaker
     {
         createLine(particle,start,end,1);
     }
-
     public static void SpawnParticle(Location location, Particle particle, int count, float offsetX, float offsetY, float offsetZ, float speed)
     {
         location.getWorld().spawnParticle(particle,location,count,offsetX,offsetY,offsetZ,speed,null, true);

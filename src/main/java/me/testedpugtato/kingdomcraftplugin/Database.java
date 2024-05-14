@@ -1,11 +1,11 @@
 package me.testedpugtato.kingdomcraftplugin;
 
-import jdk.internal.net.http.common.Pair;
 import me.testedpugtato.kingdomcraftplugin.items.CustomItem;
 import me.testedpugtato.kingdomcraftplugin.items.blood.LightningBlood;
 import me.testedpugtato.kingdomcraftplugin.items.swords.*;
 
 import me.testedpugtato.kingdomcraftplugin.util.Msg;
+import me.testedpugtato.kingdomcraftplugin.util.Pair;
 import me.testedpugtato.kingdomcraftplugin.util.Recipe;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandException;
@@ -18,7 +18,7 @@ import java.util.Map;
 public class Database
 {
     public static Map<Integer, Sword> SwordMap = new HashMap<>();
-    public static Map<Pair<Integer,Integer>, CustomItem> RecipeMap = new HashMap<>();
+    public static Map<Pair, CustomItem> RecipeMap = new HashMap<>();
     public static ArrayList<Player> cancelFall = new ArrayList<>();
     private static Map<String, Boolean> basicCooldowns = new HashMap<>();
     private static Map<String, Boolean> arielCooldowns = new HashMap<>();
@@ -220,11 +220,11 @@ public class Database
 
     public static void initRecipeMap()
     {
-        RecipeMap.put(Pair.pair(12,6),new AirSword());
-        RecipeMap.put(Pair.pair(12,7),new LightningSword());
-        RecipeMap.put(Pair.pair(12,8),new EarthSword());
-        RecipeMap.put(Pair.pair(12,9),new WaterSword());
-        RecipeMap.put(Pair.pair(12,10),new FireSword());
+        RecipeMap.put(Pair.pair(12,6), new AirSword());
+        RecipeMap.put(Pair.pair(12,7), new LightningSword());
+        RecipeMap.put(Pair.pair(12,8), new EarthSword());
+        RecipeMap.put(Pair.pair(12,9), new WaterSword());
+        RecipeMap.put(Pair.pair(12,10), new FireSword());
     }
 
 }
