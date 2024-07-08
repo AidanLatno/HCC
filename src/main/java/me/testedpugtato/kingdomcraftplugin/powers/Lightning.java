@@ -165,6 +165,7 @@ public class Lightning extends Power
                     ParticleMaker.SpawnParticle(loc, Particle.BUBBLE_POP,60,.1f,.1f,.1f,0.6f);
                     player.setWalkSpeed(0.2f);
                     entity.getWorld().strikeLightningEffect(entity.getLocation());
+
                     return;
                 }
 
@@ -230,8 +231,8 @@ public class Lightning extends Power
     @Override
     public void groundSlamFalling(Player player, int powerLevel, double charge)
     {
-        if(charge > 2) charge = 2;
-        charge /= 2;
+        if(charge > .6) charge = .6;
+        charge /= .6;
 
         Location loc = player.getLocation();
 
@@ -261,8 +262,8 @@ public class Lightning extends Power
     @Override
     public void useGroundSlamLanding(Player player, int powerLevel, double charge)
     {
-        if(charge > 2) charge = 2;
-        charge /= 2;
+        if(charge > .6) charge = .6;
+        charge /= .6;
 
         ParticleMaker.SpawnParticle(player.getLocation(), Particle.SCRAPE, (int)lvl.i(100,800,powerLevel), 1,0,1,0.3f);
         ParticleMaker.SpawnParticle(player.getLocation(), Particle.SCRAPE, (int)lvl.i(1000,8000,powerLevel), lvl.i(5,15,powerLevel),1,lvl.i(5,15,powerLevel),0.3f);

@@ -2,6 +2,7 @@ package me.testedpugtato.kingdomcraftplugin.items.swords;
 
 import me.testedpugtato.kingdomcraftplugin.util.GeneralUtils;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
+import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
 import org.bukkit.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -42,14 +43,14 @@ public class LightningSword extends Sword{
 
         loc.add(loc.getDirection().multiply(2));
 
-        GeneralUtils.SpawnParticle(loc, Particle.SCRAPE,100,2,2,2);
+        ParticleMaker.SpawnParticle(loc, Particle.SCRAPE,100,2,2,2);
 
         for(LivingEntity e : entitiesInCone)
         {
             if(e.equals(player)) continue;
 
             e.getWorld().strikeLightningEffect(e.getLocation());
-            GeneralUtils.SpawnParticle(e.getLocation(),Particle.SCRAPE,10,2,2,2);
+            ParticleMaker.SpawnParticle(e.getLocation(),Particle.SCRAPE,10,2,2,2);
         }
     }
     @Override

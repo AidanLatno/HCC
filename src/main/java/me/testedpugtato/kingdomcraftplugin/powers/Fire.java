@@ -174,8 +174,8 @@ public class Fire extends Power
     @Override
     public void groundSlamFalling(Player player, int powerLevel, double charge)
     {
-        if(charge > 2) charge = 2;
-        charge /= 2;
+        if(charge > .6) charge = .6;
+        charge /= .6;
 
         setParticle(player,powerLevel);
 
@@ -201,8 +201,8 @@ public class Fire extends Power
     @Override
     public void useGroundSlamLanding(Player player, int powerLevel, double charge)
     {
-        if(charge > 2) charge = 2;
-        charge /= 2;
+        if(charge > .6) charge = .6;
+        charge /= .6;
 
         setParticle(player,powerLevel);
 

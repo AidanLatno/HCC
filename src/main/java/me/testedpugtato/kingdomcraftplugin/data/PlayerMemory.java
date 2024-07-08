@@ -24,6 +24,7 @@ public class PlayerMemory {
     public void stun(int ticks)
     {
         stunned = true;
+
         Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), () -> stunned = false,ticks);
     }
 

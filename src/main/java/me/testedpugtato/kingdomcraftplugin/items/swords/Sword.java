@@ -19,18 +19,38 @@ public class Sword extends CustomItem {
     }
     public void useAriel(Player player, int powerLevel, float swordDamage)
     {
-        Location loc = player.getEyeLocation();
+        Location loc = player.getEyeLocation().clone();
 
+        loc.add(0,1.5f,0);
         loc.setPitch(90);
         loc.setYaw(0);
 
         ParticleMaker.createCircle(
                 Particle.SWEEP_ATTACK,
                 loc,
-                lvl.i(1, 4, powerLevel),
+                lvl.i(2,6,powerLevel),
                 (int)lvl.i(1,5,powerLevel),
-                lvl.i(2,32,powerLevel));
-        CombatManager.DamageNearby(player.getLocation(),lvl.i(1,4,powerLevel),3,lvl.i(1,4,powerLevel),swordDamage,player);
+                lvl.i(2,8,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.05,powerLevel),
+                10);
+
+        ParticleMaker.createCircle(
+                Particle.SWEEP_ATTACK,
+                loc,
+                lvl.i(1,3,powerLevel),
+                (int)lvl.i(1,3,powerLevel),
+                lvl.i(1,4,powerLevel),
+                0,0,0,
+                lvl.i(0,0.05,powerLevel),
+                10);
+
+        CombatManager.DamageNearby(player.getLocation(),lvl.i(2,6,powerLevel),3,lvl.i(2,6,powerLevel),swordDamage,player);
+        GeneralUtils.PlaySound(loc,Sound.ENTITY_PLAYER_ATTACK_SWEEP,100,0);
+        GeneralUtils.PlaySound(loc,Sound.ENTITY_PHANTOM_FLAP,1000,2);
+
     }
     public void useArielDash(Player player, int powerLevel, float swordDamage)
     {
@@ -50,7 +70,7 @@ public class Sword extends CustomItem {
                     if(e.equals(player)) continue;
                     CombatManager.DamageEntity(swordDamage*lvl.i(0.9,1.4,powerLevel),e,player);
                 }
-                if(ticks >= lvl.i(0.1,0.5, powerLevel)*20) {
+                if(ticks >= lvl.i(0.1,0.35, powerLevel)*20) {
                     player.setVelocity(new Vector(0,0,0));
                 }
                 else {
@@ -61,17 +81,17 @@ public class Sword extends CustomItem {
     }
     public void chargeChargedAttack(Player player, int powerLevel, double charge, float swordDamage)
     {
-        player.sendMessage(("[ERROR] Charge Charged Attack Not Overloaded"));
+
     }
     public void useChargedAttack(Player player, int powerLevel, double charge, float swordDamage)
     {
-        player.sendMessage("[ERROR] Charged Attack Not Overloaded");
+
     }
     public void useQuickAttack(Player player, int powerLevel, float swordDamage)
     {
         List<LivingEntity> entitiesInCone = MathUtils.getEntitiesInCone(player.getLocation());
 
-        CombatManager.ApplyPulse(player.getLocation(),lvl.i(0.1,2,(int)swordDamage)*lvl.i(1,2,powerLevel),1.0f, entitiesInCone,player);
+        CombatManager.ApplyPulse(player.getLocation(),lvl.i(1,3,(int)swordDamage)*lvl.i(1,2,powerLevel),1.0f, entitiesInCone,player);
         CombatManager.DamageEntity(swordDamage*lvl.i(1,1.75,powerLevel),entitiesInCone,player);
         //Play audio slightly in front of user
         ParticleMaker.SpawnParticle(player.getEyeLocation().add(player.getLocation().getDirection().multiply(2)),Particle.SWEEP_ATTACK,3,1,1,1);
@@ -83,12 +103,8 @@ public class Sword extends CustomItem {
         player.setVelocity(new Vector(0,-20,0));
         Location loc = player.getLocation();
 
-        loc.add(0,2,0);
-        loc.setPitch(90);
-        loc.setYaw(0);
-
         ParticleMaker.createCircle(
-                Particle.SWEEP_ATTACK,
+                Particle.CLOUD,
                 loc,
                 lvl.i(1,5,powerLevel),
                 (int)lvl.i(1,3,powerLevel),
@@ -97,36 +113,41 @@ public class Sword extends CustomItem {
                 lvl.i(0,0.5,powerLevel),
                 lvl.i(0,0.5,powerLevel),
                 lvl.i(0,0.05,powerLevel));
-        ParticleMaker.createCircle(
-                Particle.SWEEP_ATTACK,
-                loc,
-                lvl.i(0.5,3.75,powerLevel),
-                (int)lvl.i(1,3,powerLevel),
-                lvl.i(2,16,powerLevel),
-                lvl.i(0,0.5,powerLevel),
-                lvl.i(0,0.5,powerLevel),
-                lvl.i(0,0.5,powerLevel),
-                lvl.i(0,0.05,powerLevel),
-                10);
-        ParticleMaker.createCircle(
-                Particle.SWEEP_ATTACK,
-                loc,
-                lvl.i(0,2.5,powerLevel),
-                (int)lvl.i(1,3,powerLevel),
-                lvl.i(2,16,powerLevel),
-                lvl.i(0,0.5,powerLevel),
-                lvl.i(0,0.5,powerLevel),
-                lvl.i(0,0.5,powerLevel),
-                lvl.i(0,0.05,powerLevel),
-                -10);
-        GeneralUtils.PlaySound(player.getEyeLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP);
+
+        GeneralUtils.PlaySound(player.getEyeLocation(),Sound.ENTITY_GENERIC_EXPLODE);
     }
     public void groundSlamFalling(Player player, int powerLevel, double charge, float swordDamage)
     {
-        player.sendMessage("[ERROR] Ground Slam Fall Not Overloaded");
+        if(charge > 0.3) charge = 0.3;
+        charge /= 0.3;
+
+
+        Location loc = player.getEyeLocation().clone();
+
+        loc.setYaw(loc.getYaw()+90);
+        loc.setPitch(0);
+
+        ParticleMaker.createCircle(
+                Particle.SWEEP_ATTACK,
+                loc,
+                lvl.i(1.6,6,powerLevel)*charge,
+                1,
+                lvl.i(2,4,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.05,powerLevel));
+
+        GeneralUtils.PlaySound(player.getEyeLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,10);
     }
     public void useGroundSlamLanding(Player player, int powerLevel, double charge, float swordDamage)
     {
-        player.sendMessage("[ERROR] Ground Slam Landing Not Overloaded");
+        if(charge > 0.3) charge = 0.3;
+        charge /= 0.3;
+
+        GeneralUtils.PlaySound(player.getLocation(),Sound.BLOCK_ANVIL_LAND,10,2);
+        GeneralUtils.PlaySound(player.getLocation(),Sound.BLOCK_ANVIL_LAND,10,0);
+        CombatManager.DamageNearby(player.getLocation(), lvl.i(4,8,powerLevel), lvl.i(14,20,powerLevel), lvl.i(4,8,powerLevel), (float)(swordDamage*lvl.i(2,4,powerLevel)*charge),player);
+
     }
 }

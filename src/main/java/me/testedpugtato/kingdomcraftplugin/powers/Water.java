@@ -144,7 +144,8 @@ public class Water extends Power
     {
         if(isInNether(player)) return;
 
-        if(charge > 1) charge = 1;
+        if(charge > .6) charge = .6;
+        charge /= .6;
 
 
         ParticleMaker.SpawnParticle(
