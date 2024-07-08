@@ -1,12 +1,15 @@
 package me.testedpugtato.kingdomcraftplugin.items.swords;
 
+import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.projectiles.FireProjectiles.FireBasicAttackProj;
 import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SamuraiBasicProj;
 import me.testedpugtato.kingdomcraftplugin.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FireSword extends Sword {
@@ -23,6 +26,8 @@ public class FireSword extends Sword {
     public void useBasicAttack(Player player, int powerLevel, float swordDamage)
     {
         super.useBasicAttack(player,powerLevel,swordDamage);
+
+
         FireBasicAttackProj proj = new FireBasicAttackProj(player,2,Particle.FLAME,2);
         proj.moveSelf(2,false);
     }
@@ -30,17 +35,13 @@ public class FireSword extends Sword {
     @Override
     public void useAriel(Player player, int powerLevel, float swordDamage)
     {
+        super.useAriel(player,powerLevel,swordDamage);
         Location loc = player.getEyeLocation();
 
         loc.setPitch(90);
         loc.setYaw(0);
 
-        ParticleMaker.createCircle(
-                Particle.SWEEP_ATTACK,
-                loc,
-                lvl.i(1, 4, powerLevel),
-                (int)lvl.i(1,5,powerLevel),
-                lvl.i(2,32,powerLevel));
+
         ParticleMaker.createCircle(
                 Particle.FLAME,
                 loc,
@@ -53,7 +54,36 @@ public class FireSword extends Sword {
     @Override
     public void useArielDash(Player player, int powerLevel, float swordDamage)
     {
-
+        GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,100,2);
+        GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,100,0);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), new Runnable() {
+            int ticks = 0;
+            ArrayList<LivingEntity> hitEnemies = new ArrayList<>();
+            @Override
+            public void run() {
+                ticks++;
+                Vector dir = player.getLocation().getDirection().clone().multiply(10);
+                dir.setY(0.2f);
+                player.setVelocity(dir);
+                ParticleMaker.SpawnParticle(player.getEyeLocation(), Particle.SWEEP_ATTACK,4,.2f,.2f,.2f);
+                for(LivingEntity e : player.getLocation().getNearbyLivingEntities(3,3,3))
+                {
+                    if(e.equals(player)) continue;
+                    CombatManager.DamageEntity(swordDamage*lvl.i(0.9,1.4,powerLevel),e,player);
+                    hitEnemies.add(e);
+                }
+                if(ticks >= lvl.i(0.1,0.35, powerLevel)*20) {
+                    player.setVelocity(new Vector(0,0,0));
+                    for(LivingEntity entity : hitEnemies)
+                    {
+                        player.getWorld().strikeLightningEffect(entity.getLocation());
+                    }
+                }
+                else {
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), this, 1);
+                }
+            }
+        },1);
     }
     @Override
     public void useQuickAttack(Player player, int powerLevel, float swordDamage)

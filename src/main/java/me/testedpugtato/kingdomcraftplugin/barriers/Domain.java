@@ -67,18 +67,18 @@ public class Domain {
             public void run() {
                 ticks+=tickRate;
                 float time = ticks / 20f; // Ensure floating-point division
-                if (time > radius){
-                    time = radius;
+                if (time > radius/5){
+                    time = radius/5;
                     expanded = true;
                 }
-
+                float temp = time*5;
                 for(Particle p : particles) {
-                    ParticleMaker.createSphere(p, center, time, count, time / 3, offSetX, offSetY, offSetZ, particleSpeed);
+                    ParticleMaker.createSphere(p, center, temp, count, temp / 5, offSetX, offSetY, offSetZ, particleSpeed);
                 }
 
                 caster.sendMessage("Domain Expanding");
 
-                if(ticks / 20f > radius) {
+                if(expanded) {
                     mainLoop();
                     Bukkit.getScheduler().cancelTask(taskId[0]); // Use the taskId from the array
                 }

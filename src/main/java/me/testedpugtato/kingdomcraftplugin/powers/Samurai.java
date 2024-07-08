@@ -103,7 +103,7 @@ public class Samurai extends Power
         Sword sword = getHeldSword(player);
 
 
-        sword.useChargedAttack(player,powerLevel,charge,swordDamage);
+        sword.chargeChargedAttack(player,powerLevel,charge,swordDamage);
     }
 
     @Override

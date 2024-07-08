@@ -7,6 +7,8 @@ import me.testedpugtato.kingdomcraftplugin.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -29,7 +31,7 @@ public class Sword extends CustomItem {
                 Particle.SWEEP_ATTACK,
                 loc,
                 lvl.i(2,6,powerLevel),
-                (int)lvl.i(1,5,powerLevel),
+                (int)lvl.i(1,3,powerLevel),
                 lvl.i(2,8,powerLevel),
                 lvl.i(0,0.5,powerLevel),
                 lvl.i(0,0.5,powerLevel),
@@ -81,11 +83,26 @@ public class Sword extends CustomItem {
     }
     public void chargeChargedAttack(Player player, int powerLevel, double charge, float swordDamage)
     {
-
+        if(charge > 6) charge = 6;
+        charge /= 6;
+        GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,0.7f);
+        ParticleMaker.createSphere(
+                Particle.SWEEP_ATTACK,
+                player.getEyeLocation(),
+                2.5f,
+                1,
+                1
+        );
+        PotionEffect effect = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE,1,1,false,false,true);
+        player.addPotionEffect(effect);
     }
     public void useChargedAttack(Player player, int powerLevel, double charge, float swordDamage)
     {
+        if(charge >= 6) {
 
+            GeneralUtils.PlaySound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 10, 2);
+            CombatManager.DamageNearby(player.getLocation(), lvl.i(4, 8, powerLevel), lvl.i(14, 20, powerLevel), lvl.i(4, 8, powerLevel), (float) (swordDamage * lvl.i(2.5, 4.5, powerLevel) * charge), player);
+        } else GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PHANTOM_FLAP,1,2);
     }
     public void useQuickAttack(Player player, int powerLevel, float swordDamage)
     {
@@ -147,7 +164,7 @@ public class Sword extends CustomItem {
 
         GeneralUtils.PlaySound(player.getLocation(),Sound.BLOCK_ANVIL_LAND,10,2);
         GeneralUtils.PlaySound(player.getLocation(),Sound.BLOCK_ANVIL_LAND,10,0);
-        CombatManager.DamageNearby(player.getLocation(), lvl.i(4,8,powerLevel), lvl.i(14,20,powerLevel), lvl.i(4,8,powerLevel), (float)(swordDamage*lvl.i(2,4,powerLevel)*charge),player);
+        CombatManager.DamageNearby(player.getLocation(), lvl.i(4,8,powerLevel), lvl.i(14,20,powerLevel), lvl.i(4,8,powerLevel), (float)(swordDamage*lvl.i(2,3.5,powerLevel)*charge),player);
 
     }
 }

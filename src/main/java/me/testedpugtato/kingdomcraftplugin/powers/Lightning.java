@@ -49,6 +49,12 @@ public class Lightning extends Power
         vec.multiply(2);
         loc.add(vec);
         ParticleMaker.SpawnParticle(loc, Particle.SCRAPE,2000,2,1.3f,2,1);
+        for(LivingEntity e : MathUtils.getEntitiesInSphere(player.getLocation(),20))
+        {
+            if(e instanceof Player && !e.equals(player))
+                PlayerUtility.getPlayerMemory((Player)e).stun(3*20);
+        }
+
 
     }
 
@@ -130,7 +136,7 @@ public class Lightning extends Power
                 continue;
 
             entity.getWorld().strikeLightningEffect(entity.getLocation());
-            PlayerUtility.getPlayerMemory((Player) entity).stun(2 * 20);
+            PlayerUtility.getPlayerMemory((Player) entity).stun(2 * 80);
         }
         CombatManager.ApplyPulse(player.getLocation(),3.5f,2f,entities,player);
     }
