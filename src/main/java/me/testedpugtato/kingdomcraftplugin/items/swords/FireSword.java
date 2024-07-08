@@ -1,8 +1,8 @@
 package me.testedpugtato.kingdomcraftplugin.items.swords;
 
-import me.testedpugtato.kingdomcraftplugin.util.GeneralUtils;
-import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
-import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
+import me.testedpugtato.kingdomcraftplugin.projectiles.FireProjectiles.FireBasicAttackProj;
+import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SamuraiBasicProj;
+import me.testedpugtato.kingdomcraftplugin.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -23,11 +23,31 @@ public class FireSword extends Sword {
     public void useBasicAttack(Player player, int powerLevel, float swordDamage)
     {
         super.useBasicAttack(player,powerLevel,swordDamage);
+        FireBasicAttackProj proj = new FireBasicAttackProj(player,2,Particle.FLAME,2);
+        proj.moveSelf(2,false);
     }
 
     @Override
     public void useAriel(Player player, int powerLevel, float swordDamage)
     {
+        Location loc = player.getEyeLocation();
+
+        loc.setPitch(90);
+        loc.setYaw(0);
+
+        ParticleMaker.createCircle(
+                Particle.SWEEP_ATTACK,
+                loc,
+                lvl.i(1, 4, powerLevel),
+                (int)lvl.i(1,5,powerLevel),
+                lvl.i(2,32,powerLevel));
+        ParticleMaker.createCircle(
+                Particle.FLAME,
+                loc,
+                lvl.i(1, 4, powerLevel),
+                (int)lvl.i(1,3,powerLevel),
+                lvl.i(2,16,powerLevel));
+        CombatManager.DamageNearby(player.getLocation(),lvl.i(1,4,powerLevel),3,lvl.i(1,4,powerLevel),swordDamage+3,player);
 
     }
     @Override

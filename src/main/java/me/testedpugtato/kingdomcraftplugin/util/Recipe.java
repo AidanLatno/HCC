@@ -1,33 +1,26 @@
 package me.testedpugtato.kingdomcraftplugin.util;
 
+
+import me.testedpugtato.kingdomcraftplugin.Database;
 import me.testedpugtato.kingdomcraftplugin.items.CustomItem;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
 
 public class Recipe
 {
-    ItemStack item1;
-    ItemStack item2;
-    CustomItem custom1;
-    CustomItem custom2;
-    ItemStack returnItem;
-    public Recipe(ItemStack item1, ItemStack item2)
+
+    static CustomItem craft(ItemStack item1, ItemStack item2)
     {
-        this.item1 = item1;
-        this.item2 = item2;
+        CustomItem returnItem = null;
+        if(item1.getItemMeta().hasCustomModelData() && item2.getItemMeta().hasCustomModelData())
+        {
+            returnItem = Database.RecipeMap.get(Pair.pair(item1.getItemMeta().getCustomModelData(),item2.getItemMeta().getCustomModelData()));
+            ItemMeta data = item1.getItemMeta();
+            data.setCustomModelData(returnItem.CustomModelData);
+            returnItem.setItemMeta(data);
+        }
+        return returnItem;
     }
-    public Recipe(ItemStack item1, CustomItem custom2)
-    {
-        this.item1 = item1;
-        this.custom2 = custom2;
-    }
-    public Recipe(CustomItem custom1, ItemStack item2)
-    {
-        this.custom1 = custom1;
-        this.item2 = item2;
-    }
-    public Recipe(CustomItem custom1, CustomItem custom2)
-    {
-        this.custom1 = custom1;
-        this.custom2 = custom2;
-    }
+
 }
