@@ -37,6 +37,7 @@ public final class KingdomCraftPlugin extends JavaPlugin
         new YouTubeLink();
         new Stats();
         new SetPower();
+        new SetSpecialist();
         new Expand();
         new Craft();
 
@@ -75,6 +76,7 @@ public final class KingdomCraftPlugin extends JavaPlugin
             config.set("stats.power_exp", memory.getPowerEXP());
             config.set("stats.power_level", memory.getPowerLevel());
             config.set("stats.power_slot", memory.getPowerSlot());
+            config.set("stats.specialist",memory.getSpecialist().id);
 
             try {
                 config.save(f);

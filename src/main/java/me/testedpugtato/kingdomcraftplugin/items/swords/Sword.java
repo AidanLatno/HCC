@@ -3,6 +3,7 @@ package me.testedpugtato.kingdomcraftplugin.items.swords;
 import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.items.CustomItem;
 import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SamuraiBasicProj;
+import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SamuraiChargeProj;
 import me.testedpugtato.kingdomcraftplugin.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.LivingEntity;
@@ -81,27 +82,57 @@ public class Sword extends CustomItem {
             }
         },1);
     }
-    public void chargeChargedAttack(Player player, int powerLevel, double charge, float swordDamage)
-    {
-        if(charge > 6) charge = 6;
-        charge /= 6;
-        GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,0.7f);
-        ParticleMaker.createSphere(
-                Particle.SWEEP_ATTACK,
-                player.getEyeLocation(),
-                2.5f,
-                1,
-                1
-        );
+    public void chargeChargedAttack(Player player, int powerLevel, double charge, float swordDamage) {
+        if (charge > 4)
+        {
+            charge = 4;
+            GeneralUtils.PlaySound(player.getLocation(),Sound.BLOCK_BEACON_ACTIVATE,0.2f,2);
+        }
+        GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,0.1f,0.7f);
+
+        ParticleMaker.SpawnParticle(player.getEyeLocation(),Particle.SWEEP_ATTACK,10,2.5f,2.5f,2.5f,1);
         PotionEffect effect = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE,1,1,false,false,true);
         player.addPotionEffect(effect);
     }
     public void useChargedAttack(Player player, int powerLevel, double charge, float swordDamage)
     {
-        if(charge >= 6) {
+        // CHANGE SO THAT THE SLASH IS FORMED FROM DIFFERENT PROJECTILES
+        if(charge >= 4) {
+            charge /= 4;
 
             GeneralUtils.PlaySound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 10, 2);
             CombatManager.DamageNearby(player.getLocation(), lvl.i(4, 8, powerLevel), lvl.i(14, 20, powerLevel), lvl.i(4, 8, powerLevel), (float) (swordDamage * lvl.i(2.5, 4.5, powerLevel) * charge), player);
+            SamuraiChargeProj proj = new SamuraiChargeProj(player,2,swordDamage,this);
+            proj.moveSelf(3,false);
+
+            Vector left = MathUtils.rotateAroundY(player.getEyeLocation().getDirection(),90);
+            Vector right = MathUtils.rotateAroundY(player.getEyeLocation().getDirection(),-90);
+
+            for(int i = 1; i <= 6; i++)
+            {
+                left.normalize();
+                right.normalize();
+                left.multiply(i);
+                right.multiply(i);
+                Location loc1 = player.getEyeLocation().clone().add(left);
+                Location loc2 = player.getEyeLocation().clone().add(right);
+
+                SamuraiChargeProj projLeft = new SamuraiChargeProj(player,2,swordDamage,this);
+                projLeft.setLocation(loc1);
+                projLeft.moveSelf(3,false);
+                SamuraiChargeProj projRight = new SamuraiChargeProj(player,2,swordDamage,this);
+                projRight.setLocation(loc2);
+                projRight.moveSelf(3,false);
+
+         /*       SamuraiChargeProj sideProjectile1 = new SamuraiChargeProj(player,2,swordDamage,this);
+                sideProjectile1.moveSelf(3,false);
+                sideProjectile1.setLocation(new Location(player.getWorld(),left.getX(),left.getY(),left.getZ(),player.getLocation().getYaw(),player.getLocation().getPitch()));
+                SamuraiChargeProj sideProjectile2 = new SamuraiChargeProj(player,2,swordDamage,this);
+                sideProjectile2.moveSelf(3,false);
+                sideProjectile2.setLocation(new Location(player.getWorld(),right.getX(),right.getY(),right.getZ(),player.getLocation().getYaw(),player.getLocation().getPitch()));
+*/
+
+            }
         } else GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PHANTOM_FLAP,1,2);
     }
     public void useQuickAttack(Player player, int powerLevel, float swordDamage)

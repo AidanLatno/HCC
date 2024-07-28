@@ -8,15 +8,20 @@ import org.bukkit.entity.Player;
 public class Power
 {
 
-    public String id = "no power";
-    private float basicCooldown = 1;
-    private float quickCooldown = 1;
-    private float dashCooldown = 1;
-    private float chargedCooldown = 1;
-    private float arielCooldown = 1;
-    private float slamCooldown = 1;
+    public String id;
+    private float basicCooldown;
+    private float quickCooldown;
+    private float dashCooldown;
+    private float chargedCooldown;
+    private float arielCooldown;
+    private float slamCooldown;
     public boolean isDomainActive = false;
     public PlayerMemory memory;
+
+    public Power()
+    {
+        id = "no power";
+    }
 
     public void useBasicAttack(Player player, int powerLevel)
     {
@@ -82,6 +87,7 @@ public class Power
 
 
     public static Material[] ignoreList = {
+            Material.LIGHT,
             Material.AIR,
             Material.GRASS,
             Material.TALL_GRASS,
@@ -115,6 +121,35 @@ public class Power
             Material.LILY_PAD,
             Material.WITHER_ROSE,
             Material.TORCH,
-            Material.SOUL_TORCH
+            Material.SOUL_TORCH,
+            Material.LARGE_FERN,
+            Material.RED_CARPET,
+            Material.ORANGE_CARPET,
+            Material.YELLOW_CARPET,
+            Material.LIME_CARPET,
+            Material.GREEN_CARPET,
+            Material.BLUE_CARPET,
+            Material.CYAN_CARPET,
+            Material.LIGHT_BLUE_CARPET,
+            Material.PINK_CARPET,
+            Material.MAGENTA_CARPET,
+            Material.PURPLE_CARPET,
+            Material.BLACK_CARPET,
+            Material.GRAY_CARPET,
+            Material.LIGHT_GRAY_CARPET,
+            Material.WHITE_CARPET,
+            Material.BROWN_CARPET,
+            Material.OAK_SIGN,
+            Material.DARK_OAK_SIGN,
+            Material.SPRUCE_SIGN,
+            Material.BIRCH_SIGN,
+            Material.ACACIA_SIGN,
+            Material.MANGROVE_SIGN,
+            Material.WARPED_SIGN,
+            Material.CRIMSON_SIGN,
+            Material.BAMBOO_SAPLING,
+            Material.STRING,
+            Material.SCAFFOLDING,
+
     };
 }

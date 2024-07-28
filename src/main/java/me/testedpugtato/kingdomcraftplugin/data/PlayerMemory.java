@@ -13,6 +13,7 @@ public class PlayerMemory {
     private int powerEXP;
     private int playerEXP;
     private Power power;
+    private Power specialist;
     private int powerSlot = 8;
     private boolean isKing = false;
 
@@ -112,23 +113,42 @@ public class PlayerMemory {
             case "mage":
                 this.power = new Mage();
                 break;
-            case "earth":
-                this.power = new Earth();
-                break;
             case "air":
                 this.power = new Air();
-                break;
-            case "riftwalker":
-                this.power = new RiftWalker();
-                break;
-            case "necromancer":
-                this.power = new Necromancer();
                 break;
             default:
                 this.power = new Power();
         }
         this.power.memory = this;
     }
+    public Power getSpecialist()
+    {
+        return specialist;
+    }
+    public boolean isSpecialist()
+    {
+        return specialist.id != "no power";
+    }
+    public void setSpecialist(Power power)
+    {
+        specialist = power;
+    }
+    public void setSpecialist(String power)
+    {
+        switch(power)
+        {
+            case "riftwalker":
+                specialist = new RiftWalker();
+                break;
+            case "necromancer":
+                specialist = new Necromancer();
+                break;
+            default:
+                specialist = new Power();
+        }
+        this.power.memory = this;
+    }
+
     public int getPlayerLevel() { return playerLevel; }
 
     public void setPlayerLevel(int playerLevel) { this.playerLevel = playerLevel; }
@@ -157,6 +177,8 @@ public class PlayerMemory {
         s += Integer.toString(playerEXP) + "\n";
         s += "Player Level EXP needed till next level: ";
         s += Integer.toString((int)playerEXPNeeded()) + "\n";
+        s += "Specialist ability:";
+        s += getSpecialist().id;
         return s;
     }
 }

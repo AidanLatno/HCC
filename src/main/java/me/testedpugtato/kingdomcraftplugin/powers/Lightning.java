@@ -85,8 +85,8 @@ public class Lightning extends Power
 
     @Override
     public void chargeChargedAttack(Player player, int powerLevel, double charge) {
-        if(charge > 6) charge = 6;
-        charge /= 6;
+        if(charge > 4) charge = 4;
+        charge /= 4;
         double scale = 1.1 - charge;
 
         GeneralUtils.PlaySound(player.getLocation(), Sound.BLOCK_BEEHIVE_WORK,100,0);
@@ -116,8 +116,8 @@ public class Lightning extends Power
 
     @Override
     public void useChargedAttack(Player player, int powerLevel, double charge) {
-        if(charge > 6) charge = 6;
-        charge /= 6;
+        if(charge > 4) charge = 4;
+        charge /= 4;
 
         ParticleMaker.SpawnParticle(player.getLocation(),Particle.SCRAPE,(int)lvl.i(100,800,powerLevel), 1,0,1,0.3f);
         ParticleMaker.SpawnParticle(player.getLocation(),Particle.SCRAPE,(int)lvl.i(1000,8000,powerLevel), lvl.i(5*charge,10*charge,powerLevel),1,lvl.i(5*charge,15*charge,powerLevel),0.3f);

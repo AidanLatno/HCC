@@ -1,7 +1,9 @@
 package me.testedpugtato.kingdomcraftplugin.powers.specialists;
 
 import me.testedpugtato.kingdomcraftplugin.barriers.RiftWalkerDomain;
+import me.testedpugtato.kingdomcraftplugin.items.swords.FireSword;
 import me.testedpugtato.kingdomcraftplugin.powers.Power;
+import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SamuraiChargeProj;
 import org.bukkit.entity.Player;
 
 public class RiftWalker extends Power {
@@ -18,7 +20,8 @@ public class RiftWalker extends Power {
     @Override
     public void useBasicAttack(Player player, int powerLevel)
     {
-
+        SamuraiChargeProj proj = new SamuraiChargeProj(player,1,7,new FireSword());
+        proj.moveSelf(3,false);
     }
 
     @Override

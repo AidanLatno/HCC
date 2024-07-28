@@ -46,10 +46,10 @@ public class FireSword extends Sword {
                 Particle.FLAME,
                 loc,
                 lvl.i(1, 4, powerLevel),
-                (int)lvl.i(1,3,powerLevel),
-                lvl.i(2,16,powerLevel));
+                (int)lvl.i(2,4,powerLevel),
+                lvl.i(2,16,powerLevel),
+                1,.1,1);
         CombatManager.DamageNearby(player.getLocation(),lvl.i(1,4,powerLevel),3,lvl.i(1,4,powerLevel),swordDamage+3,player);
-
     }
     @Override
     public void useArielDash(Player player, int powerLevel, float swordDamage)
@@ -109,7 +109,7 @@ public class FireSword extends Sword {
     @Override
     public void useGroundSlam(Player player, int powerLevel, float swordDamage)
     {
-
+        super.useGroundSlam(player,powerLevel,swordDamage);
     }
 
     @Override

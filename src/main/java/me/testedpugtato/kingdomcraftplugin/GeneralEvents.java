@@ -40,6 +40,7 @@ public class GeneralEvents implements Listener {
             memory.setPowerLevel(config.getInt("stats.power_level"));
             memory.setPowerSlot(config.getInt("stats.power_slot"));
             memory.setKing(config.getBoolean("stats.is_king"));
+            memory.setSpecialist(config.getString("stats.specialist"));
             PlayerUtility.setPlayerMemory(event.getPlayer(), memory);
         }
         else
@@ -51,21 +52,26 @@ public class GeneralEvents implements Listener {
             memory.setPlayerEXP(0);
             memory.setPowerSlot(8);
             memory.setPower(new Power());
+            memory.setSpecialist(new Power());
+
+            PlayerUtility.setPlayerMemory(event.getPlayer(), memory);
 
             File theDir = new File(PlayerUtility.getFolderPath(event.getPlayer()));
             if (!theDir.exists()){
                 theDir.mkdirs();
             }
             f.getParentFile().mkdirs();
-//            JavaPlugin.getPlugin(KingdomCraftPlugin.class).saveResource("asdad", false);
 
-            config.set("stats.power", memory.getPower());
+            config.set("username",event.getPlayer().getName());
+            config.set("stats.power", memory.getPower().id);
             config.set("stats.player_exp", memory.getPlayerEXP());
             config.set("stats.player_level", memory.getPlayerLevel());
             config.set("stats.power_exp", memory.getPowerEXP());
             config.set("stats.power_level", memory.getPowerLevel());
             config.set("stats.power_slot", memory.getPowerSlot());
             config.set("stats.is_king",memory.isKing());
+            config.set("stats.specialist",memory.getSpecialist().id);
+
 
             // save file
             try {
@@ -81,6 +87,7 @@ public class GeneralEvents implements Listener {
         PlayerMemory memory = PlayerUtility.getPlayerMemory(event.getPlayer());
         File f = new File(PlayerUtility.getFolderPath(event.getPlayer()) + "/general.yml");
         FileConfiguration config = YamlConfiguration.loadConfiguration(f);
+        config.set("username",event.getPlayer().getName());
         config.set("stats.power", memory.getPower().id);
         config.set("stats.player_exp", memory.getPlayerEXP());
         config.set("stats.player_level", memory.getPlayerLevel());
@@ -88,6 +95,7 @@ public class GeneralEvents implements Listener {
         config.set("stats.power_level", memory.getPowerLevel());
         config.set("stats.power_slot", memory.getPowerSlot());
         config.set("stats.is_king",memory.isKing());
+        config.set("stats.specialist",memory.getSpecialist().id);
 
         try{config.save(f);} catch(IOException e) {e.printStackTrace();}
         PlayerUtility.setPlayerMemory(event.getPlayer(), null);
@@ -109,7 +117,7 @@ public class GeneralEvents implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            else if(power instanceof Air || power instanceof Earth)
+            else if(power instanceof Air)
             {
                 player.setFallDistance(0);
                 e.setCancelled(true);
