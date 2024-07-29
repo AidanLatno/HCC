@@ -96,7 +96,6 @@ public class Sword extends CustomItem {
     }
     public void useChargedAttack(Player player, int powerLevel, double charge, float swordDamage)
     {
-        // CHANGE SO THAT THE SLASH IS FORMED FROM DIFFERENT PROJECTILES
         if(charge >= 4) {
             charge /= 4;
 
@@ -107,6 +106,8 @@ public class Sword extends CustomItem {
 
             Vector left = MathUtils.rotateAroundY(player.getEyeLocation().getDirection(),90);
             Vector right = MathUtils.rotateAroundY(player.getEyeLocation().getDirection(),-90);
+            right.setY(0);
+            left.setY(0);
 
             for(int i = 1; i <= 6; i++)
             {
