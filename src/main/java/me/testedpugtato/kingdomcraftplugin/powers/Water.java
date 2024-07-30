@@ -74,18 +74,7 @@ public class Water extends Power
 
                 block.setType(Material.WATER,true);
 
-                BlockData blockData = block.getBlockData();
-
-                // Check if the BlockData is an instance of Levelled (water, lava)
-                if (blockData instanceof Levelled) {
-                    Levelled levelled = (Levelled) blockData;
-
-                    // Set the water level to 1
-                    levelled.setLevel(1);
-
-                    // Apply the modified BlockData back to the block
-                    block.setBlockData(levelled);
-                }
+                BlockUtil.setBlockLevel(block,1);
 
                 Vector vec = player.getLocation().getDirection();
                 vec.setY(0.1);
@@ -178,8 +167,8 @@ public class Water extends Power
 
         // Get blocks in a circular shape and fill them with water
         ArrayList<Block> blocks = BlockUtil.getBlocksCircular(player.getLocation(),(int)lvl.i(5,10,powerLevel));
-        ArrayList<Material> replacedBlocks = new ArrayList(Arrays.asList(Power.ignoreList));
-        BlockUtil.fillBlocks(blocks,Material.WATER,replacedBlocks);
+
+        BlockUtil.fillBlocks(blocks,Material.WATER,BlockUtil.ignoreList);
         for(Block block : blocks)
             BlockUtil.setBlockLevel(block,1);
 
@@ -254,8 +243,8 @@ public class Water extends Power
         }
 
         ArrayList<Block> blocks = BlockUtil.getBlocksCircular(player.getLocation(),radius);
-        ArrayList<Material> replacedBlocks = new ArrayList(Arrays.asList(Power.ignoreList));
-        BlockUtil.fillBlocks(blocks,Material.WATER,replacedBlocks);
+
+        BlockUtil.fillBlocks(blocks,Material.WATER,BlockUtil.ignoreList);
         for(Block block : blocks)
             BlockUtil.setBlockLevel(block,1);
     }

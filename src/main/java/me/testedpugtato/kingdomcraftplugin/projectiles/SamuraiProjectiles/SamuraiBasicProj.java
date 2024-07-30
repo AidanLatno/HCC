@@ -40,10 +40,7 @@ public class SamuraiBasicProj extends PowerProjectile {
     @Override
     public void entityInteract(Collection<LivingEntity> entities)
     {
-        for(LivingEntity entity : entities)
-        {
-            CombatManager.DamageEntity(swordDamage* lvl.i(0.5,1.3,getPowerLevel()),entity,getCaster());
-        }
+        CombatManager.DamageEntity(swordDamage* lvl.i(0.5,1.3,getPowerLevel()),entities,getCaster());
     }
 
     // controllable determines whether the projectile can be controlled after it has been shot based on the player's direction

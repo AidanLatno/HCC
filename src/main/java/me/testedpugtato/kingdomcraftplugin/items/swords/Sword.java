@@ -20,6 +20,7 @@ public class Sword extends CustomItem {
         SamuraiBasicProj proj = new SamuraiBasicProj(player,2,2,swordDamage,this);
         proj.moveSelf(2,false);
     }
+
     public void useAriel(Player player, int powerLevel, float swordDamage)
     {
         Location loc = player.getEyeLocation().clone();
@@ -82,26 +83,26 @@ public class Sword extends CustomItem {
             }
         },1);
     }
-    public void chargeChargedAttack(Player player, int powerLevel, double charge, float swordDamage) {
-        if (charge > 4)
+    public void chargeChargedAttack(Player player, int powerLevel, double charge, float swordDamage)
+    {
+        if (charge >= 4)
         {
             charge = 4;
             GeneralUtils.PlaySound(player.getLocation(),Sound.BLOCK_BEACON_ACTIVATE,0.2f,2);
         }
+        charge /= 4;
         GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,0.1f,0.7f);
 
-        ParticleMaker.SpawnParticle(player.getEyeLocation(),Particle.SWEEP_ATTACK,10,2.5f,2.5f,2.5f,1);
+        ParticleMaker.SpawnParticle(player.getEyeLocation(),Particle.SWEEP_ATTACK,(int)(10*charge),2.5f,2.5f,2.5f,1);
         PotionEffect effect = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE,1,1,false,false,true);
         player.addPotionEffect(effect);
     }
     public void useChargedAttack(Player player, int powerLevel, double charge, float swordDamage)
     {
         if(charge >= 4) {
-            charge /= 4;
-
             GeneralUtils.PlaySound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 10, 2);
-            CombatManager.DamageNearby(player.getLocation(), lvl.i(4, 8, powerLevel), lvl.i(14, 20, powerLevel), lvl.i(4, 8, powerLevel), (float) (swordDamage * lvl.i(2.5, 4.5, powerLevel) * charge), player);
-            SamuraiChargeProj proj = new SamuraiChargeProj(player,2,swordDamage,this);
+            CombatManager.DamageNearby(player.getLocation(), lvl.i(4, 8, powerLevel), lvl.i(14, 20, powerLevel), lvl.i(4, 8, powerLevel), (float) (swordDamage * lvl.i(2.5, 4.5, powerLevel)), player);
+            SamuraiChargeProj proj = new SamuraiChargeProj(player,2,swordDamage);
             proj.moveSelf(3,false);
 
             Vector left = MathUtils.rotateAroundY(player.getEyeLocation().getDirection(),90);
@@ -118,20 +119,14 @@ public class Sword extends CustomItem {
                 Location loc1 = player.getEyeLocation().clone().add(left);
                 Location loc2 = player.getEyeLocation().clone().add(right);
 
-                SamuraiChargeProj projLeft = new SamuraiChargeProj(player,2,swordDamage,this);
+                SamuraiChargeProj projLeft = new SamuraiChargeProj(player,2,swordDamage);
                 projLeft.setLocation(loc1);
                 projLeft.moveSelf(3,false);
-                SamuraiChargeProj projRight = new SamuraiChargeProj(player,2,swordDamage,this);
+                SamuraiChargeProj projRight = new SamuraiChargeProj(player,2,swordDamage);
                 projRight.setLocation(loc2);
                 projRight.moveSelf(3,false);
 
-         /*       SamuraiChargeProj sideProjectile1 = new SamuraiChargeProj(player,2,swordDamage,this);
-                sideProjectile1.moveSelf(3,false);
-                sideProjectile1.setLocation(new Location(player.getWorld(),left.getX(),left.getY(),left.getZ(),player.getLocation().getYaw(),player.getLocation().getPitch()));
-                SamuraiChargeProj sideProjectile2 = new SamuraiChargeProj(player,2,swordDamage,this);
-                sideProjectile2.moveSelf(3,false);
-                sideProjectile2.setLocation(new Location(player.getWorld(),right.getX(),right.getY(),right.getZ(),player.getLocation().getYaw(),player.getLocation().getPitch()));
-*/
+
 
             }
         } else GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PHANTOM_FLAP,1,2);
@@ -142,7 +137,7 @@ public class Sword extends CustomItem {
 
         CombatManager.ApplyPulse(player.getLocation(),lvl.i(1,3,(int)swordDamage)*lvl.i(1,2,powerLevel),1.0f, entitiesInCone,player);
         CombatManager.DamageEntity(swordDamage*lvl.i(1,1.75,powerLevel),entitiesInCone,player);
-        //Play audio slightly in front of user
+        //Play effect/audio slightly in front of user
         ParticleMaker.SpawnParticle(player.getEyeLocation().add(player.getLocation().getDirection().multiply(2)),Particle.SWEEP_ATTACK,3,1,1,1);
         GeneralUtils.PlaySound(player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(2)), Sound.ENTITY_PLAYER_ATTACK_SWEEP,2,2);
 
@@ -150,11 +145,10 @@ public class Sword extends CustomItem {
     public void useGroundSlam(Player player, int powerLevel, float swordDamage)
     {
         player.setVelocity(new Vector(0,-20,0));
-        Location loc = player.getLocation();
 
         ParticleMaker.createCircle(
                 Particle.CLOUD,
-                loc,
+                player.getLocation(),
                 lvl.i(1,5,powerLevel),
                 (int)lvl.i(1,3,powerLevel),
                 lvl.i(2,16,powerLevel),
@@ -187,7 +181,7 @@ public class Sword extends CustomItem {
                 lvl.i(0,0.5,powerLevel),
                 lvl.i(0,0.05,powerLevel));
 
-        GeneralUtils.PlaySound(player.getEyeLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,10);
+        GeneralUtils.PlaySound(player.getEyeLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,0.7f,10);
     }
     public void useGroundSlamLanding(Player player, int powerLevel, double charge, float swordDamage)
     {
@@ -197,6 +191,6 @@ public class Sword extends CustomItem {
         GeneralUtils.PlaySound(player.getLocation(),Sound.BLOCK_ANVIL_LAND,10,2);
         GeneralUtils.PlaySound(player.getLocation(),Sound.BLOCK_ANVIL_LAND,10,0);
         CombatManager.DamageNearby(player.getLocation(), lvl.i(4,8,powerLevel), lvl.i(14,20,powerLevel), lvl.i(4,8,powerLevel), (float)(swordDamage*lvl.i(2,3.5,powerLevel)*charge),player);
-
+        CombatManager.ApplyPulse(player.getLocation(),0.2f,0.4f,new Vector( lvl.i(4,8,powerLevel), lvl.i(14,20,powerLevel), lvl.i(4,8,powerLevel)),player);
     }
 }

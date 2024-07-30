@@ -3,6 +3,8 @@ package me.testedpugtato.kingdomcraftplugin.items.swords;
 import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
 import me.testedpugtato.kingdomcraftplugin.projectiles.LightningProjectiles.LightningBasicProj;
+import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SLightningChargeProj;
+import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SWaterChargeProj;
 import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SamuraiBasicProj;
 import me.testedpugtato.kingdomcraftplugin.util.*;
 import org.bukkit.*;
@@ -11,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class LightningSword extends Sword{
@@ -56,7 +59,7 @@ public class LightningSword extends Sword{
         for(LivingEntity e : MathUtils.getEntitiesInSphere(player.getLocation(),(int)(lvl.i(1, 4, powerLevel))))
         {
             if(e instanceof Player && !e.equals(player))
-                PlayerUtility.getPlayerMemory((Player)e).stun(30);
+                PlayerUtility.getPlayerMemory((Player)e).stun(40);
         }
     }
     @Override
@@ -116,13 +119,11 @@ public class LightningSword extends Sword{
     @Override
     public void useGroundSlam(Player player, int powerLevel, float swordDamage)
     {
-
-        player.setVelocity(new Vector(0,-20,0));
-        Location loc = player.getLocation();
+        super.useGroundSlam(player,powerLevel,swordDamage);
 
         ParticleMaker.createCircle(
                 Particle.SCRAPE,
-                loc,
+                player.getLocation(),
                 lvl.i(1,5,powerLevel),
                 (int)lvl.i(1,3,powerLevel),
                 lvl.i(2,16,powerLevel),
@@ -130,13 +131,12 @@ public class LightningSword extends Sword{
                 lvl.i(0,0.5,powerLevel),
                 lvl.i(0,0.5,powerLevel),
                 lvl.i(0,0.05,powerLevel));
-
-        GeneralUtils.PlaySound(player.getEyeLocation(),Sound.BLOCK_BEEHIVE_WORK);
     }
 
     @Override
     public void groundSlamFalling(Player player, int powerLevel, double charge, float swordDamage)
     {
+        super.groundSlamFalling(player,powerLevel,charge,swordDamage);
         if(charge > 0.3) charge = 0.3;
         charge /= 0.3;
 
@@ -163,19 +163,12 @@ public class LightningSword extends Sword{
     @Override
     public void useGroundSlamLanding(Player player, int powerLevel, double charge, float swordDamage)
     {
-        if(charge > 0.3) charge = 0.3;
-        charge /= 0.3;
-        CombatManager.DamageNearby(
-                player.getLocation(),
-                lvl.i(4,8,powerLevel),
-                lvl.i(14,20,powerLevel),
-                lvl.i(4,8,powerLevel),
-                (float)(swordDamage*lvl.i(2,4,powerLevel)*charge),
-                player);
+        super.useGroundSlamLanding(player,powerLevel,charge,swordDamage);
+
         for(LivingEntity e : MathUtils.getEntitiesInSphere(player.getLocation(),(int)(lvl.i(4, 8, powerLevel))))
         {
             if(e instanceof Player && !e.equals(player))
-                PlayerUtility.getPlayerMemory((Player)e).stun(10);
+                PlayerUtility.getPlayerMemory((Player)e).stun(40);
         }
     }
 
@@ -183,30 +176,43 @@ public class LightningSword extends Sword{
     public void chargeChargedAttack(Player player, int powerLevel, double charge, float swordDamage)
     {
         super.chargeChargedAttack(player,powerLevel,charge,swordDamage);
-        ParticleMaker.createSphere(
-                Particle.SCRAPE,
-                player.getLocation(),
-                3,
-                1,
-                1
-        );
-        GeneralUtils.PlaySound(player.getLocation(),Sound.BLOCK_BEEHIVE_WORK,1,2);
-        for(LivingEntity e : MathUtils.getEntitiesInSphere(player.getLocation(),3))
-        {
-            if(e instanceof Player && !e.equals(player))
-                PlayerUtility.getPlayerMemory((Player)e).stun(20);
-        }
+        ParticleMaker.SpawnParticle(player.getEyeLocation(),Particle.SCRAPE,(int)(5*charge),2.5f,2.5f,2.5f,1);
+        GeneralUtils.PlaySound(player.getLocation(),Sound.BLOCK_BEEHIVE_WORK,0.1f,0.7f);
     }
 
     @Override
     public void useChargedAttack(Player player, int powerLevel, double charge, float swordDamage)
     {
-        for(LivingEntity e : MathUtils.getEntitiesInSphere(player.getLocation(),7))
-        {
-            if(e instanceof Player && !e.equals(player))
-                PlayerUtility.getPlayerMemory((Player)e).stun(60);
-            e.getWorld().strikeLightningEffect(e.getLocation());
-        }
+        if(charge >= 4) {
+            GeneralUtils.PlaySound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 10, 2);
+            CombatManager.DamageNearby(player.getLocation(), lvl.i(4, 8, powerLevel), lvl.i(14, 20, powerLevel), lvl.i(4, 8, powerLevel), (float) (swordDamage * lvl.i(2.5, 4.5, powerLevel)), player);
+            SLightningChargeProj proj = new SLightningChargeProj(player,2,swordDamage);
+            proj.moveSelf(3,false);
 
+            Vector left = MathUtils.rotateAroundY(player.getEyeLocation().getDirection(),90);
+            Vector right = MathUtils.rotateAroundY(player.getEyeLocation().getDirection(),-90);
+            right.setY(0);
+            left.setY(0);
+
+            for(int i = 1; i <= 6; i++)
+            {
+                left.normalize();
+                right.normalize();
+                left.multiply(i);
+                right.multiply(i);
+                Location loc1 = player.getEyeLocation().clone().add(left);
+                Location loc2 = player.getEyeLocation().clone().add(right);
+
+                SLightningChargeProj projLeft = new SLightningChargeProj(player,2,swordDamage);
+                projLeft.setLocation(loc1);
+                projLeft.moveSelf(3,false);
+                SLightningChargeProj projRight = new SLightningChargeProj(player,2,swordDamage);
+                projRight.setLocation(loc2);
+                projRight.moveSelf(3,false);
+
+
+
+            }
+        } else GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PHANTOM_FLAP,1,2);
     }
 }

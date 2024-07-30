@@ -20,8 +20,7 @@ public class RiftWalker extends Power {
     @Override
     public void useBasicAttack(Player player, int powerLevel)
     {
-        SamuraiChargeProj proj = new SamuraiChargeProj(player,1,7,new FireSword());
-        proj.moveSelf(3,false);
+
     }
 
     @Override
