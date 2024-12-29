@@ -1,7 +1,9 @@
 package me.testedpugtato.kingdomcraftplugin.powers.specialists;
 
 import me.testedpugtato.kingdomcraftplugin.barriers.RiftWalkerDomain;
+import me.testedpugtato.kingdomcraftplugin.items.swords.FireSword;
 import me.testedpugtato.kingdomcraftplugin.powers.Power;
+import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SamuraiChargeProj;
 import org.bukkit.entity.Player;
 
 public class RiftWalker extends Power {

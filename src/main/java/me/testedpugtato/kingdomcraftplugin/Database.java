@@ -212,10 +212,9 @@ public class Database
     {
         SwordMap.put(0, new Sword());
         SwordMap.put(1, new FireSword());
-        SwordMap.put(2, new EarthSword());
-        SwordMap.put(3, new AirSword());
-        SwordMap.put(4, new LightningSword());
-        SwordMap.put(5, new WaterSword());
+        SwordMap.put(2, new AirSword());
+        SwordMap.put(3, new LightningSword());
+        SwordMap.put(4, new WaterSword());
     }
 
     public static void initRecipeMap()

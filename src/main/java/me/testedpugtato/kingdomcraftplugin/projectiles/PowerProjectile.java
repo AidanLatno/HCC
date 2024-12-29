@@ -2,6 +2,8 @@ package me.testedpugtato.kingdomcraftplugin.projectiles;
 
 import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
 import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
+import me.testedpugtato.kingdomcraftplugin.powers.Power;
+import me.testedpugtato.kingdomcraftplugin.util.BlockUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -62,12 +64,18 @@ public class PowerProjectile
 
         Vector prevVec = prevLocation.toVector();
         Location mid = current.add(vec.subtract(prevVec));
+        int i = 0;
+        for(Material m : BlockUtil.ignoreList)
+        {
+            if(type(location).equals(m) && type(mid).equals(m))
+                return false;
+        }
+        return true;
 
-
-
-        boolean returner = !caster.getWorld().getBlockAt(location).getType().equals(Material.AIR)
-                || !caster.getWorld().getBlockAt(mid).getType().equals(Material.AIR);
-        return returner;
+    }
+    Material type(Location location)
+    {
+        return caster.getWorld().getBlockAt(location).getType();
     }
     // TO BE OVERRIDDEN
     public void logic(boolean controllable)

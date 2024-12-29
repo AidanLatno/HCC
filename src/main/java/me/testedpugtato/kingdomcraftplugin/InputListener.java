@@ -49,21 +49,24 @@ public class InputListener implements Listener
                 Database.removeCancelFall(player,10);
                 int powerLevel = PlayerUtility.getPlayerMemory(player).getPowerLevel();
 
-                Power power = PlayerUtility.GetPower(player);
-                Database.startSlamCooldown(player,power.getSlamCooldown());
-                power.useGroundSlam(player,powerLevel);
+                Power abilities;
+                if(memory.isSpecialist()) abilities = memory.getSpecialist();
+                else abilities = memory.getPower();
+
+                Database.startSlamCooldown(player,abilities.getSlamCooldown());
+                abilities.useGroundSlam(player,powerLevel);
 
                 Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), new Runnable() {
                     double charge = 0;
                     @Override
                     public void run() {
                         charge += 0.05;
-                        power.groundSlamFalling(player,powerLevel,charge);
+                        abilities.groundSlamFalling(player,powerLevel,charge);
 
                         if(charge >= 12) return;
 
                         if(player.isOnGround()) {
-                            power.useGroundSlamLanding(player, powerLevel,charge);
+                            abilities.useGroundSlamLanding(player, powerLevel,charge);
                             PlayerMemory memory = PlayerUtility.getPlayerMemory(player);
                             memory.shiftCount = 0;
                             PlayerUtility.setPlayerMemory(player, memory);
@@ -104,7 +107,9 @@ public class InputListener implements Listener
         if (player.getInventory().getHeldItemSlot() != memory.getPowerSlot())
             return;
 
-        Power abilities = PlayerUtility.GetPower(player);
+        Power abilities;
+        if(memory.isSpecialist()) abilities = memory.getSpecialist();
+        else abilities = memory.getPower();
 
         if(event.getAction().equals(Action.LEFT_CLICK_BLOCK) && player.isSneaking() && player.isOnGround()) // Charge
         {

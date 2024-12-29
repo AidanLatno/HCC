@@ -174,8 +174,8 @@ public class Fire extends Power
     @Override
     public void groundSlamFalling(Player player, int powerLevel, double charge)
     {
-        if(charge > 2) charge = 2;
-        charge /= 2;
+        if(charge > .6) charge = .6;
+        charge /= .6;
 
         setParticle(player,powerLevel);
 
@@ -201,8 +201,8 @@ public class Fire extends Power
     @Override
     public void useGroundSlamLanding(Player player, int powerLevel, double charge)
     {
-        if(charge > 2) charge = 2;
-        charge /= 2;
+        if(charge > .6) charge = .6;
+        charge /= .6;
 
         setParticle(player,powerLevel);
 
@@ -224,8 +224,8 @@ public class Fire extends Power
     @Override
     public void chargeChargedAttack(Player player, int powerLevel, double charge)
     {
-        if(charge > 6) charge = 6;
-        charge /= 6;
+        if(charge > 4) charge = 4;
+        charge /= 4;
 
         Location loc = player.getEyeLocation();
 
@@ -261,8 +261,8 @@ public class Fire extends Power
     @Override
     public void useChargedAttack(Player player, int powerLevel, double charge)
     {
-        if(charge > 6) charge = 6;
-        charge /= 6;
+        if(charge > 4) charge = 4;
+        charge /= 4;
 
         FireChargedAttack blast = new FireChargedAttack(player,1.5f,charge*2,particle,3);
         blast.moveSelf(lvl.i(1,3,powerLevel), false,1);

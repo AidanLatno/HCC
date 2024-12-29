@@ -17,7 +17,7 @@ public class Samurai extends Power
     {
         setBasicCooldown(3);
         setDashCooldown(5);
-        setQuickCooldown(1);
+        setQuickCooldown(0.5f);
         setArielCooldown(7);
         setChargedCooldown(15);
         setSlamCooldown(15);
@@ -103,7 +103,7 @@ public class Samurai extends Power
         Sword sword = getHeldSword(player);
 
 
-        sword.useChargedAttack(player,powerLevel,charge,swordDamage);
+        sword.chargeChargedAttack(player,powerLevel,charge,swordDamage);
     }
 
     @Override

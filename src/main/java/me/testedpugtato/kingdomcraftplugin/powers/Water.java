@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -73,18 +74,7 @@ public class Water extends Power
 
                 block.setType(Material.WATER,true);
 
-                BlockData blockData = block.getBlockData();
-
-                // Check if the BlockData is an instance of Levelled (water, lava)
-                if (blockData instanceof Levelled) {
-                    Levelled levelled = (Levelled) blockData;
-
-                    // Set the water level to 1
-                    levelled.setLevel(1);
-
-                    // Apply the modified BlockData back to the block
-                    block.setBlockData(levelled);
-                }
+                BlockUtil.setBlockLevel(block,1);
 
                 Vector vec = player.getLocation().getDirection();
                 vec.setY(0.1);
@@ -144,7 +134,8 @@ public class Water extends Power
     {
         if(isInNether(player)) return;
 
-        if(charge > 1) charge = 1;
+        if(charge > .6) charge = .6;
+        charge /= .6;
 
 
         ParticleMaker.SpawnParticle(
@@ -167,85 +158,20 @@ public class Water extends Power
                 (int)(lvl.i(5,18,powerLevel)*charge),
                 player);
 
-        Collection<LivingEntity> entities = player.getLocation().getNearbyLivingEntities(
+        Vector boundingBox = new Vector(
                 lvl.i(7,10,powerLevel),
                 3,
                 lvl.i(7,10,powerLevel));
 
-        for (LivingEntity entity : entities) {
-            if(entity.equals(player))
-                continue;
+        CombatManager.ApplyPulse(player.getLocation(), (float) (lvl.i(1,2,powerLevel)*charge), (float) (lvl.i(0.4,1.3,powerLevel)*charge), boundingBox, player);
 
-            Location playerCenterLocation = player.getEyeLocation();
-            Location playerToThrowLocation = entity.getEyeLocation();
+        // Get blocks in a circular shape and fill them with water
+        ArrayList<Block> blocks = BlockUtil.getBlocksCircular(player.getLocation(),(int)lvl.i(5,10,powerLevel));
 
-            double x = playerToThrowLocation.getX() - playerCenterLocation.getX();
-            double y = playerToThrowLocation.getY() - playerCenterLocation.getY();
-            double z = playerToThrowLocation.getZ() - playerCenterLocation.getZ();
-
-            Vector throwVector = new Vector(x, y, z);
-
-            throwVector.normalize();
-            throwVector.multiply(lvl.i(1,2,powerLevel)*charge);
-            throwVector.setY(lvl.i(0.4,1.3,powerLevel)*charge);
-
-            entity.setVelocity(throwVector);
-
-        }
-
-        List<Block> blocks = new ArrayList<>();
-        int radius = (int)lvl.i(5,10,powerLevel);
-        Location center = player.getLocation(); // Center of the circle
-        World world = center.getWorld();
-        int centerX = center.getBlockX();
-        int centerY = center.getBlockY();
-        int centerZ = center.getBlockZ();
-
-        for (int x = -radius; x <= radius; x++) {
-            for (int z = -radius; z <= radius; z++) {
-                if (x*x + z*z <= radius*radius) { // Check if the location is within the circle
-                    blocks.add(world.getBlockAt(centerX + x, centerY, centerZ + z));
-                }
-            }
-        }
-
+        BlockUtil.fillBlocks(blocks,Material.WATER,BlockUtil.ignoreList);
         for(Block block : blocks)
-        {
-            if(block.getType() != Material.AIR) continue;
-            block.setType(Material.WATER,true);
+            BlockUtil.setBlockLevel(block,1);
 
-            BlockData blockData = block.getBlockData();
-
-            // Check if the BlockData is an instance of Levelled (water, lava)
-            if (blockData instanceof Levelled) {
-                Levelled levelled = (Levelled) blockData;
-
-                // Set the water level to 1
-                levelled.setLevel(1);
-
-                // Apply the modified BlockData back to the block
-                block.setBlockData(levelled);
-            }
-        }
-
-        Collection<LivingEntity> list = center.getNearbyLivingEntities(radius,radius,radius);
-        for(Entity entity : list)
-        {
-            if(entity.getLocation().distance(center) <= radius && entity != player) {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), new Runnable() {
-                    int ticks = 0;
-                    @Override
-                    public void run() {
-                        ticks++;
-                        entity.setVelocity(new Vector(0,0,0));
-
-
-
-                        if(ticks >= (int)lvl.i(5,10,powerLevel)) Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(),this,1);
-                    }
-                },1);
-            }
-        }
     }
 
     @Override
@@ -253,8 +179,8 @@ public class Water extends Power
     {
         if(isInNether(player)) return;
 
-        if(charge > 6) charge = 6;
-        charge /= 6;
+        if(charge > 4) charge = 4;
+        charge /= 4;
 
         ParticleMaker.SpawnParticle(player.getLocation(), Particle.BUBBLE_POP, (int)(lvl.i(100,1000, powerLevel)*charge), (float)(lvl.i(5,10,powerLevel)*charge),0,(float)(lvl.i(5,10,powerLevel)*charge));
         if(charge == 1) GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_AXOLOTL_SPLASH,0.5f,0);
@@ -265,8 +191,8 @@ public class Water extends Power
     {
         if(isInNether(player)) return;
 
-        if(charge > 6) charge = 6;
-        charge /= 6;
+        if(charge > 4) charge = 4;
+        charge /= 4;
 
         int radius = (int)(lvl.i(5,10,powerLevel)*charge);
         int trapTicks = (int)(lvl.i(20,100,powerLevel)*charge);
@@ -305,18 +231,7 @@ public class Water extends Power
                                 if(block.getType() != Material.AIR) continue;
                                 block.setType(Material.WATER,true);
 
-                                BlockData blockData = block.getBlockData();
-
-                                // Check if the BlockData is an instance of Levelled (water, lava)
-                                if (blockData instanceof Levelled) {
-                                    Levelled levelled = (Levelled) blockData;
-
-                                    // Set the water level to 1
-                                    levelled.setLevel(1);
-
-                                    // Apply the modified BlockData back to the block
-                                    block.setBlockData(levelled);
-                                }
+                                BlockUtil.setBlockLevel(block,1);
                             }
                         }
                     }
@@ -327,41 +242,11 @@ public class Water extends Power
 
         }
 
-        List<Block> blocks = new ArrayList<>();
-        Location center = player.getLocation(); // Center of the circle
-        World world = center.getWorld();
-        int centerX = center.getBlockX();
-        int centerY = center.getBlockY();
-        int centerZ = center.getBlockZ();
+        ArrayList<Block> blocks = BlockUtil.getBlocksCircular(player.getLocation(),radius);
 
-        for (int x = -radius; x <= radius; x++) {
-            for (int z = -radius; z <= radius; z++) {
-                if (x*x + z*z <= radius*radius) { // Check if the location is within the circle
-                    blocks.add(world.getBlockAt(centerX + x, centerY, centerZ + z));
-                }
-            }
-        }
-
-
-
+        BlockUtil.fillBlocks(blocks,Material.WATER,BlockUtil.ignoreList);
         for(Block block : blocks)
-        {
-            if(block.getType() != Material.AIR) continue;
-            block.setType(Material.WATER,true);
-
-            BlockData blockData = block.getBlockData();
-
-            // Check if the BlockData is an instance of Levelled (water, lava)
-            if (blockData instanceof Levelled) {
-                Levelled levelled = (Levelled) blockData;
-
-                // Set the water level to 1
-                levelled.setLevel(1);
-
-                // Apply the modified BlockData back to the block
-                block.setBlockData(levelled);
-            }
-        }
+            BlockUtil.setBlockLevel(block,1);
     }
 
     @Override

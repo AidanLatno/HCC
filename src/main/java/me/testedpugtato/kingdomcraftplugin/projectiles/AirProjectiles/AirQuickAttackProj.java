@@ -1,10 +1,7 @@
 package me.testedpugtato.kingdomcraftplugin.projectiles.AirProjectiles;
 
 import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
-import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
-import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
-import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
-import me.testedpugtato.kingdomcraftplugin.util.lvl;
+import me.testedpugtato.kingdomcraftplugin.util.*;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -42,21 +39,18 @@ public class AirQuickAttackProj extends PowerProjectile
                 0
         );
 
-        getLocation().getWorld().playSound(getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,2,2);
-        getCaster().getWorld().playSound(getCaster().getEyeLocation().add(getCaster().getEyeLocation().getDirection()),Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,0.3f,2);
-        getLocation().getWorld().playSound(getLocation(), Sound.ENTITY_CREEPER_HURT,0.1f,5);
-        getCaster().getWorld().playSound(getCaster().getEyeLocation().add(getCaster().getEyeLocation().getDirection()),Sound.ENTITY_CREEPER_HURT, SoundCategory.MASTER,0.1f,5);
+        GeneralUtils.PlaySound(getLocation(),Sound.ENTITY_CREEPER_HURT,0.1f,5);
     }
 
     @Override
     public void entityInteract(Collection<LivingEntity> entities)
     {
         CombatManager.ApplyPulse(getLocation(),
-                lvl.i(1,2,getPowerLevel()),
-                lvl.i(0.5,1.3,getPowerLevel()),
+                lvl.i(0.5,1,getPowerLevel()),
+                lvl.i(0.1,0.5,getPowerLevel()),
                 entities,
                 getCaster());
-        CombatManager.DamageEntity(lvl.i(1,3,getPowerLevel()),entities,getCaster());
+        CombatManager.DamageEntity(lvl.i(2,7,getPowerLevel()),entities,getCaster());
 
     }
 

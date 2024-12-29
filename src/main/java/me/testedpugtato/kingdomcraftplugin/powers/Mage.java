@@ -19,7 +19,7 @@ public class Mage extends Power
     @Override
     public void useBasicAttack(Player player, int powerLevel)
     {
-
+        
     }
 
     @Override

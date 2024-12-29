@@ -1,8 +1,20 @@
 package me.testedpugtato.kingdomcraftplugin.items.swords;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import me.testedpugtato.kingdomcraftplugin.KingdomCraftPlugin;
+import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
+import me.testedpugtato.kingdomcraftplugin.projectiles.AirProjectiles.AirBasicAttackProj;
+import me.testedpugtato.kingdomcraftplugin.projectiles.FireProjectiles.FireBasicAttackProj;
+import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SAirChargeProj;
+import me.testedpugtato.kingdomcraftplugin.projectiles.SamuraiProjectiles.SFireChargeProj;
+import me.testedpugtato.kingdomcraftplugin.util.*;
+import org.bukkit.*;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class AirSword extends Sword{
     public AirSword()
@@ -16,50 +28,169 @@ public class AirSword extends Sword{
     @Override
     public void useBasicAttack(Player player, int powerLevel, float swordDamage)
     {
+        super.useBasicAttack(player,powerLevel,swordDamage);
 
+        AirBasicAttackProj proj = new AirBasicAttackProj(player,2,2);
+        proj.moveSelf(2,false);
     }
 
     @Override
     public void useAriel(Player player, int powerLevel, float swordDamage)
     {
+        super.useAriel(player,powerLevel,swordDamage);
+        Location loc = player.getEyeLocation();
 
+        loc.setPitch(90);
+        loc.setYaw(0);
+
+
+        ParticleMaker.createCircle(
+                Particle.CLOUD,
+                loc,
+                lvl.i(1, 4, powerLevel),
+                (int)lvl.i(2,4,powerLevel),
+                lvl.i(2,16,powerLevel),
+                1,.1,1);
+
+        CombatManager.ApplyPulse(player.getLocation(),1,0.6f,MathUtils.getEntitiesInSphere(player.getLocation(),(int)(lvl.i(2,6,powerLevel))),player);
     }
     @Override
     public void useArielDash(Player player, int powerLevel, float swordDamage)
     {
-
+        GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,100,2);
+        GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PLAYER_ATTACK_SWEEP,100,0);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), new Runnable() {
+            int ticks = 0;
+            ArrayList<LivingEntity> hitEnemies = new ArrayList<>();
+            @Override
+            public void run() {
+                ticks++;
+                Vector dir = player.getLocation().getDirection().clone().multiply(10);
+                dir.setY(0.2f);
+                player.setVelocity(player.getVelocity().add(dir));
+                ParticleMaker.SpawnParticle(player.getEyeLocation(), Particle.CLOUD,4,.2f,.2f,.2f);
+                for(LivingEntity e : player.getLocation().getNearbyLivingEntities(3,3,3))
+                {
+                    if(e.equals(player)) continue;
+                    CombatManager.DamageEntity(swordDamage*lvl.i(0.9,1.4,powerLevel),e,player);
+                    hitEnemies.add(e);
+                }
+                if(ticks >= lvl.i(0.1,0.35, powerLevel)*20) {
+                    player.setVelocity(new Vector(0,0,0));
+                    for(LivingEntity entity : hitEnemies)
+                    {
+                        entity.setVelocity(entity.getVelocity().add(new Vector(0,1,0)));
+                    }
+                }
+                else {
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(KingdomCraftPlugin.getInstance(), this, 1);
+                }
+            }
+        },1);
     }
     @Override
     public void useQuickAttack(Player player, int powerLevel, float swordDamage)
     {
+        super.useQuickAttack(player,powerLevel,swordDamage);
+        List<LivingEntity> entitiesInCone = MathUtils.getEntitiesInCone(player.getLocation());
+        Location loc = player.getEyeLocation().clone();
 
+        loc.add(loc.getDirection().multiply(2));
+
+        GeneralUtils.PlaySound(loc,Sound.ENTITY_CREEPER_HURT,2,2);
+        ParticleMaker.SpawnParticle(loc,Particle.CLOUD,100,2,2,2);
+
+        for(LivingEntity e : entitiesInCone)
+        {
+            if(e.equals(player)) continue;
+
+            ParticleMaker.SpawnParticle(e.getLocation(),Particle.CLOUD,10,2,2,2);
+        }
     }
     @Override
     public void useGroundSlam(Player player, int powerLevel, float swordDamage)
     {
-
+        super.useGroundSlam(player,powerLevel,swordDamage);
+        ParticleMaker.createCircle(
+                Particle.CLOUD,
+                player.getLocation(),
+                lvl.i(1,5,powerLevel),
+                1,
+                lvl.i(2,4,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.05,powerLevel));
     }
 
     @Override
     public void groundSlamFalling(Player player, int powerLevel, double charge, float swordDamage)
     {
+        super.groundSlamFalling(player,powerLevel,charge,swordDamage);
+        Location loc = player.getEyeLocation().clone();
 
+        loc.setYaw(loc.getYaw()+90);
+        loc.setPitch(0);
+
+        ParticleMaker.createCircle(
+                Particle.CLOUD,
+                loc,
+                lvl.i(1.6,6,powerLevel)*charge,
+                1,
+                lvl.i(2,4,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.5,powerLevel),
+                lvl.i(0,0.05,powerLevel));
     }
     @Override
     public void useGroundSlamLanding(Player player, int powerLevel, double charge, float swordDamage)
     {
+        super.useGroundSlamLanding(player,powerLevel,charge,swordDamage);
 
+        CombatManager.ApplyPulse(player.getLocation(),0.4f,0.6f,new Vector(lvl.i(4,8,powerLevel), lvl.i(14,20,powerLevel), lvl.i(4,8,powerLevel)),player);
     }
 
     @Override
     public void chargeChargedAttack(Player player, int powerLevel, double charge, float swordDamage)
     {
-
+        super.chargeChargedAttack(player,powerLevel,charge,swordDamage);
+        ParticleMaker.SpawnParticle(player.getEyeLocation(),Particle.CLOUD,(int)(5*charge),2.5f,2.5f,2.5f,1);
     }
 
     @Override
     public void useChargedAttack(Player player, int powerLevel, double charge, float swordDamage)
     {
+        if(charge >= 4) {
+            GeneralUtils.PlaySound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 10, 2);
+            CombatManager.DamageNearby(player.getLocation(), lvl.i(4, 8, powerLevel), lvl.i(14, 20, powerLevel), lvl.i(4, 8, powerLevel), (float) (swordDamage * lvl.i(2.5, 4.5, powerLevel)), player);
+            SAirChargeProj proj = new SAirChargeProj(player,2,swordDamage);
+            proj.moveSelf(3,false);
 
+            Vector left = MathUtils.rotateAroundY(player.getEyeLocation().getDirection(),90);
+            Vector right = MathUtils.rotateAroundY(player.getEyeLocation().getDirection(),-90);
+            right.setY(0);
+            left.setY(0);
+
+            for(int i = 1; i <= 6; i++)
+            {
+                left.normalize();
+                right.normalize();
+                left.multiply(i);
+                right.multiply(i);
+                Location loc1 = player.getEyeLocation().clone().add(left);
+                Location loc2 = player.getEyeLocation().clone().add(right);
+
+                SAirChargeProj projLeft = new SAirChargeProj(player,2,swordDamage);
+                projLeft.setLocation(loc1);
+                projLeft.moveSelf(3,false);
+                SAirChargeProj projRight = new SAirChargeProj(player,2,swordDamage);
+                projRight.setLocation(loc2);
+                projRight.moveSelf(3,false);
+
+
+
+            }
+        } else GeneralUtils.PlaySound(player.getLocation(),Sound.ENTITY_PHANTOM_FLAP,1,2);
     }
 }

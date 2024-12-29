@@ -1,6 +1,7 @@
 package me.testedpugtato.kingdomcraftplugin.projectiles.AirProjectiles;
 
 import me.testedpugtato.kingdomcraftplugin.projectiles.PowerProjectile;
+import me.testedpugtato.kingdomcraftplugin.util.CombatManager;
 import me.testedpugtato.kingdomcraftplugin.util.MathUtils;
 import me.testedpugtato.kingdomcraftplugin.util.ParticleMaker;
 import me.testedpugtato.kingdomcraftplugin.util.lvl;
@@ -60,8 +61,7 @@ public class TornadoProj extends PowerProjectile
 
                 Location centerLocation = getLocation();
                 Location playerToThrowLocation = entity.getLocation();
-                entity.damage(lvl.i(0.6,2.5,getPowerLevel())*charge,getCaster());
-                entity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,10,1),true);
+                CombatManager.DamageEntity((float) (lvl.i(0.2,1,getPowerLevel())*charge),entity,getCaster());
 
                 double x = playerToThrowLocation.getX() - centerLocation.getX();
                 double y = playerToThrowLocation.getY() - centerLocation.getY();

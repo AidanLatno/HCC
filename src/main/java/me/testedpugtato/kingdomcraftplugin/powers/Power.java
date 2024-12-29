@@ -8,15 +8,20 @@ import org.bukkit.entity.Player;
 public class Power
 {
 
-    public String id = "no power";
-    private float basicCooldown = 1;
-    private float quickCooldown = 1;
-    private float dashCooldown = 1;
-    private float chargedCooldown = 1;
-    private float arielCooldown = 1;
-    private float slamCooldown = 1;
+    public String id;
+    private float basicCooldown;
+    private float quickCooldown;
+    private float dashCooldown;
+    private float chargedCooldown;
+    private float arielCooldown;
+    private float slamCooldown;
     public boolean isDomainActive = false;
     public PlayerMemory memory;
+
+    public Power()
+    {
+        id = "no power";
+    }
 
     public void useBasicAttack(Player player, int powerLevel)
     {
@@ -79,42 +84,4 @@ public class Power
     public void setSlamCooldown(float slamCooldown) { this.slamCooldown = slamCooldown; }
 
     public void domainExpand(Player player) {}
-
-
-    public static Material[] ignoreList = {
-            Material.AIR,
-            Material.GRASS,
-            Material.TALL_GRASS,
-            Material.SEAGRASS,
-            Material.TALL_SEAGRASS,
-            Material.SEA_PICKLE,
-            Material.KELP_PLANT,
-            Material.OXEYE_DAISY,
-            Material.DANDELION,
-            Material.ROSE_BUSH,
-            Material.POPPY,
-            Material.AZURE_BLUET,
-            Material.CORNFLOWER,
-            Material.SUNFLOWER,
-            Material.BAMBOO,
-            Material.SMALL_DRIPLEAF,
-            Material.BIG_DRIPLEAF,
-            Material.BIG_DRIPLEAF_STEM,
-            Material.COBWEB,
-            Material.FIRE,
-            Material.SOUL_FIRE,
-            Material.BLUE_ORCHID,
-            Material.ALLIUM,
-            Material.PEONY,
-            Material.ORANGE_TULIP,
-            Material.PINK_TULIP,
-            Material.RED_TULIP,
-            Material.WHITE_TULIP,
-            Material.LILAC,
-            Material.LILY_OF_THE_VALLEY,
-            Material.LILY_PAD,
-            Material.WITHER_ROSE,
-            Material.TORCH,
-            Material.SOUL_TORCH
-    };
 }

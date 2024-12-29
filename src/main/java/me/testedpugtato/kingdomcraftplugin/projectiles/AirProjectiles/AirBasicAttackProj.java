@@ -49,11 +49,11 @@ public class AirBasicAttackProj extends PowerProjectile {
     public void entityInteract(Collection<LivingEntity> entities)
     {
         CombatManager.ApplyPulse(getLocation(),
-                lvl.i(1.3,3,getPowerLevel()),
-                lvl.i(0.8,2,getPowerLevel()),
+                lvl.i(0.8,1.5,getPowerLevel()),
+                lvl.i(0.2,0.8f,getPowerLevel()),
                 entities,
                 getCaster());
-        CombatManager.DamageEntity(lvl.i(1,6,getPowerLevel()),entities,getCaster());
+        CombatManager.DamageEntity(lvl.i(1,5,getPowerLevel()),entities,getCaster());
     }
 
     @Override

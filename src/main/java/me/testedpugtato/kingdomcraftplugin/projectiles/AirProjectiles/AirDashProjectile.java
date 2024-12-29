@@ -35,8 +35,6 @@ public class AirDashProjectile extends PowerProjectile
 
         getLocation().getWorld().playSound(getLocation(), Sound.ENTITY_CREEPER_HURT,0.7f,5);
         getCaster().getWorld().playSound(getCaster().getEyeLocation(),Sound.ENTITY_CREEPER_HURT, SoundCategory.MASTER,0.7f,5);
-
-
     }
 
     @Override
@@ -44,7 +42,6 @@ public class AirDashProjectile extends PowerProjectile
     {
 
         CombatManager.ApplyPulse(getLocation(),1f,0.5f,entities,getCaster());
-        getLocation().getWorld().playSound(getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.MASTER,2,2);
 
 
     }

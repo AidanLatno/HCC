@@ -2,6 +2,7 @@ package me.testedpugtato.kingdomcraftplugin.powers;
 
 
 import me.testedpugtato.kingdomcraftplugin.barriers.EarthDomain;
+import me.testedpugtato.kingdomcraftplugin.util.BlockUtil;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -45,7 +46,7 @@ public class Earth extends Power
         };
 
         blockList.addAll(Arrays.asList(set));
-        ignoreListSet.addAll(Arrays.asList(ignoreList));
+        ignoreListSet.addAll(Arrays.asList(BlockUtil.ignoreList));
     }
     @Override
     public void useBasicAttack(Player player, int powerLevel)

@@ -2,7 +2,6 @@ package me.testedpugtato.kingdomcraftplugin.util;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.World;
 import org.bukkit.util.Vector;
 
 public class ParticleMaker
@@ -28,7 +27,7 @@ public class ParticleMaker
     }
     public static void createCircle(Particle particle, Location loc, double radius, int particleAmount, double particleDensity, double offsetX, double offsetY, double offsetZ,double speed)
     {
-        createCircle(particle,loc,radius,particleAmount,particleDensity,offsetX,offsetY,offsetZ,speed,30);
+        createCircle(particle,loc,radius,particleAmount,particleDensity,offsetX,offsetY,offsetZ,speed,0);
     }
     public static void createCircle(Particle particle, Location loc, double radius, int particleAmount, double particleDensity, double offsetX, double offsetY, double offsetZ)
     {

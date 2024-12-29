@@ -46,13 +46,13 @@ public class GeneralEvents implements Listener {
             memory.setKing(config.getBoolean("stats.is_king"));
             memory.setDead(config.getBoolean("stats.is_dead"));
             memory.setUnBanTime(LocalDateTime.parse(config.getString("stats.unban_time")));
+            memory.setSpecialist(config.getString("stats.specialist"));
             PlayerUtility.setPlayerMemory(event.getPlayer(), memory);
         }
         // if the file does not exist
         else
         {
             // Create default values for new player memory
-            memory.setPower("no power");
             memory.setPowerLevel(1);
             memory.setPlayerLevel(1);
             memory.setPowerEXP(0);
@@ -61,6 +61,10 @@ public class GeneralEvents implements Listener {
             memory.setPower(new Power());
             memory.setDead(false);
             memory.setUnBanTime(LocalDateTime.now().plusHours(-1));
+            memory.setSpecialist(new Power());
+
+            PlayerUtility.setPlayerMemory(event.getPlayer(), memory);
+
 
             // Create file for new player
             File theDir = new File(PlayerUtility.getFolderPath(event.getPlayer()));
@@ -80,6 +84,8 @@ public class GeneralEvents implements Listener {
             config.set("stats.is_king",memory.isKing());
             config.set("stats.is_dead", memory.isDead());
             config.set("stats.unban_time",memory.getUnBanTime().toString());
+            config.set("stats.specialist",memory.getSpecialist().id);
+
 
             // save file
             try {
@@ -113,6 +119,7 @@ public class GeneralEvents implements Listener {
         config.set("stats.is_king",memory.isKing());
         config.set("stats.isDead", memory.isDead());
         config.set("stats.unban_time",memory.getUnBanTime().toString());
+        config.set("stats.specialist",memory.getSpecialist().id);
 
         try{config.save(f);} catch(IOException e) {e.printStackTrace();}
         PlayerUtility.setPlayerMemory(event.getPlayer(), null);
@@ -134,7 +141,7 @@ public class GeneralEvents implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            else if(power instanceof Air || power instanceof Earth)
+            else if(power instanceof Air)
             {
                 player.setFallDistance(0);
                 e.setCancelled(true);
