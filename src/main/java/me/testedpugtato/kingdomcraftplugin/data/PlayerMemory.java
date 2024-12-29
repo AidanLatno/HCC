@@ -6,6 +6,8 @@ import me.testedpugtato.kingdomcraftplugin.powers.specialists.Necromancer;
 import me.testedpugtato.kingdomcraftplugin.powers.specialists.RiftWalker;
 import org.bukkit.Bukkit;
 
+import java.time.LocalDateTime;
+
 public class PlayerMemory {
     // Database variables
     private int powerLevel;
@@ -15,6 +17,8 @@ public class PlayerMemory {
     private Power power;
     private int powerSlot = 8;
     private boolean isKing = false;
+    private LocalDateTime unBanTime;
+    private boolean isDead = false;
 
 
     // Temporary variables
@@ -139,6 +143,10 @@ public class PlayerMemory {
     public void setPowerSlot(int powerSlot) { this.powerSlot = powerSlot; }
     public boolean isKing() { return isKing; }
     public void setKing(boolean king) { isKing = king; }
+    public boolean isDead() { return isDead; }
+    public void setDead(boolean dead) { isDead = dead; }
+    public LocalDateTime getUnBanTime() { return unBanTime; }
+    public void setUnBanTime(LocalDateTime date) { unBanTime = date; }
 
     public String toString()
     {

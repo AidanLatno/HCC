@@ -57,7 +57,7 @@ public final class KingdomCraftPlugin extends JavaPlugin
 
     public static void savePlayerData()
     {
-        int success = 0,failed = 0;
+        int success = 0, failed = 0;
         for(Player player : Bukkit.getOnlinePlayers()) {
             PlayerMemory memory = PlayerUtility.getPlayerMemory(player);
             File f = new File(PlayerUtility.getFolderPath(player) + "/general.yml");
@@ -69,12 +69,16 @@ public final class KingdomCraftPlugin extends JavaPlugin
                 continue;
             }
 
+            config.set("stats.name", player.getName());
             config.set("stats.power", memory.getPower().id);
             config.set("stats.player_exp", memory.getPlayerEXP());
             config.set("stats.player_level", memory.getPlayerLevel());
             config.set("stats.power_exp", memory.getPowerEXP());
             config.set("stats.power_level", memory.getPowerLevel());
             config.set("stats.power_slot", memory.getPowerSlot());
+            config.set("stats.is_king",memory.isKing());
+            config.set("stats.is_dead", memory.isDead());
+            config.set("stats.unban_time",memory.getUnBanTime().toString());
 
             try {
                 config.save(f);

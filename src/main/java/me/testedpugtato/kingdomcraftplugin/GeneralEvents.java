@@ -7,6 +7,7 @@ import me.testedpugtato.kingdomcraftplugin.powers.Earth;
 import me.testedpugtato.kingdomcraftplugin.powers.Lightning;
 import me.testedpugtato.kingdomcraftplugin.powers.Power;
 import me.testedpugtato.kingdomcraftplugin.util.EventUtil;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class GeneralEvents implements Listener {
     public GeneralEvents() { EventUtil.register(this); }
@@ -31,8 +33,10 @@ public class GeneralEvents implements Listener {
         File f = new File(PlayerUtility.getFolderPath(event.getPlayer()) + "/general.yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
 
+        // If a file exists for the user
         if(f.exists())
         {
+            // Load file into memory
             memory.setPower(config.getString("stats.power"));
             memory.setPlayerEXP(config.getInt("stats.player_exp"));
             memory.setPlayerLevel(config.getInt("stats.player_level"));
@@ -40,10 +44,14 @@ public class GeneralEvents implements Listener {
             memory.setPowerLevel(config.getInt("stats.power_level"));
             memory.setPowerSlot(config.getInt("stats.power_slot"));
             memory.setKing(config.getBoolean("stats.is_king"));
+            memory.setDead(config.getBoolean("stats.is_dead"));
+            memory.setUnBanTime(LocalDateTime.parse(config.getString("stats.unban_time")));
             PlayerUtility.setPlayerMemory(event.getPlayer(), memory);
         }
+        // if the file does not exist
         else
         {
+            // Create default values for new player memory
             memory.setPower("no power");
             memory.setPowerLevel(1);
             memory.setPlayerLevel(1);
@@ -51,21 +59,27 @@ public class GeneralEvents implements Listener {
             memory.setPlayerEXP(0);
             memory.setPowerSlot(8);
             memory.setPower(new Power());
+            memory.setDead(false);
+            memory.setUnBanTime(LocalDateTime.now().plusHours(-1));
 
+            // Create file for new player
             File theDir = new File(PlayerUtility.getFolderPath(event.getPlayer()));
             if (!theDir.exists()){
                 theDir.mkdirs();
             }
             f.getParentFile().mkdirs();
-//            JavaPlugin.getPlugin(KingdomCraftPlugin.class).saveResource("asdad", false);
 
-            config.set("stats.power", memory.getPower());
+            // Set newly created file's values
+            config.set("stats.name", event.getPlayer().getName());
+            config.set("stats.power", memory.getPower().id);
             config.set("stats.player_exp", memory.getPlayerEXP());
             config.set("stats.player_level", memory.getPlayerLevel());
             config.set("stats.power_exp", memory.getPowerEXP());
             config.set("stats.power_level", memory.getPowerLevel());
             config.set("stats.power_slot", memory.getPowerSlot());
             config.set("stats.is_king",memory.isKing());
+            config.set("stats.is_dead", memory.isDead());
+            config.set("stats.unban_time",memory.getUnBanTime().toString());
 
             // save file
             try {
@@ -74,13 +88,22 @@ public class GeneralEvents implements Listener {
                 e.printStackTrace();
             }
         }
+
+        // check to see if user is death banned
+        if(memory.getUnBanTime().isAfter(LocalDateTime.now()))
+        {
+            event.getPlayer().kick(Component.text("You are still death banned. You will be able to rejoin: " + memory.getUnBanTime().toString()));
+        }
     }
 
-    @EventHandler
-    private void onQuit(PlayerQuitEvent event) {
+     @EventHandler
+    private void onQuit(PlayerQuitEvent event)
+    {
+        // Save player's data to their file
         PlayerMemory memory = PlayerUtility.getPlayerMemory(event.getPlayer());
         File f = new File(PlayerUtility.getFolderPath(event.getPlayer()) + "/general.yml");
         FileConfiguration config = YamlConfiguration.loadConfiguration(f);
+        config.set("stats.name", event.getPlayer().getName());
         config.set("stats.power", memory.getPower().id);
         config.set("stats.player_exp", memory.getPlayerEXP());
         config.set("stats.player_level", memory.getPlayerLevel());
@@ -88,6 +111,8 @@ public class GeneralEvents implements Listener {
         config.set("stats.power_level", memory.getPowerLevel());
         config.set("stats.power_slot", memory.getPowerSlot());
         config.set("stats.is_king",memory.isKing());
+        config.set("stats.isDead", memory.isDead());
+        config.set("stats.unban_time",memory.getUnBanTime().toString());
 
         try{config.save(f);} catch(IOException e) {e.printStackTrace();}
         PlayerUtility.setPlayerMemory(event.getPlayer(), null);

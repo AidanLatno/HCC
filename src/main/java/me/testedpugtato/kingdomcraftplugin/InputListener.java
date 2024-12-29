@@ -23,7 +23,8 @@ public class InputListener implements Listener
         EventUtil.register(this);
     }
     @EventHandler
-    public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
+    public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event)
+    {
         Player player = event.getPlayer();
         PlayerMemory memory = PlayerUtility.getPlayerMemory(player);
         if(memory.isStunned())
@@ -32,7 +33,9 @@ public class InputListener implements Listener
             return;
         }
         if (player.getInventory().getHeldItemSlot() != memory.getPowerSlot()) return;
-        if(player.isSneaking() && !player.isOnGround() && player.getLocation().getPitch() >= 50 && !Database.isOnSlamCooldown(player)) { // Slam attack
+        // Slam attack
+        if(player.isSneaking() && !player.isOnGround() && player.getLocation().getPitch() >= 50 && !Database.isOnSlamCooldown(player))
+        {
 
             memory.shiftCount++;
             PlayerUtility.setPlayerMemory(player,memory);

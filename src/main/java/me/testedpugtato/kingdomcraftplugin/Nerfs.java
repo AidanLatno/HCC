@@ -1,7 +1,9 @@
 package me.testedpugtato.kingdomcraftplugin;
 
+import me.testedpugtato.kingdomcraftplugin.data.PlayerMemory;
 import me.testedpugtato.kingdomcraftplugin.data.PlayerUtility;
 import me.testedpugtato.kingdomcraftplugin.util.EventUtil;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
@@ -11,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityResurrectEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -18,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Nerfs implements Listener
@@ -56,6 +60,16 @@ public class Nerfs implements Listener
         }
     }
 
+    @EventHandler
+    public void OnDeath(PlayerDeathEvent event)
+    {
+        PlayerMemory memory = PlayerUtility.getPlayerMemory(event.getPlayer());
+        // Add 1 hour to current time then set unban time
+        memory.setUnBanTime(LocalDateTime.now().plusHours(1));
+        memory.setDead(true);
+        event.getPlayer().getInventory().clear();
+        event.getPlayer().kick(Component.text("You died! You may rejoin in 1 hour"));
+    }
 
 
     @EventHandler
